@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Divyansh Shandil — The Digital Architect</title>
+  <meta name="description" content="Divyansh Shandil is a Software Engineer at Google USA, BCA student at SRM, IIT Mandi Data Science graduate, CEO & Founder of Desi Dhun, and a Music Producer from North India." />
+  <meta name="author" content="Divyansh Shandil" />
+  <meta property="og:title" content="Divyansh Shandil — The Digital Architect" />
+  <meta property="og:description" content="Engineer. Entrepreneur. Artist. Building systems that serve both global industries and local communities." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">⬡</span>
+      <span class="brand-text">DS</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#journey" class="nav-link">Journey</a></li>
+      <li><a href="#expertise" class="nav-link">Expertise</a></li>
+      <li><a href="#ventures" class="nav-link">Ventures</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+    </ul>
+    <button class="nav-cta" id="nav-cta-btn">Connect</button>
+    <button class="hamburger" id="hamburger-btn" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#about" class="mobile-link">About</a>
+    <a href="#journey" class="mobile-link">Journey</a>
+    <a href="#expertise" class="mobile-link">Expertise</a>
+    <a href="#ventures" class="mobile-link">Ventures</a>
+    <a href="#contact" class="mobile-link">Contact</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <img src="hero_bg.png" alt="Digital Architect Background" class="hero-bg-img" />
+      <div class="hero-overlay"></div>
+      <canvas id="particles-canvas"></canvas>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>Available · Engineer @ Google USA</span>
+      </div>
+      <h1 class="hero-title">
+        <span class="title-line title-small">Divyansh</span>
+        <span class="title-line title-large">Shandil</span>
+      </h1>
+      <p class="hero-tagline">The Digital Architect</p>
+      <p class="hero-subtitle">
+        Engineer · Entrepreneur · Artist · Dreamer from the foothills of <strong>Himachal Pradesh</strong>
+      </p>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number" data-target="19">0</span>
+          <span class="stat-label">Years Old</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number" data-target="2">0</span>
+          <span class="stat-label">Universities</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number" data-target="1">0</span>
+          <span class="stat-label">Company Founded</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number" data-target="3">0</span>
+          <span class="stat-label">AI Specializations</span>
+        </div>
+      </div>
+      <div class="hero-cta-group">
+        <a href="#journey" class="btn-primary" id="hero-journey-btn">Read My Story</a>
+        <a href="#contact" class="btn-ghost" id="hero-contact-btn">Get In Touch</a>
+      </div>
+    </div>
+    <div class="hero-scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="section-label">Who I Am</div>
+      <div class="about-grid">
+        <div class="about-text">
+          <h2 class="section-title">Born in the mountains,<br/>built for the <span class="gradient-text">digital world.</span></h2>
+          <p class="about-para">
+            I'm Divyansh Shandil — a software engineer, entrepreneur, and creative force from the landscapes of <strong>Punjab</strong> and <strong>Himachal Pradesh</strong>. Born on October 16, 2006, I grew up navigating mountains on motorcycles and traversing India by rail, building a sense of scale and independence that would define everything I'd build later.
+          </p>
+          <p class="about-para">
+            Today, I operate at the intersection of deep technical expertise and entrepreneurial vision. By day, I'm a BCA student at <strong>SRM Institute of Science and Technology</strong>. By night, I'm a professional engineer on the <strong>Google USA team</strong> — mastering the art of the multi-threaded life.
+          </p>
+          <div class="about-tags">
+            <span class="tag">🏔️ North India</span>
+            <span class="tag">🎓 SRM University</span>
+            <span class="tag">🏛️ IIT Mandi</span>
+            <span class="tag">🌐 Google USA</span>
+            <span class="tag">🎵 Music Producer</span>
+            <span class="tag">🤖 AI Engineer</span>
+          </div>
+        </div>
+        <div class="about-visual">
+          <div class="about-card-stack">
+            <div class="info-card card-google">
+              <div class="card-icon">🌐</div>
+              <div class="card-content">
+                <div class="card-title">Software Engineer</div>
+                <div class="card-sub">Google USA · Night Shift</div>
+              </div>
+            </div>
+            <div class="info-card card-srm">
+              <div class="card-icon">🎓</div>
+              <div class="card-content">
+                <div class="card-title">BCA Student</div>
+                <div class="card-sub">SRM Kattankulathur</div>
+              </div>
+            </div>
+            <div class="info-card card-iit">
+              <div class="card-icon">🏛️</div>
+              <div class="card-content">
+                <div class="card-title">Data Science & ML</div>
+                <div class="card-sub">IIT Mandi · Certified Mar 14, 2026</div>
+              </div>
+            </div>
+            <div class="info-card card-desi">
+              <div class="card-icon">🎵</div>
+              <div class="card-content">
+                <div class="card-title">CEO & Founder</div>
+                <div class="card-sub">Desi Dhun</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Journey / Timeline Section -->
+  <section class="journey" id="journey">
+    <div class="container">
+      <div class="section-label">The Story</div>
+      <h2 class="section-title center">Four Chapters of <span class="gradient-text">Rapid Scaling</span></h2>
+      <p class="section-subtitle center">From the foothills of Himachal to the halls of global tech infrastructure</p>
+
+      <div class="timeline">
+        <!-- Chapter 1 -->
+        <div class="timeline-item" id="chapter-1">
+          <div class="timeline-marker">
+            <div class="marker-ring"></div>
+            <div class="marker-dot">🏔️</div>
+          </div>
+          <div class="timeline-card">
+            <div class="chapter-badge">Chapter 1</div>
+            <div class="timeline-period">2006 – 2024</div>
+            <h3 class="timeline-title">The Foundation</h3>
+            <p class="timeline-desc">
+              Born on October 16, 2006, in the vibrant culture of <strong>Punjab</strong> and the quiet majesty of <strong>Himachal Pradesh</strong>. Early years defined by a growing curiosity — not just for how things worked, but for how they could be <em>created</em>.
+            </p>
+            <p class="timeline-desc">
+              Whether navigating the roads on a motorcycle or traveling the vast Indian railway network, these journeys built a sense of independence and scale that would later define professional ambitions.
+            </p>
+            <div class="timeline-tags">
+              <span class="t-tag">🏔️ Himachal Pradesh</span>
+              <span class="t-tag">🌾 Punjab</span>
+              <span class="t-tag">🏍️ Motorcyclist</span>
+              <span class="t-tag">🚂 Railway Explorer</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chapter 2 -->
+        <div class="timeline-item right" id="chapter-2">
+          <div class="timeline-marker">
+            <div class="marker-ring"></div>
+            <div class="marker-dot">🎓</div>
+          </div>
+          <div class="timeline-card">
+            <div class="chapter-badge">Chapter 2</div>
+            <div class="timeline-period">2025</div>
+            <h3 class="timeline-title">The Gateway to Systems</h3>
+            <p class="timeline-desc">
+              Moved across the country to join <strong>SRM Institute of Science and Technology</strong> at the Kattankulathur campus — pursuing a <strong>Bachelor of Computer Applications</strong>. A system upgrade in every sense.
+            </p>
+            <p class="timeline-desc">
+              Balanced rigors of college life with a dedicated fitness regimen, documenting progress in the gym with the same precision applied to code. Building physical and mental stamina for the high-intensity path ahead.
+            </p>
+            <div class="timeline-tags">
+              <span class="t-tag">🎓 SRM University</span>
+              <span class="t-tag">💻 BCA</span>
+              <span class="t-tag">🏋️ Fitness</span>
+              <span class="t-tag">📐 Systems Thinking</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chapter 3 -->
+        <div class="timeline-item" id="chapter-3">
+          <div class="timeline-marker">
+            <div class="marker-ring"></div>
+            <div class="marker-dot">⚡</div>
+          </div>
+          <div class="timeline-card">
+            <div class="chapter-badge">Chapter 3</div>
+            <div class="timeline-period">2026</div>
+            <h3 class="timeline-title">The Multi-Threaded Life</h3>
+            <p class="timeline-desc">
+              Joined the <strong>Google USA team</strong> as a professional engineer on the Night Shift — while maintaining student status by day. Completed a specialized program in <strong>Data Science & Machine Learning</strong> at IIT Mandi on <em>March 14, 2026</em>.
+            </p>
+            <div class="highlight-grid">
+              <div class="highlight-item">
+                <span class="hi-icon">🧠</span>
+                <div>
+                  <strong>Deep Learning</strong>
+                  <small>MobileNetV2 & CNNs for plant infestation detection</small>
+                </div>
+              </div>
+              <div class="highlight-item">
+                <span class="hi-icon">🤖</span>
+                <div>
+                  <strong>Agentic Systems</strong>
+                  <small>Gemini, Gemma & LangChain applications</small>
+                </div>
+              </div>
+              <div class="highlight-item">
+                <span class="hi-icon">🏗️</span>
+                <div>
+                  <strong>System Design</strong>
+                  <small>Core CSE with real-world software engineering</small>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-tags">
+              <span class="t-tag">🌐 Google USA</span>
+              <span class="t-tag">🏛️ IIT Mandi</span>
+              <span class="t-tag">🤖 AI/ML</span>
+              <span class="t-tag">🎵 Desi Dhun CEO</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chapter 4 -->
+        <div class="timeline-item right" id="chapter-4">
+          <div class="timeline-marker">
+            <div class="marker-ring active"></div>
+            <div class="marker-dot pulse">🚀</div>
+          </div>
+          <div class="timeline-card active-card">
+            <div class="chapter-badge active-badge">Chapter 4 · Now</div>
+            <div class="timeline-period">Current Epoch</div>
+            <h3 class="timeline-title">The Digital Architect</h3>
+            <p class="timeline-desc">
+              Standing at a unique intersection of disciplines — engineer, entrepreneur, student, and artist. Solving complex algorithms by day and contributing to global tech infrastructure by night.
+            </p>
+            <p class="timeline-desc">
+              From the poetic couplets of Hindi literature to the logic of a neural network — a story of <strong>rapid scaling</strong>, transforming from a curious observer into a digital architect building systems that serve both global industries and local communities.
+            </p>
+            <div class="timeline-tags">
+              <span class="t-tag live">🔴 Live</span>
+              <span class="t-tag">🌍 Global Impact</span>
+              <span class="t-tag">🎵 Music & Tech</span>
+              <span class="t-tag">🚀 Scaling Fast</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Expertise Section -->
+  <section class="expertise" id="expertise">
+    <div class="container">
+      <div class="section-label">Technical Stack</div>
+      <h2 class="section-title center">Areas of <span class="gradient-text">Deep Expertise</span></h2>
+
+      <div class="expertise-grid">
+        <div class="exp-card" id="exp-ai">
+          <div class="exp-glow"></div>
+          <div class="exp-icon">🧠</div>
+          <h3 class="exp-title">Artificial Intelligence</h3>
+          <p class="exp-desc">Building intelligent systems using cutting-edge deep learning architectures.</p>
+          <ul class="exp-list">
+            <li>MobileNetV2 & CNN architectures</li>
+            <li>Plant infestation detection (CV)</li>
+            <li>Agentic AI with Gemini & Gemma</li>
+            <li>LangChain pipeline engineering</li>
+          </ul>
+          <div class="exp-level">
+            <span>Proficiency</span>
+            <div class="level-bar"><div class="level-fill" style="--w:90%"></div></div>
+          </div>
+        </div>
+
+        <div class="exp-card" id="exp-ds">
+          <div class="exp-glow"></div>
+          <div class="exp-icon">📊</div>
+          <h3 class="exp-title">Data Science & ML</h3>
+          <p class="exp-desc">Certified by IIT Mandi in Data Science and Machine Learning (March 2026).</p>
+          <ul class="exp-list">
+            <li>Statistical modeling & analysis</li>
+            <li>Feature engineering</li>
+            <li>Model training & evaluation</li>
+            <li>Data pipeline architecture</li>
+          </ul>
+          <div class="exp-level">
+            <span>Proficiency</span>
+            <div class="level-bar"><div class="level-fill" style="--w:88%"></div></div>
+          </div>
+        </div>
+
+        <div class="exp-card" id="exp-sys">
+          <div class="exp-glow"></div>
+          <div class="exp-icon">🏗️</div>
+          <h3 class="exp-title">System Design & CSE</h3>
+          <p class="exp-desc">High-level technical architecture rooted in core Computer Science principles.</p>
+          <ul class="exp-list">
+            <li>Distributed system design</li>
+            <li>Scalable backend architecture</li>
+            <li>CSE fundamentals (algorithms, OS)</li>
+            <li>Software engineering practices</li>
+          </ul>
+          <div class="exp-level">
+            <span>Proficiency</span>
+            <div class="level-bar"><div class="level-fill" style="--w:85%"></div></div>
+          </div>
+        </div>
+
+        <div class="exp-card" id="exp-web">
+          <div class="exp-glow"></div>
+          <div class="exp-icon">💻</div>
+          <h3 class="exp-title">Software Engineering</h3>
+          <p class="exp-desc">Full-stack development with an emphasis on performance and elegant code.</p>
+          <ul class="exp-list">
+            <li>Full-stack web development</li>
+            <li>Computer Vision applications</li>
+            <li>API design & integration</li>
+            <li>Google infrastructure experience</li>
+          </ul>
+          <div class="exp-level">
+            <span>Proficiency</span>
+            <div class="level-bar"><div class="level-fill" style="--w:87%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ventures Section -->
+  <section class="ventures" id="ventures">
+    <div class="container">
+      <div class="section-label">Endeavors</div>
+      <h2 class="section-title center">Where <span class="gradient-text">I Operate</span></h2>
+
+      <div class="ventures-grid">
+        <div class="venture-card venture-google" id="venture-google">
+          <div class="venture-logo">🌐</div>
+          <div class="venture-info">
+            <h3>Google USA</h3>
+            <p class="venture-role">Software Engineer · Night Shift</p>
+            <p class="venture-desc">Contributing to global tech infrastructure as part of the Google USA engineering team, blending student life with professional excellence.</p>
+            <div class="venture-status active-status">● Active</div>
+          </div>
+        </div>
+
+        <div class="venture-card venture-srm" id="venture-srm">
+          <div class="venture-logo">🎓</div>
+          <div class="venture-info">
+            <h3>SRM Institute of Science & Technology</h3>
+            <p class="venture-role">Bachelor of Computer Applications</p>
+            <p class="venture-desc">Pursuing BCA at the Kattankulathur campus, Chennai — building systematic knowledge in computer applications and software systems.</p>
+            <div class="venture-status active-status">● Enrolled</div>
+          </div>
+        </div>
+
+        <div class="venture-card venture-iit" id="venture-iit">
+          <div class="venture-logo">🏛️</div>
+          <div class="venture-info">
+            <h3>IIT Mandi</h3>
+            <p class="venture-role">Data Science & Machine Learning · CSE Track</p>
+            <p class="venture-desc">Specialized program in Data Science and Machine Learning completed on March 14, 2026. Deep dive into AI, neural networks, and high-level technical architecture.</p>
+            <div class="venture-status completed-status">✓ Certified</div>
+          </div>
+        </div>
+
+        <div class="venture-card venture-desi" id="venture-desi">
+          <div class="venture-logo">🎵</div>
+          <div class="venture-info">
+            <h3>Desi Dhun</h3>
+            <p class="venture-role">CEO & Founder · Music Production</p>
+            <p class="venture-desc">Founded and leads Desi Dhun — a music venture bridging technical expertise with artistic passion, celebrating the rich heritage of South Asian music.</p>
+            <div class="venture-status active-status">● Building</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quote Section -->
+  <section class="quote-section">
+    <div class="container">
+      <div class="quote-card">
+        <div class="quote-mark">"</div>
+        <blockquote class="quote-text">
+          From the poetic couplets of Hindi literature to the logic of a neural network — my story is one of <strong>rapid scaling</strong>. I have transformed from a curious observer into a digital architect, building systems that serve both global industries and local communities.
+        </blockquote>
+        <div class="quote-author">— Divyansh Shandil</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="section-label">Let's Connect</div>
+      <h2 class="section-title center">Reach <span class="gradient-text">Divyansh</span></h2>
+      <p class="section-subtitle center">Open to collaborations, tech conversations, and creative projects.</p>
+
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="contact-item" id="contact-email">
+            <div class="contact-icon">📧</div>
+            <div>
+              <div class="contact-label">Email</div>
+              <div class="contact-value">divyansh.shandil@gmail.com</div>
+            </div>
+          </div>
+          <div class="contact-item" id="contact-location">
+            <div class="contact-icon">📍</div>
+            <div>
+              <div class="contact-label">Location</div>
+              <div class="contact-value">Kattankulathur, Tamil Nadu · India</div>
+            </div>
+          </div>
+          <div class="contact-item" id="contact-linkedin">
+            <div class="contact-icon">💼</div>
+            <div>
+              <div class="contact-label">LinkedIn</div>
+              <div class="contact-value">linkedin.com/in/divyanshshandil</div>
+            </div>
+          </div>
+          <div class="contact-item" id="contact-github">
+            <div class="contact-icon">🐙</div>
+            <div>
+              <div class="contact-label">GitHub</div>
+              <div class="contact-value">github.com/divyanshshandil</div>
+            </div>
+          </div>
+        </div>
+
+        <form class="contact-form" id="contact-form" onsubmit="handleFormSubmit(event)">
+          <div class="form-group">
+            <label for="contact-name">Full Name</label>
+            <input type="text" id="contact-name" name="name" placeholder="Your name" required />
+          </div>
+          <div class="form-group">
+            <label for="contact-email-input">Email Address</label>
+            <input type="email" id="contact-email-input" name="email" placeholder="your@email.com" required />
+          </div>
+          <div class="form-group">
+            <label for="contact-subject">Subject</label>
+            <input type="text" id="contact-subject" name="subject" placeholder="Collaboration, opportunity, hello..." />
+          </div>
+          <div class="form-group">
+            <label for="contact-message">Message</label>
+            <textarea id="contact-message" name="message" rows="4" placeholder="Tell me about your project or idea..." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary full-width" id="form-submit-btn">Send Message 🚀</button>
+          <div class="form-success" id="form-success" style="display:none;">
+            ✅ Message sent! Divyansh will get back to you soon.
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="brand-icon">⬡</span>
+          <span class="brand-text">Divyansh Shandil</span>
+        </div>
+        <div class="footer-links">
+          <a href="#about">About</a>
+          <a href="#journey">Journey</a>
+          <a href="#expertise">Expertise</a>
+          <a href="#ventures">Ventures</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-bottom">
+        <p>© 2026 Divyansh Shandil · The Digital Architect · All Rights Reserved</p>
+        <p class="footer-sub">Built with 💙 · From Himachal Pradesh to the World</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
