@@ -368,6 +368,72 @@ section { padding: 6rem 0; }
 .footer-sub { color: var(--c-dim) !important; }
 
 /* ============================================================ RESPONSIVE */
+/* ============================================================ LEARN WITH ME */
+.learn { background: var(--c-bg); }
+
+.learn-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem;
+  margin-top: 3rem; margin-bottom: 3rem;
+}
+
+.learn-card {
+  background: var(--c-surface); border: 1px solid var(--c-border);
+  border-radius: var(--radius); padding: 1.8rem 1.4rem; text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+  position: relative; overflow: hidden;
+}
+.learn-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--grad-main); opacity: 0;
+  transition: opacity 0.3s;
+}
+.learn-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(99,102,241,0.2); border-color: var(--c-indigo); }
+.learn-card:hover::before { opacity: 0.04; }
+.learn-icon { font-size: 2.2rem; margin-bottom: 1rem; position: relative; }
+.learn-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.6rem; position: relative; }
+.learn-card p { font-size: 0.84rem; color: var(--c-dim); line-height: 1.65; position: relative; }
+
+/* Instagram CTA Banner */
+.insta-cta {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(135deg, rgba(131,58,180,0.15), rgba(253,29,29,0.1), rgba(252,176,69,0.1));
+  border: 1px solid rgba(131,58,180,0.3);
+  border-radius: var(--radius); padding: 2rem 2.5rem;
+  gap: 2rem; flex-wrap: wrap;
+}
+.insta-glow {
+  position: absolute; top: -60px; right: -60px;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(253,29,29,0.2), rgba(131,58,180,0.2), transparent);
+  pointer-events: none;
+}
+.insta-left { display: flex; align-items: center; gap: 1.2rem; }
+.insta-avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; font-weight: 800; color: white;
+  flex-shrink: 0;
+  box-shadow: 0 0 20px rgba(253,29,29,0.4);
+}
+.insta-handle {
+  font-size: 1.4rem; font-weight: 800;
+  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.insta-desc { font-size: 0.85rem; color: var(--c-dim); margin-top: 0.2rem; }
+.insta-btn {
+  display: inline-flex; align-items: center; gap: 0.7rem;
+  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+  color: white; text-decoration: none;
+  padding: 0.9rem 2rem; border-radius: 50px;
+  font-weight: 700; font-size: 1rem; white-space: nowrap;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 30px rgba(253,29,29,0.3);
+}
+.insta-btn:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 0 50px rgba(253,29,29,0.5); }
+
 @media (max-width: 900px) {
   .nav-links, .nav-cta { display: none; }
   .hamburger { display: flex; }
@@ -379,6 +445,9 @@ section { padding: 6rem 0; }
   .timeline-item.right .timeline-card { grid-column: 2; }
   .timeline-item .timeline-marker, .timeline-item.right .timeline-marker { grid-column: 1; }
   .expertise-grid, .ventures-grid { grid-template-columns: 1fr; }
+  .learn-grid { grid-template-columns: repeat(2, 1fr); }
+  .insta-cta { flex-direction: column; text-align: center; }
+  .insta-left { flex-direction: column; }
   .contact-grid { grid-template-columns: 1fr; }
   .footer-top { flex-direction: column; text-align: center; }
   .footer-bottom { flex-direction: column; text-align: center; }
