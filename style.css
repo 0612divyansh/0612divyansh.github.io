@@ -467,12 +467,23 @@ body.light-mode .hero-bg-img { opacity: 0.2; }
   background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2);
   border-radius: 50px; color: var(--c-indigo); font-weight: 600;
 }
-.proj-links { margin-top: auto; }
-.proj-link {
-  font-size: 0.85rem; color: var(--c-cyan); font-weight: 700;
-  text-decoration: none; transition: letter-spacing 0.2s;
+.proj-links { margin-top: auto; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+.proj-link-primary {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  background: rgba(34, 211, 238, 0.12); border: 1px solid rgba(34, 211, 238, 0.35);
+  color: var(--c-cyan); font-weight: 700; font-size: 0.82rem;
+  padding: 0.4rem 0.9rem; border-radius: 50px; text-decoration: none;
+  transition: all 0.2s ease;
 }
-.proj-link:hover { letter-spacing: 0.05em; }
+.proj-link-primary:hover {
+  background: var(--c-cyan); color: #000;
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
+}
+.proj-link {
+  font-size: 0.85rem; color: var(--c-muted); font-weight: 600;
+  text-decoration: none; transition: color 0.2s, letter-spacing 0.2s;
+}
+.proj-link:hover { color: var(--c-text); letter-spacing: 0.04em; }
 
 /* ============================================================ ACHIEVEMENTS */
 .achievements { background: var(--c-bg); }
