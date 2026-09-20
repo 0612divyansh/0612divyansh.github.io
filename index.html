@@ -15,6 +15,15 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress" id="scroll-progress"></div>
+  <!-- Custom Cursor -->
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+  <!-- Back to Top -->
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
 
   <!-- Navigation -->
   <nav class="navbar" id="navbar">
@@ -25,10 +34,12 @@
     <ul class="nav-links">
       <li><a href="#about" class="nav-link">About</a></li>
       <li><a href="#journey" class="nav-link">Journey</a></li>
-      <li><a href="#expertise" class="nav-link">Expertise</a></li>
-      <li><a href="#ventures" class="nav-link">Ventures</a></li>
+      <li><a href="#projects" class="nav-link">Projects</a></li>
+      <li><a href="#expertise" class="nav-link">Skills</a></li>
+      <li><a href="#achievements" class="nav-link">Awards</a></li>
       <li><a href="#contact" class="nav-link">Contact</a></li>
     </ul>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
     <button class="nav-cta" id="nav-cta-btn">Connect</button>
     <button class="hamburger" id="hamburger-btn" aria-label="Toggle menu">
       <span></span><span></span><span></span>
@@ -62,7 +73,7 @@
       </h1>
       <p class="hero-tagline">The Digital Architect</p>
       <p class="hero-subtitle">
-        Engineer · Entrepreneur · Artist · Dreamer from the foothills of <strong>Himachal Pradesh</strong>
+        I'm a <span id="typing-text" class="typing-text"></span><span class="typing-cursor">|</span>
       </p>
       <div class="hero-stats">
         <div class="stat-item">
@@ -413,6 +424,155 @@
     </div>
   </section>
 
+
+  <!-- Projects Section -->
+  <section class="projects" id="projects">
+    <div class="container">
+      <div class="section-label">Work & Builds</div>
+      <h2 class="section-title center">Featured <span class="gradient-text">Projects</span></h2>
+      <p class="section-subtitle center">Real systems built with cutting-edge tech — from AI to the web.</p>
+      <div class="projects-grid">
+
+        <div class="project-card" id="proj-plant">
+          <div class="proj-header">
+            <div class="proj-icon">🌿</div>
+            <div class="proj-status live-badge">🟢 Research</div>
+          </div>
+          <h3 class="proj-title">Plant Infestation Detector</h3>
+          <p class="proj-desc">Deep Learning model using MobileNetV2 &amp; CNN to detect plant diseases and infestations from images with high accuracy.</p>
+          <div class="proj-stack">
+            <span class="stack-tag">Python</span>
+            <span class="stack-tag">MobileNetV2</span>
+            <span class="stack-tag">TensorFlow</span>
+            <span class="stack-tag">CNN</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/0612divyansh" target="_blank" class="proj-link">GitHub →</a>
+          </div>
+        </div>
+
+        <div class="project-card" id="proj-gesture">
+          <div class="proj-header">
+            <div class="proj-icon">✋</div>
+            <div class="proj-status live-badge">🟢 Live</div>
+          </div>
+          <h3 class="proj-title">Hand Gesture Recognition App</h3>
+          <p class="proj-desc">Web app using MediaPipe to recognize hand gestures in real-time, mapping them to alphabets, words &amp; draggable elements on-screen.</p>
+          <div class="proj-stack">
+            <span class="stack-tag">JavaScript</span>
+            <span class="stack-tag">MediaPipe</span>
+            <span class="stack-tag">HTML Canvas</span>
+            <span class="stack-tag">Computer Vision</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/0612divyansh" target="_blank" class="proj-link">GitHub →</a>
+          </div>
+        </div>
+
+        <div class="project-card" id="proj-agentic">
+          <div class="proj-header">
+            <div class="proj-icon">🤖</div>
+            <div class="proj-status live-badge">🟢 Active</div>
+          </div>
+          <h3 class="proj-title">Agentic AI System</h3>
+          <p class="proj-desc">Built intelligent agentic applications using Google Gemini &amp; Gemma models with LangChain for autonomous multi-step reasoning and tool use.</p>
+          <div class="proj-stack">
+            <span class="stack-tag">Gemini API</span>
+            <span class="stack-tag">LangChain</span>
+            <span class="stack-tag">Python</span>
+            <span class="stack-tag">Gemma</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://github.com/0612divyansh" target="_blank" class="proj-link">GitHub →</a>
+          </div>
+        </div>
+
+        <div class="project-card" id="proj-desi">
+          <div class="proj-header">
+            <div class="proj-icon">🎵</div>
+            <div class="proj-status live-badge">🟢 Building</div>
+          </div>
+          <h3 class="proj-title">Desi Dhun Platform</h3>
+          <p class="proj-desc">Founded and building Desi Dhun — a music production brand &amp; platform celebrating South Asian music culture, bridging tech and art.</p>
+          <div class="proj-stack">
+            <span class="stack-tag">Web Dev</span>
+            <span class="stack-tag">Music Production</span>
+            <span class="stack-tag">Branding</span>
+            <span class="stack-tag">DAW</span>
+          </div>
+          <div class="proj-links">
+            <a href="https://www.instagram.com/divyanshshandil_" target="_blank" class="proj-link">Follow →</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Achievements Section -->
+  <section class="achievements" id="achievements">
+    <div class="container">
+      <div class="section-label">Milestones</div>
+      <h2 class="section-title center">Achievements &amp; <span class="gradient-text">Certifications</span></h2>
+      <div class="ach-grid">
+
+        <div class="ach-card" id="ach-google">
+          <div class="ach-icon-wrap" style="--c:#4285f4">🌐</div>
+          <div class="ach-content">
+            <div class="ach-title">Software Engineer · Google USA</div>
+            <div class="ach-sub">Joined the Google USA engineering team — Night Shift operations contributing to global-scale infrastructure.</div>
+            <div class="ach-date">2026 · Ongoing</div>
+          </div>
+        </div>
+
+        <div class="ach-card" id="ach-iit">
+          <div class="ach-icon-wrap" style="--c:#22d3ee">🏛️</div>
+          <div class="ach-content">
+            <div class="ach-title">BTech CSE · IIT Mandi</div>
+            <div class="ach-sub">Secured admission to IIT Mandi — one of India's premier IITs — pursuing Computer Science &amp; Engineering. 2nd year completed.</div>
+            <div class="ach-date">2025 · Ongoing</div>
+          </div>
+        </div>
+
+        <div class="ach-card" id="ach-ds">
+          <div class="ach-icon-wrap" style="--c:#8b5cf6">📜</div>
+          <div class="ach-content">
+            <div class="ach-title">Data Science &amp; ML Certificate · IIT Mandi</div>
+            <div class="ach-sub">Successfully completed the specialized Data Science and Machine Learning program at IIT Mandi covering Deep Learning, neural networks &amp; AI systems.</div>
+            <div class="ach-date">March 14, 2026</div>
+          </div>
+        </div>
+
+        <div class="ach-card" id="ach-desi">
+          <div class="ach-icon-wrap" style="--c:#ec4899">🎵</div>
+          <div class="ach-content">
+            <div class="ach-title">CEO &amp; Founder · Desi Dhun</div>
+            <div class="ach-sub">Founded Desi Dhun — a music production brand bridging South Asian cultural heritage with modern music technology.</div>
+            <div class="ach-date">2026 · Active</div>
+          </div>
+        </div>
+
+        <div class="ach-card" id="ach-iitmandi-ai">
+          <div class="ach-icon-wrap" style="--c:#f59e0b">🧠</div>
+          <div class="ach-content">
+            <div class="ach-title">Deep Learning Specialist</div>
+            <div class="ach-sub">Built production-grade plant infestation detection system using MobileNetV2 and CNNs — applied Computer Vision for real agricultural impact.</div>
+            <div class="ach-date">2026</div>
+          </div>
+        </div>
+
+        <div class="ach-card" id="ach-agentic">
+          <div class="ach-icon-wrap" style="--c:#6366f1">🤖</div>
+          <div class="ach-content">
+            <div class="ach-title">Agentic AI Builder</div>
+            <div class="ach-sub">Designed and deployed agentic AI applications with Gemini, Gemma and LangChain — pioneering autonomous reasoning systems.</div>
+            <div class="ach-date">2026</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
 
   <!-- Learn With Me Section -->
   <section class="learn" id="learn">
