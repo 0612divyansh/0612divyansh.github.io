@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AetherFlow Studio — Visual Autonomous Agent & AI Workflow Orchestration Canvas</title>
+  <meta name="description" content="Production-grade visual node canvas for orchestrating autonomous AI agents, multi-model RAG pipelines, API triggers, and real-time execution simulation.">
+  <meta name="theme-color" content="#0a0d14">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="AetherFlow Studio — Visual Autonomous AI Canvas">
+  <meta property="og:description" content="Build, simulate, and export autonomous AI agent workflows with interactive nodes, real-time telemetry, and code generation.">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts: Outfit & Inter + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-cyber-dark">
+
+  <!-- App Container -->
+  <div class="app-root" id="app-root">
+
+    <!-- Top Navigation Bar -->
+    <header class="app-header" id="app-header">
+      <div class="header-left">
+        <div class="logo-group">
+          <div class="logo-glyph" aria-hidden="true">
+            <span class="glyph-core"></span>
+            <span class="glyph-ring"></span>
+          </div>
+          <div class="logo-text">
+            <h1 class="logo-title">AetherFlow<span class="brand-sub">Studio</span></h1>
+            <span class="badge-tag">AI Agent Orchestrator</span>
+          </div>
+        </div>
+
+        <div class="project-meta">
+          <span class="divider">/</span>
+          <div class="editable-title-wrapper" title="Click to rename workflow">
+            <input type="text" id="workflow-name-input" class="workflow-name-input" value="Autonomous SecOps Auditor Pipeline" maxlength="50" aria-label="Workflow Name">
+            <span class="edit-icon" aria-hidden="true">✏️</span>
+          </div>
+          <span class="save-status" id="save-status" title="State is persisted automatically">
+            <span class="status-dot"></span> Saved
+          </span>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <!-- Template Quick Selector -->
+        <div class="template-selector-wrapper">
+          <span class="selector-label">Template:</span>
+          <select id="template-select" class="custom-select" aria-label="Select Workflow Template">
+            <option value="secops">🛡️ SecOps Vulnerability Bot</option>
+            <option value="lead-gen">📈 Growth & Lead Enrichment</option>
+            <option value="research">📰 Deep Tech Research Digest</option>
+            <option value="support">💬 Customer Support Auto-Pilot</option>
+            <option value="blank">✨ Blank Canvas</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <!-- Audio Synth Toggle -->
+        <button type="button" id="btn-toggle-sound" class="btn-icon" title="Toggle Synthesizer Audio Feedback" aria-label="Toggle Sound">
+          <span class="sound-icon" id="sound-indicator">🔊</span>
+        </button>
+
+        <!-- Command Palette Trigger -->
+        <button type="button" id="btn-cmd-palette" class="btn-subtle" title="Open Command Palette (Cmd+K)">
+          <span class="btn-kbd">⌘K</span>
+        </button>
+
+        <!-- Export Dropdown / Code Gen -->
+        <button type="button" id="btn-open-code-modal" class="btn-outline">
+          <span class="icon">⚡</span> Code Export
+        </button>
+
+        <button type="button" id="btn-open-file-actions" class="btn-outline" title="Import / Export Project Files">
+          <span class="icon">💾</span> Project
+        </button>
+
+        <button type="button" id="btn-clear-canvas" class="btn-ghost" title="Clear all nodes from canvas">
+          Clear
+        </button>
+
+        <!-- Primary Execution Button -->
+        <button type="button" id="btn-run-workflow" class="btn-primary glow-pulse" title="Execute Pipeline Simulation">
+          <span class="run-spinner" id="run-spinner" aria-hidden="true"></span>
+          <span class="run-icon" id="run-icon">▶</span>
+          <span class="run-text" id="run-text">Run Workflow</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="app-workspace" id="app-workspace">
+
+      <!-- Left Sidebar: Node Library / Palette -->
+      <aside class="node-palette" id="node-palette" aria-label="Component Palette">
+        <div class="palette-header">
+          <h2 class="palette-title">Node Library</h2>
+          <span class="palette-count" id="palette-count">10 Nodes</span>
+        </div>
+
+        <div class="palette-search">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input type="text" id="palette-filter" placeholder="Filter agents, tools, logic..." aria-label="Search node library">
+        </div>
+
+        <div class="palette-scroll" id="palette-items-container">
+          
+          <!-- Category: AI Agents -->
+          <div class="palette-category">
+            <div class="category-header">
+              <span class="cat-pill cat-agent"></span>
+              <h3>Autonomous Agents</h3>
+            </div>
+            <div class="palette-list">
+              <div class="palette-item" draggable="true" data-node-type="llm-agent" data-category="agent">
+                <div class="item-icon agent-icon">🤖</div>
+                <div class="item-info">
+                  <span class="item-name">LLM Synthesizer</span>
+                  <span class="item-desc">GPT-4o, Claude 3.5, Gemini 1.5 prompt generator</span>
+                </div>
+                <span class="add-badge">+</span>
+              </div>
+
+              <div class="palette-item" draggable="true" data-node-type="classifier" data-category="agent">
+                <div class="item-icon agent-icon">🧠</div>
+                <div class="item-info">
+                  <span class="item-name">Intent Classifier</span>
+                  <span class="item-desc">Semantic categorization & sentiment scoring</span>
+                </div>
+                <span class="add-badge">+</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category: Triggers & Sources -->
+          <div class="palette-category">
+            <div class="category-header">
+              <span class="cat-pill cat-trigger"></span>
+              <h3>Triggers & Ingestion</h3>
+            </div>
+            <div class="palette-list">
+              <div class="palette-item" draggable="true" data-node-type="webhook-trigger" data-category="trigger">
+                <div class="item-icon trigger-icon">⚡</div>
+                <div class="item-info">
+                  <span class="item-name">Webhook Trigger</span>
+                  <span class="item-desc">Inbound HTTP REST endpoint listener</span>
+                </div>
+                <span class="add-badge">+</span>
+              </div>
+
+              <div class="palette-item" draggable="true" data-node-type="web-scraper" data-category="trigger">
+                <div class="item-icon trigger-icon">🌐</div>
+                <div class="item-info">
+                  <span class="item-name">Web Scraper</span>
+                  <span class="item-desc">Real-time URL parser & content cleaner</span>
+                </div>
+                <span class="add-badge">+</span>
+              </div>
+
+              <div class="palette-item" draggable="true" data-node-type="cron-schedule" data-category="trigger">
+                <div class="item-icon trigger-icon">⏱️</div>
+                <div class="item-info">
+                  <span class="item-name">Cron Schedule</span>
+                  <span class="item-desc">Recurring time interval runner</span>
+                </div>
+                <span class="add-badge">+</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category: Logic & Memory -->
+          <div class="palette-category">
+            <div class="category-header">
+              <span class="cat-pill cat-logic"></span>
+              <h3>Logic & Context</h3>
+            </div>
+            <div class="palette-list">
+              <div class="palette-item" draggable="true" data-node-type="condition-branch" data-category="logic">
+                <div class="item-icon logic-icon">🔀</div>
+                <div class="item-info">
+                  <span class="item-name">Condition Branch</span>
+                  <span class="item-desc">True / False expression router</span>
+                </div>
+                <span class="add-badge">+</span>
+              </div>
+
+              <div class="palette-item" draggable="true" data-node-type="vector-memory" data-category="logic">
+                <div class="item-icon logic-icon">💾</div>
+                <div class="item-info">
+                  <span class="item-name">Vector Memory (RAG)</span>
+                  <span class="item-desc">Semantic similarity retrieval store</span>
+                </div>
+                <span class="add-badge">+</span>
+              </div>
+
+              <div class="palette-item" draggable="true" data-node-type="code-transform" data-category="logic">
+                <div class="item-icon logic-icon">🐍</div>
+                <div class="item-info">
+                  <span class="item-name">Python / JS Runner</span>
+                  <span class="item-desc">Inline transformation script execution</span>
+                </div>
+                <span class="add-badge">+</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category: Integrations & Actions -->
+          <div class="palette-category">
+            <div class="category-header">
+              <span class="cat-pill cat-action"></span>
+              <h3>Actions & Dispatch</h3>
+            </div>
+            <div class="palette-list">
+              <div class="palette-item" draggable="true" data-node-type="slack-alert" data-category="action">
+                <div class="item-icon action-icon">💬</div>
+                <div class="item-info">
+                  <span class="item-name">Slack / Discord Alert</span>
+                  <span class="item-desc">Channel broadcast with formatted card</span>
+                </div>
+                <span class="add-badge">+</span>
+              </div>
+
+              <div class="palette-item" draggable="true" data-node-type="github-action" data-category="action">
+                <div class="item-icon action-icon">🐙</div>
+                <div class="item-info">
+                  <span class="item-name">GitHub PR / Issue</span>
+                  <span class="item-desc">Automated PR creation or issue dispatch</span>
+                </div>
+                <span class="add-badge">+</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="palette-footer">
+          <div class="hint-tip">
+            <span class="hint-key">Tip:</span> Drag item or double-click to spawn on canvas.
+          </div>
+        </div>
+      </aside>
+
+      <!-- Center Node Canvas -->
+      <section class="canvas-viewport" id="canvas-viewport" tabindex="0" aria-label="Interactive Node Graph Canvas">
+        
+        <!-- Canvas Background Grid & Transform Stage -->
+        <div class="canvas-transform-layer" id="canvas-transform-layer">
+          
+          <!-- SVG Layer for Bezier Connecting Cables -->
+          <svg class="connections-svg" id="connections-svg" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <!-- Cable Gradients -->
+              <linearGradient id="wire-gradient-default" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#8b5cf6" />
+                <stop offset="100%" stop-color="#06b6d4" />
+              </linearGradient>
+
+              <linearGradient id="wire-gradient-active" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#10b981" />
+                <stop offset="100%" stop-color="#38bdf8" />
+              </linearGradient>
+
+              <filter id="wire-glow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+            </defs>
+
+            <!-- Rendered Cables and Pending Temp Cable -->
+            <g id="wires-group"></g>
+            <path id="temp-wire" class="wire-temp" d="" />
+          </svg>
+
+          <!-- Nodes DOM Container -->
+          <div class="nodes-container" id="nodes-container"></div>
+        </div>
+
+        <!-- Floating Canvas View Controls -->
+        <div class="canvas-controls" aria-label="Zoom and View Controls">
+          <button type="button" class="ctrl-btn" id="btn-zoom-in" title="Zoom In (+)">+</button>
+          <span class="zoom-display" id="zoom-level-text" title="Current Zoom">100%</span>
+          <button type="button" class="ctrl-btn" id="btn-zoom-out" title="Zoom Out (-)">−</button>
+          <button type="button" class="ctrl-btn" id="btn-zoom-reset" title="Reset View (1:1)">⊙</button>
+          <button type="button" class="ctrl-btn" id="btn-fit-screen" title="Fit All Nodes to Screen">⛶</button>
+        </div>
+
+        <!-- Canvas Mini-Map Navigator -->
+        <div class="minimap-panel" id="minimap-panel" title="Canvas Minimap">
+          <canvas id="minimap-canvas" width="160" height="100"></canvas>
+          <div class="minimap-viewport-indicator" id="minimap-viewport"></div>
+        </div>
+
+        <!-- Interactive Context Info Chip -->
+        <div class="canvas-status-chip" id="canvas-status-chip">
+          <span class="chip-dot"></span>
+          <span id="canvas-node-count-display">5 Nodes • 4 Connections</span>
+        </div>
+      </section>
+
+      <!-- Right / Bottom Collapsible Telemetry & Execution Console -->
+      <section class="telemetry-dock" id="telemetry-dock" aria-label="Execution Telemetry Console">
+        <div class="dock-header">
+          <div class="dock-tabs" role="tablist">
+            <button type="button" class="dock-tab active" data-tab="logs" role="tab" aria-selected="true">
+              <span class="tab-icon">📜</span> Execution Stream
+              <span class="badge-count" id="log-count-badge">0</span>
+            </button>
+            <button type="button" class="dock-tab" data-tab="telemetry" role="tab" aria-selected="false">
+              <span class="tab-icon">📊</span> Latency & Tokens
+            </button>
+            <button type="button" class="dock-tab" data-tab="inspector" role="tab" aria-selected="false">
+              <span class="tab-icon">🔍</span> Payload Inspector
+            </button>
+          </div>
+
+          <div class="dock-actions">
+            <button type="button" id="btn-clear-logs" class="dock-btn-subtle" title="Clear log output">Clear Logs</button>
+            <button type="button" id="btn-toggle-dock" class="dock-btn-icon" title="Toggle Console Height" aria-label="Minimize or maximize console">↕</button>
+          </div>
+        </div>
+
+        <!-- Dock Content Panels -->
+        <div class="dock-content">
+          
+          <!-- Tab 1: Execution Stream -->
+          <div class="tab-panel active" id="panel-logs" role="tabpanel">
+            <div class="stream-log-container" id="stream-log-container">
+              <div class="log-entry log-system">
+                <span class="log-time">[SYSTEM]</span>
+                <span class="log-msg">AetherFlow Studio initialized. Ready for execution. Press <strong>"Run Workflow"</strong> or hit <strong>Space</strong>.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: Telemetry & Token Metrics -->
+          <div class="tab-panel" id="panel-telemetry" role="tabpanel">
+            <div class="telemetry-grid">
+              <div class="telemetry-card">
+                <span class="card-label">Total Execution Time</span>
+                <span class="card-value" id="metric-exec-time">0.00 s</span>
+                <span class="card-sub">Simulated distributed latency</span>
+              </div>
+              <div class="telemetry-card">
+                <span class="card-label">Total Tokens Processed</span>
+                <span class="card-value text-accent-cyan" id="metric-token-count">0</span>
+                <span class="card-sub" id="metric-token-breakdown">0 prompt / 0 completion</span>
+              </div>
+              <div class="telemetry-card">
+                <span class="card-label">Estimated Pipeline Cost</span>
+                <span class="card-value text-accent-emerald" id="metric-cost-estimate">$0.0000</span>
+                <span class="card-sub">Blended multi-model pricing</span>
+              </div>
+              <div class="telemetry-card">
+                <span class="card-label">Active Concurrency</span>
+                <span class="card-value text-accent-violet" id="metric-nodes-active">0 / 5</span>
+                <span class="card-sub">Step-by-step DAG progression</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 3: Payload Inspector -->
+          <div class="tab-panel" id="panel-inspector" role="tabpanel">
+            <div class="inspector-wrapper">
+              <div class="inspector-controls">
+                <label for="inspector-node-select">Inspect Node Output:</label>
+                <select id="inspector-node-select" class="custom-select-small">
+                  <option value="">(Select a node to inspect payload)</option>
+                </select>
+              </div>
+              <pre class="json-viewer" id="inspector-json-viewer"><code>// Select any node above or run the workflow to view live JSON outputs.</code></pre>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Modal: Command Palette (Cmd+K) -->
+    <dialog class="app-dialog cmd-dialog" id="cmd-dialog" aria-labelledby="cmd-dialog-title">
+      <div class="cmd-box">
+        <div class="cmd-input-bar">
+          <span class="cmd-prompt-icon">⌘</span>
+          <input type="text" id="cmd-search-input" placeholder="Type a command or node name (e.g. 'LLM', 'Run', 'Template')..." autofocus>
+          <button type="button" class="btn-close-dialog" id="btn-close-cmd">✕</button>
+        </div>
+        <div class="cmd-results" id="cmd-results-list"></div>
+        <div class="cmd-footer">
+          <span>Navigate with <strong>↑</strong> <strong>↓</strong></span>
+          <span>Select with <strong>Enter</strong></span>
+          <span>Close with <strong>Esc</strong></span>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Modal: Code Generator Export -->
+    <dialog class="app-dialog code-dialog" id="code-dialog" aria-labelledby="code-dialog-title">
+      <div class="dialog-card">
+        <div class="dialog-header">
+          <div class="dialog-title-group">
+            <span class="dialog-icon">⚡</span>
+            <h2 id="code-dialog-title" class="dialog-title">Production Code Generator</h2>
+          </div>
+          <button type="button" class="btn-close-dialog" id="btn-close-code">✕</button>
+        </div>
+        
+        <div class="code-dialog-nav">
+          <div class="code-tabs">
+            <button type="button" class="code-tab active" data-lang="python">Python (LangChain / Async)</button>
+            <button type="button" class="code-tab" data-lang="typescript">TypeScript / Node.js</button>
+            <button type="button" class="code-tab" data-lang="json">AetherFlow Spec (JSON)</button>
+          </div>
+          <button type="button" class="btn-primary-small" id="btn-copy-code">
+            <span id="copy-btn-text">📋 Copy Code</span>
+          </button>
+        </div>
+
+        <div class="dialog-body code-body">
+          <pre class="code-output" id="generated-code-display"><code># Generating executable pipeline...</code></pre>
+        </div>
+
+        <div class="dialog-footer">
+          <span class="footer-tip">Ready to paste into your backend server, serverless function, or automated pipeline.</span>
+          <button type="button" class="btn-outline-small" id="btn-download-code-file">Download File</button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Modal: Project Import / Export / Snapshot -->
+    <dialog class="app-dialog project-dialog" id="project-dialog" aria-labelledby="project-dialog-title">
+      <div class="dialog-card">
+        <div class="dialog-header">
+          <div class="dialog-title-group">
+            <span class="dialog-icon">💾</span>
+            <h2 id="project-dialog-title" class="dialog-title">Project Management & Export</h2>
+          </div>
+          <button type="button" class="btn-close-dialog" id="btn-close-project">✕</button>
+        </div>
+
+        <div class="dialog-body">
+          <div class="export-options-grid">
+            <div class="export-card" id="card-export-json">
+              <div class="export-icon">📦</div>
+              <h3>Export JSON Project</h3>
+              <p>Download the entire node graph, connection wires, and node configurations as an <code>.aether.json</code> bundle.</p>
+              <button type="button" class="btn-primary-small" id="btn-trigger-json-download">Download JSON</button>
+            </div>
+
+            <div class="export-card" id="card-import-json">
+              <div class="export-icon">📂</div>
+              <h3>Import Project</h3>
+              <p>Load an existing AetherFlow JSON configuration file from your computer.</p>
+              <input type="file" id="file-input-json" accept=".json" style="display:none">
+              <button type="button" class="btn-outline-small" id="btn-trigger-json-upload">Choose File...</button>
+            </div>
+
+            <div class="export-card" id="card-export-png">
+              <div class="export-icon">🖼️</div>
+              <h3>Export Canvas Image (PNG)</h3>
+              <p>Generate a high-definition image snapshot of your current visual workflow canvas to share in docs or READMEs.</p>
+              <button type="button" class="btn-outline-small" id="btn-trigger-png-export">Export Snapshot</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Global Floating Toast Notification Container -->
+    <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  </div>
+
+  <!-- Main Application Script -->
+  <script src="app.js"></script>
+</body>
+</html>
