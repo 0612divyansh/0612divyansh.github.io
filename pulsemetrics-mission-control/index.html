@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PulseMetrics Mission Control — Real-Time Developer Observability & Incident War-Room</title>
+  <meta name="description" content="Production-grade real-time cloud observability and incident war-room command center with live telemetry feeds, 60-bucket latency heatmaps, distributed trace waterfalls, and automated runbook self-healing.">
+  <meta name="theme-color" content="#070a13">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="PulseMetrics Mission Control — Observability & Incident War-Room">
+  <meta property="og:description" content="Real-time developer observability command center with live telemetry, service mesh topology, latency heatmaps, and simulated automated runbooks.">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts: Inter, Outfit & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-obsidian">
+
+  <!-- Root App Shell -->
+  <div class="app-root" id="app-root">
+
+    <!-- Top Mission Control Navigation Bar -->
+    <header class="app-header" id="app-header">
+      <div class="header-left">
+        <div class="brand-group">
+          <div class="brand-radar" aria-hidden="true">
+            <span class="radar-ping"></span>
+            <span class="radar-sweep"></span>
+            <span class="radar-center"></span>
+          </div>
+          <div class="brand-text">
+            <h1 class="brand-title">PULSE<span class="brand-accent">METRICS</span></h1>
+            <span class="brand-badge">Mission Control v2.4</span>
+          </div>
+        </div>
+
+        <div class="system-pulse-indicator" id="system-pulse-badge" title="Global Cluster Status">
+          <span class="pulse-dot status-healthy"></span>
+          <span class="pulse-label" id="system-status-text">SYSTEM NOMINAL</span>
+        </div>
+
+        <div class="cluster-environment">
+          <span class="env-chip env-prod">PROD • us-east-1</span>
+          <span class="live-clock" id="live-utc-clock">00:00:00 UTC</span>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <!-- Scenario / Chaos Preset Selector -->
+        <div class="scenario-selector-card">
+          <span class="scenario-label">⚡ Chaos Injection:</span>
+          <select id="scenario-select" class="custom-select" aria-label="Simulate Chaos Scenario">
+            <option value="nominal">🟢 Steady State • Nominal Load</option>
+            <option value="pg_exhaustion">💥 Aurora DB Connection Exhaustion (P1)</option>
+            <option value="transit_degraded">🔥 Fiber Cut & Regional Latency Spike (P2)</option>
+            <option value="mem_leak">⚡ Search Service OOM Spike (P2)</option>
+            <option value="ddos_flood">🌊 L7 DDoS Attack on /checkout (P1)</option>
+          </select>
+          <button type="button" id="btn-trigger-chaos" class="btn-chaos" title="Inject selected incident scenario">
+            Inject
+          </button>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <!-- Auto Remediation Toggle -->
+        <label class="toggle-switch-container" title="Automatically trigger runbook when incident breaches SLA">
+          <input type="checkbox" id="toggle-auto-remediation" checked>
+          <span class="toggle-slider"></span>
+          <span class="toggle-text">AI Auto-Heal</span>
+        </label>
+
+        <!-- Sound Synthesizer Toggle -->
+        <button type="button" id="btn-toggle-sound" class="btn-icon" title="Toggle Mission Control Audio Synth" aria-label="Toggle Audio">
+          <span id="sound-indicator" class="sound-icon">🔊</span>
+        </button>
+
+        <!-- Post-Mortem Report Modal Trigger -->
+        <button type="button" id="btn-open-postmortem" class="btn-outline" title="Generate Post-Mortem Incident Report">
+          <span class="icon">📋</span> Post-Mortem
+        </button>
+
+        <!-- Export Telemetry Snapshot -->
+        <button type="button" id="btn-export-snapshot" class="btn-outline" title="Export High-Resolution Canvas Snapshot">
+          <span class="icon">📸</span> Snapshot
+        </button>
+
+        <!-- War Room Manual Incident Toggle -->
+        <button type="button" id="btn-emergency-action" class="btn-danger-glow" title="Emergency War-Room Action">
+          <span class="alert-icon">⚠️</span> War-Room Active
+        </button>
+      </div>
+    </header>
+
+    <!-- Incident Escalation War-Room Banner (Dynamic) -->
+    <section class="incident-war-room-banner hidden" id="incident-banner">
+      <div class="banner-inner">
+        <div class="banner-severity">
+          <span class="sev-tag sev-p1" id="banner-sev-badge">P1 CRITICAL</span>
+          <span class="banner-title" id="banner-incident-title">Aurora DB Connection Pool Exhaustion</span>
+        </div>
+        <div class="banner-metrics">
+          <div class="metric-pill">
+            <span class="pill-label">Time Elapsed:</span>
+            <span class="pill-val alert-val" id="incident-timer">00:00:00</span>
+          </div>
+          <div class="metric-pill">
+            <span class="pill-label">Blast Radius:</span>
+            <span class="pill-val" id="incident-blast-radius">38.4% Transactions</span>
+          </div>
+          <div class="metric-pill">
+            <span class="pill-label">SLO Deficit:</span>
+            <span class="pill-val alert-val" id="incident-slo-deficit">-2.84% Availability</span>
+          </div>
+        </div>
+        <div class="banner-actions">
+          <button type="button" id="btn-banner-runbook" class="btn-banner-action">⚡ Execute Runbook</button>
+          <button type="button" id="btn-banner-dismiss" class="btn-banner-dismiss" title="Force Resolve Incident">Resolve</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Mission Control Grid -->
+    <main class="main-dashboard-grid">
+
+      <!-- TOP ROW: KPI Telemetry Command Bar -->
+      <section class="kpi-command-bar" aria-label="System Metrics Summary">
+        
+        <!-- Metric 1: Global Throughput -->
+        <div class="kpi-card" id="kpi-card-rps">
+          <div class="kpi-header">
+            <span class="kpi-title">GLOBAL THROUGHPUT</span>
+            <span class="kpi-badge badge-cyan" id="kpi-rps-delta">+4.2%</span>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-value-group">
+              <span class="kpi-value" id="kpi-val-rps">24,850</span>
+              <span class="kpi-unit">req/sec</span>
+            </div>
+            <div class="kpi-sparkline-wrap">
+              <canvas id="sparkline-rps" width="120" height="32" class="sparkline-canvas"></canvas>
+            </div>
+          </div>
+          <div class="kpi-footer">
+            <span class="kpi-subtext">Peak 32,400 req/s • Edge Ingress Normal</span>
+          </div>
+        </div>
+
+        <!-- Metric 2: P99 Latency -->
+        <div class="kpi-card" id="kpi-card-p99">
+          <div class="kpi-header">
+            <span class="kpi-title">P99 LATENCY (SLO &lt; 120ms)</span>
+            <span class="kpi-badge badge-emerald" id="kpi-p99-badge">PASSING</span>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-value-group">
+              <span class="kpi-value" id="kpi-val-p99">42.8</span>
+              <span class="kpi-unit">ms</span>
+            </div>
+            <div class="kpi-sparkline-wrap">
+              <canvas id="sparkline-p99" width="120" height="32" class="sparkline-canvas"></canvas>
+            </div>
+          </div>
+          <div class="kpi-footer">
+            <span class="kpi-subtext">P50: 14.2ms • P95: 28.6ms</span>
+          </div>
+        </div>
+
+        <!-- Metric 3: Error Rate -->
+        <div class="kpi-card" id="kpi-card-err">
+          <div class="kpi-header">
+            <span class="kpi-title">ERROR RATE (5xx/4xx)</span>
+            <span class="kpi-badge badge-emerald" id="kpi-err-badge">0.008%</span>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-value-group">
+              <span class="kpi-value" id="kpi-val-err">0.012</span>
+              <span class="kpi-unit">%</span>
+            </div>
+            <div class="kpi-sparkline-wrap">
+              <canvas id="sparkline-err" width="120" height="32" class="sparkline-canvas"></canvas>
+            </div>
+          </div>
+          <div class="kpi-footer">
+            <span class="kpi-subtext">Budget Remaining: 98.4% (30d Rolling)</span>
+          </div>
+        </div>
+
+        <!-- Metric 4: Cluster Health Score -->
+        <div class="kpi-card" id="kpi-card-health">
+          <div class="kpi-header">
+            <span class="kpi-title">FLEET HEALTH SCORE</span>
+            <span class="kpi-badge badge-cyan">48 / 48 PODS</span>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-value-group">
+              <span class="kpi-value" id="kpi-val-health">99.8</span>
+              <span class="kpi-unit">%</span>
+            </div>
+            <div class="kpi-sparkline-wrap">
+              <div class="kpi-gauge-bar">
+                <div class="gauge-fill" id="health-gauge-fill" style="width: 99.8%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="kpi-footer">
+            <span class="kpi-subtext">CPU: 42% • MEM: 61% • IOPS: 8.2k</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ROW 2: Primary Panels Split (Service Topology & Live Telemetry Charts) -->
+      <div class="middle-layout-split">
+        
+        <!-- Left: Service Mesh & Cluster Topology Graph -->
+        <section class="panel-card topology-panel">
+          <div class="panel-header">
+            <div class="panel-title-group">
+              <span class="panel-icon">🌐</span>
+              <h2 class="panel-title">Service Mesh Topology</h2>
+              <span class="sub-counter" id="active-services-count">8 Microservices Active</span>
+            </div>
+            <div class="panel-controls">
+              <button type="button" class="btn-micro" id="btn-recenter-topology" title="Recenter Topology View">⌖ Reset</button>
+              <span class="legend-chip"><span class="legend-dot dot-cyan"></span> Gateway</span>
+              <span class="legend-chip"><span class="legend-dot dot-emerald"></span> Healthy</span>
+              <span class="legend-chip"><span class="legend-dot dot-crimson"></span> Degraded</span>
+            </div>
+          </div>
+          <div class="topology-canvas-wrapper" id="topology-container">
+            <canvas id="topology-canvas" class="topology-canvas"></canvas>
+
+            <!-- Interactive Service Node Inspector Drawer (Flyout) -->
+            <div class="node-inspector-drawer hidden" id="node-inspector">
+              <div class="drawer-header">
+                <div class="drawer-title-group">
+                  <span class="drawer-icon" id="inspector-icon">⚙️</span>
+                  <div>
+                    <h3 class="drawer-title" id="inspector-name">API Gateway (Kong)</h3>
+                    <span class="drawer-sub" id="inspector-role">Ingress Controller • Node 1</span>
+                  </div>
+                </div>
+                <button type="button" class="drawer-close" id="btn-close-inspector" aria-label="Close Inspector">×</button>
+              </div>
+              <div class="drawer-body">
+                <div class="drawer-stat-row">
+                  <span class="drawer-label">Current State:</span>
+                  <span class="drawer-val status-val" id="inspector-status">HEALTHY</span>
+                </div>
+                <div class="drawer-stat-row">
+                  <span class="drawer-label">Request Rate:</span>
+                  <span class="drawer-val" id="inspector-rps">24,850 req/s</span>
+                </div>
+                <div class="drawer-stat-row">
+                  <span class="drawer-label">P99 Latency:</span>
+                  <span class="drawer-val" id="inspector-latency">12.4 ms</span>
+                </div>
+                <div class="drawer-stat-row">
+                  <span class="drawer-label">Error Rate:</span>
+                  <span class="drawer-val" id="inspector-errors">0.00%</span>
+                </div>
+                <div class="drawer-stat-row">
+                  <span class="drawer-label">Memory Heap:</span>
+                  <span class="drawer-val" id="inspector-memory">512 MB / 2048 MB</span>
+                </div>
+                <div class="drawer-stat-row">
+                  <span class="drawer-label">Active Replicas:</span>
+                  <span class="drawer-val" id="inspector-replicas">12 / 12 Pods (Autoscaling)</span>
+                </div>
+                <div class="drawer-actions">
+                  <button type="button" class="btn-drawer-action" id="btn-isolate-service">🛡️ Circuit Breaker</button>
+                  <button type="button" class="btn-drawer-action" id="btn-scale-service">📈 Scale +4 Pods</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right: Multi-Stream Live Latency Wave & 60-Bucket Regional Heatmap -->
+        <section class="panel-card telemetry-panel">
+          <div class="panel-header">
+            <div class="panel-title-group">
+              <span class="panel-icon">📈</span>
+              <h2 class="panel-title">Real-Time Telemetry & Heatmap</h2>
+            </div>
+            <!-- Tabs for Chart Switch -->
+            <div class="panel-tab-group">
+              <button type="button" class="tab-btn active" data-tab="tab-latency-chart" id="tab-btn-latency">Latency Curves</button>
+              <button type="button" class="tab-btn" data-tab="tab-regional-heatmap" id="tab-btn-heatmap">Regional Heatmap</button>
+              <button type="button" class="tab-btn" data-tab="tab-throughput-chart" id="tab-btn-throughput">RPS Breakdown</button>
+            </div>
+          </div>
+
+          <div class="tab-content-container">
+            
+            <!-- Tab 1: Live Multi-Curve Latency Chart -->
+            <div class="tab-pane active" id="tab-latency-chart">
+              <div class="chart-legend-row">
+                <span class="chart-tag tag-p99"><span class="tag-line line-p99"></span> P99 Tail (&lt;120ms)</span>
+                <span class="chart-tag tag-p95"><span class="tag-line line-p95"></span> P95 Mean</span>
+                <span class="chart-tag tag-p50"><span class="tag-line line-p50"></span> P50 Median</span>
+                <span class="chart-tag tag-sla"><span class="tag-line line-sla"></span> SLO Threshold (120ms)</span>
+              </div>
+              <div class="canvas-chart-wrapper">
+                <canvas id="latency-stream-canvas" class="stream-canvas"></canvas>
+              </div>
+            </div>
+
+            <!-- Tab 2: 60-Bucket Regional Latency Heatmap -->
+            <div class="tab-pane" id="tab-regional-heatmap">
+              <div class="heatmap-info-row">
+                <span class="heatmap-subtext">Live 60-second rolling quantiles across 5 edge transit regions</span>
+                <div class="heatmap-legend">
+                  <span class="heat-chip">&lt;20ms</span>
+                  <div class="heat-gradient-bar"></div>
+                  <span class="heat-chip">&gt;300ms</span>
+                </div>
+              </div>
+              <div class="canvas-chart-wrapper">
+                <canvas id="heatmap-canvas" class="stream-canvas"></canvas>
+              </div>
+            </div>
+
+            <!-- Tab 3: Throughput & Error Rate Stacked Breakdown -->
+            <div class="tab-pane" id="tab-throughput-chart">
+              <div class="chart-legend-row">
+                <span class="chart-tag tag-2xx"><span class="tag-dot dot-emerald"></span> 2xx Success</span>
+                <span class="chart-tag tag-4xx"><span class="tag-dot dot-amber"></span> 4xx Client Err</span>
+                <span class="chart-tag tag-5xx"><span class="tag-dot dot-crimson"></span> 5xx Server Err</span>
+              </div>
+              <div class="canvas-chart-wrapper">
+                <canvas id="throughput-canvas" class="stream-canvas"></canvas>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ROW 3: Incident War-Room Runbook Terminal & Distributed Trace Waterfall -->
+      <div class="bottom-layout-split">
+
+        <!-- Left: Automated Runbook & Self-Healing Terminal -->
+        <section class="panel-card runbook-panel">
+          <div class="panel-header">
+            <div class="panel-title-group">
+              <span class="panel-icon">⚡</span>
+              <h2 class="panel-title">Automated Runbook Orchestrator</h2>
+            </div>
+            <div class="runbook-status-badge" id="runbook-engine-status">
+              <span class="engine-dot ready"></span> STANDBY
+            </div>
+          </div>
+          
+          <div class="runbook-body">
+            <!-- Runbook Preset Selector & Stepper -->
+            <div class="runbook-stepper-header">
+              <div class="stepper-meta">
+                <span class="stepper-id" id="runbook-code-name">RUNBOOK: RB-AURORA-POOL-DRAIN</span>
+                <span class="stepper-eta" id="runbook-eta">Estimated MTTR: 18s</span>
+              </div>
+              <div class="stepper-progress-track">
+                <div class="stepper-step completed" id="step-node-1" data-step="1">
+                  <span class="step-num">1</span>
+                  <span class="step-name">Detect</span>
+                </div>
+                <div class="stepper-line completed" id="step-line-1"></div>
+                <div class="stepper-step" id="step-node-2" data-step="2">
+                  <span class="step-num">2</span>
+                  <span class="step-name">Isolate</span>
+                </div>
+                <div class="stepper-line" id="step-line-2"></div>
+                <div class="stepper-step" id="step-node-3" data-step="3">
+                  <span class="step-num">3</span>
+                  <span class="step-name">Failover / Drain</span>
+                </div>
+                <div class="stepper-line" id="step-line-3"></div>
+                <div class="stepper-step" id="step-node-4" data-step="4">
+                  <span class="step-num">4</span>
+                  <span class="step-name">Verify SLO</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Terminal Output Stream -->
+            <div class="runbook-terminal" id="terminal-screen" aria-label="Incident Runbook Output Console">
+              <div class="terminal-bar">
+                <div class="term-dots">
+                  <span class="term-dot red"></span>
+                  <span class="term-dot yellow"></span>
+                  <span class="term-dot green"></span>
+                </div>
+                <span class="term-title">runbook-daemon — bash — 80x24</span>
+                <button type="button" class="btn-term-clear" id="btn-clear-term" title="Clear console buffer">Clear</button>
+              </div>
+              <div class="terminal-logs" id="terminal-log-flow">
+                <div class="term-line info">[INIT] PulseMetrics Automated Runbook Daemon v2.4 initialized.</div>
+                <div class="term-line info">[WATCH] Prometheus alerting rules synchronized (0 alert rules firing).</div>
+                <div class="term-line system">[READY] Standby for telemetry anomaly triggers or manual runbook execution.</div>
+              </div>
+            </div>
+
+            <!-- Runbook Execution Action Bar -->
+            <div class="runbook-actions-bar">
+              <button type="button" class="btn-action-primary glow-cyan" id="btn-run-remediation">
+                <span class="action-icon">▶</span> Execute Remediation Script
+              </button>
+              <button type="button" class="btn-action-secondary" id="btn-step-runbook">
+                <span class="action-icon">⏭</span> Step Next
+              </button>
+              <button type="button" class="btn-action-ghost" id="btn-abort-runbook">
+                Abort
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right: OpenTelemetry Distributed Trace Waterfall -->
+        <section class="panel-card traces-panel">
+          <div class="panel-header">
+            <div class="panel-title-group">
+              <span class="panel-icon">🔍</span>
+              <h2 class="panel-title">Distributed Trace Waterfall</h2>
+              <span class="trace-id-badge" id="current-trace-id">Trace: tr-8f49b21e0a84</span>
+            </div>
+            <div class="trace-header-actions">
+              <button type="button" class="btn-micro" id="btn-refresh-trace">⟳ New Trace</button>
+              <select id="trace-sample-select" class="micro-select" aria-label="Sample Trace Scenario">
+                <option value="checkout_success">GET /v2/orders/checkout (200 OK • 42ms)</option>
+                <option value="pg_timeout">POST /v2/orders/payment (504 Gateway Timeout • 1820ms)</option>
+                <option value="auth_ratelimit">POST /v1/auth/token (429 Too Many Requests • 9ms)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="trace-waterfall-body" id="trace-waterfall-container">
+            <div class="trace-timeline-header">
+              <span class="col-service">Service & Span Operation</span>
+              <span class="col-timeline">Execution Timeline (0ms — 2000ms)</span>
+              <span class="col-duration">Duration</span>
+            </div>
+
+            <div class="trace-spans-list" id="trace-spans-list">
+              <!-- Dynamically populated span rows -->
+            </div>
+          </div>
+
+          <!-- Trace Span Detail Inspector Modal/Drawer -->
+          <div class="span-inspect-overlay hidden" id="span-inspector-modal">
+            <div class="span-inspect-card">
+              <div class="span-inspect-header">
+                <h4 id="span-modal-title">Span: postgres.query (Aurora Primary)</h4>
+                <button type="button" class="modal-close" id="btn-close-span-inspect">×</button>
+              </div>
+              <div class="span-inspect-body">
+                <pre class="span-code-block" id="span-modal-details"></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ROW 4: Live Structured Log Stream & Filter Console -->
+      <section class="panel-card logs-panel">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <span class="panel-icon">📋</span>
+            <h2 class="panel-title">Real-Time Structured Telemetry Logs</h2>
+            <span class="log-stream-status" id="log-stream-status">
+              <span class="pulse-dot status-healthy"></span> STREAMING (32 logs/sec)
+            </span>
+          </div>
+
+          <div class="log-controls">
+            <!-- Search Filter -->
+            <div class="log-search-wrapper">
+              <span class="search-icon">🔎</span>
+              <input type="text" id="log-search-input" class="log-search-input" placeholder="Filter logs (regex, traceId, service, status)..." aria-label="Search logs">
+            </div>
+
+            <!-- Severity Pills -->
+            <div class="log-level-filters">
+              <button type="button" class="lvl-btn active" data-level="ALL">ALL</button>
+              <button type="button" class="lvl-btn" data-level="INFO">INFO</button>
+              <button type="button" class="lvl-btn" data-level="WARN">WARN</button>
+              <button type="button" class="lvl-btn" data-level="ERROR">ERROR</button>
+              <button type="button" class="lvl-btn" data-level="FATAL">FATAL</button>
+            </div>
+
+            <button type="button" class="btn-micro" id="btn-toggle-log-pause">⏸ Pause</button>
+            <button type="button" class="btn-micro" id="btn-clear-logs">Clear</button>
+          </div>
+        </div>
+
+        <div class="logs-stream-container" id="logs-stream-container">
+          <div class="logs-table-header">
+            <span class="log-col-time">TIMESTAMP</span>
+            <span class="log-col-level">LEVEL</span>
+            <span class="log-col-service">SERVICE</span>
+            <span class="log-col-trace">TRACE ID</span>
+            <span class="log-col-msg">STRUCTURED LOG PAYLOAD</span>
+          </div>
+          <div class="logs-table-body" id="logs-stream-body">
+            <!-- Streaming log rows rendered via JS -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Post-Mortem Incident Report Modal -->
+    <div class="modal-backdrop hidden" id="postmortem-modal">
+      <div class="modal-dialog modal-large">
+        <div class="modal-header">
+          <div class="modal-title-group">
+            <span class="modal-icon">📑</span>
+            <div>
+              <h2 class="modal-title">Post-Mortem Incident Analysis Report</h2>
+              <span class="modal-subtitle">Auto-Compiled Incident RCA & SLA Deviation Summary</span>
+            </div>
+          </div>
+          <button type="button" class="modal-close" id="btn-close-postmortem">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="postmortem-preview" id="postmortem-markdown-content">
+            <!-- Dynamic Post-Mortem Generated Content -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-outline" id="btn-copy-postmortem">
+            📋 Copy Markdown
+          </button>
+          <button type="button" class="btn-primary" id="btn-download-postmortem">
+            💾 Download .md File
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Snapshot Notification Toast -->
+    <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  </div>
+
+  <!-- JavaScript Orchestration Engine -->
+  <script src="app.js"></script>
+</body>
+</html>
