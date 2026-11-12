@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HyperFocus OS — Ambient Spatial Productivity &amp; Biophilic Deep-Work Suite</title>
+  <meta name="description" content="Ambient spatial productivity operating system featuring a procedural Web Audio biophilic sound synthesizer, Eisenhower Priority Matrix, split Markdown workspace, and deep-work velocity analytics.">
+  <meta name="theme-color" content="#070b12">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="HyperFocus OS — Ambient Spatial Productivity Suite">
+  <meta property="og:description" content="Zero-dependency spatial productivity workspace with procedural biophilic audio synthesis, Eisenhower Matrix, split Markdown notes, and deep-work velocity analytics.">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts: Outfit, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient-backdrop" aria-hidden="true">
+    <div class="aurora aurora-emerald"></div>
+    <div class="aurora aurora-cyan"></div>
+    <div class="aurora aurora-violet"></div>
+  </div>
+
+  <div class="os-shell" id="os-shell">
+    <!-- Top Spatial Command Header -->
+    <header class="os-header">
+      <div class="header-left">
+        <div class="brand">
+          <div class="brand-orb" aria-hidden="true">
+            <span class="orb-ring"></span>
+            <span class="orb-core"></span>
+          </div>
+          <div class="brand-copy">
+            <h1 class="brand-title">HYPERFOCUS <span class="brand-os">OS</span></h1>
+            <span class="brand-sub">Spatial Deep-Work Suite • v1.0</span>
+          </div>
+        </div>
+
+        <div class="active-target-pill" id="active-target-pill" title="Current active focus objective">
+          <span class="target-dot"></span>
+          <span class="target-label">Focus Target:</span>
+          <span class="target-name" id="active-target-name">Select a task from Matrix</span>
+        </div>
+      </div>
+
+      <nav class="header-nav" aria-label="Workspace Views">
+        <button type="button" class="nav-tab is-active" data-view="workspace">
+          <span aria-hidden="true">🧭</span> Workspace
+        </button>
+        <button type="button" class="nav-tab" data-view="matrix">
+          <span aria-hidden="true">🎯</span> Matrix
+        </button>
+        <button type="button" class="nav-tab" data-view="notes">
+          <span aria-hidden="true">📝</span> Notes
+        </button>
+        <button type="button" class="nav-tab" data-view="analytics">
+          <span aria-hidden="true">📊</span> Velocity
+        </button>
+      </nav>
+
+      <div class="header-right">
+        <div class="live-telemetry-chip" title="Today's Deep Work &amp; Streak">
+          <span class="chip-metric"><strong id="header-focus-mins">0</strong>m today</span>
+          <span class="chip-divider">•</span>
+          <span class="chip-metric">🔥 <strong id="header-streak">1</strong>d streak</span>
+        </div>
+
+        <button type="button" id="btn-zen-mode" class="btn-glass" title="Enter Distraction-Free Zen Mode (Z)">
+          <span aria-hidden="true">🪷</span> Zen Mode
+        </button>
+
+        <button type="button" id="btn-master-audio" class="btn-icon" title="Mute / Unmute Soundscape (M)" aria-label="Toggle Soundscape Audio">
+          <span id="audio-status-icon">🔇</span>
+        </button>
+
+        <button type="button" id="btn-command-palette" class="btn-icon" title="Command Palette (⌘K / Ctrl+K)" aria-label="Open Command Palette">
+          <span>⌘K</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Spatial Grid -->
+    <main class="os-main" id="os-main" data-active-view="workspace">
+
+      <!-- LEFT COLUMN: Focus Timer + Biophilic Sound Synthesizer -->
+      <section class="panel-column panel-left" aria-label="Focus Timer and Biophilic Audio">
+
+        <!-- Focus Timer Card -->
+        <article class="glass-card timer-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <span class="card-icon" aria-hidden="true">⏱️</span>
+              <div>
+                <h2 class="card-title">Deep-Work Chronometer</h2>
+                <p class="card-subtitle" id="timer-phase-label">Ultradian Focus Session</p>
+              </div>
+            </div>
+            <div class="mode-pills" role="group" aria-label="Timer Mode">
+              <button type="button" class="mode-pill is-active" data-mode="focus" data-mins="25">25m</button>
+              <button type="button" class="mode-pill" data-mode="ultradian" data-mins="50">50m</button>
+              <button type="button" class="mode-pill" data-mode="short" data-mins="5">5m</button>
+              <button type="button" class="mode-pill" data-mode="long" data-mins="15">15m</button>
+            </div>
+          </div>
+
+          <div class="timer-stage">
+            <div class="timer-ring-wrap">
+              <svg class="timer-ring" viewBox="0 0 220 220" aria-hidden="true">
+                <defs>
+                  <linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#10b981"/>
+                    <stop offset="50%" stop-color="#06b6d4"/>
+                    <stop offset="100%" stop-color="#8b5cf6"/>
+                  </linearGradient>
+                </defs>
+                <circle class="ring-track" cx="110" cy="110" r="96"></circle>
+                <circle class="ring-progress" id="timer-ring-progress" cx="110" cy="110" r="96"></circle>
+              </svg>
+              <div class="timer-readout">
+                <div class="timer-digits" id="timer-display">25:00</div>
+                <div class="timer-state" id="timer-state-badge">READY TO ENTER FLOW</div>
+              </div>
+            </div>
+
+            <div class="timer-controls">
+              <button type="button" id="btn-timer-toggle" class="btn-primary">
+                <span id="timer-toggle-icon">▶</span>
+                <span id="timer-toggle-text">Start Focus</span>
+              </button>
+              <button type="button" id="btn-timer-reset" class="btn-ghost" title="Reset Timer">↺ Reset</button>
+              <button type="button" id="btn-timer-complete" class="btn-ghost" title="Log &amp; Complete Session Now">✓ Log Session</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Biophilic Sound Synthesizer Card -->
+        <article class="glass-card synth-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <span class="card-icon" aria-hidden="true">🌿</span>
+              <div>
+                <h2 class="card-title">Biophilic Sound Engine</h2>
+                <p class="card-subtitle">Procedural Web Audio Synthesizer (0 External Files)</p>
+              </div>
+            </div>
+            <button type="button" id="btn-synth-power" class="btn-pill-toggle" aria-pressed="false">
+              <span class="power-dot"></span>
+              <span id="synth-power-label">Start Audio</span>
+            </button>
+          </div>
+
+          <!-- Canvas 2D Live Audio Spectrum -->
+          <div class="spectrum-wrap">
+            <canvas id="audio-spectrum-canvas" aria-label="Live Biophilic Audio Waveform Visualizer"></canvas>
+            <div class="spectrum-overlay">
+              <span class="spectrum-badge" id="active-preset-badge">Preset: Forest Cabin</span>
+              <div class="master-vol-group">
+                <label for="master-volume">Master</label>
+                <input type="range" id="master-volume" min="0" max="100" value="70">
+              </div>
+            </div>
+          </div>
+
+          <!-- Soundscape Presets -->
+          <div class="preset-row" role="group" aria-label="Soundscape Presets">
+            <button type="button" class="preset-chip is-active" data-preset="forest">🌲 Forest Cabin</button>
+            <button type="button" class="preset-chip" data-preset="deepcode">⚡ Deep Code 40Hz</button>
+            <button type="button" class="preset-chip" data-preset="library">📚 Warm Brown</button>
+            <button type="button" class="preset-chip" data-preset="nightsynth">🌌 Night Pad</button>
+          </div>
+
+          <!-- Individual Synthesizer Channels -->
+          <div class="synth-channels" id="synth-channels">
+            <div class="channel-row" data-channel="rain">
+              <div class="channel-info">
+                <span class="channel-emoji" aria-hidden="true">🌧️</span>
+                <div>
+                  <div class="channel-name">Forest Rain</div>
+                  <div class="channel-desc">Filtered stochastic droplets</div>
+                </div>
+              </div>
+              <input type="range" class="channel-slider" data-channel="rain" min="0" max="100" value="55" aria-label="Forest Rain volume">
+              <span class="channel-val" id="val-rain">55%</span>
+            </div>
+
+            <div class="channel-row" data-channel="wind">
+              <div class="channel-info">
+                <span class="channel-emoji" aria-hidden="true">🍃</span>
+                <div>
+                  <div class="channel-name">Alpine Wind</div>
+                  <div class="channel-desc">LFO-swept bandpass breeze</div>
+                </div>
+              </div>
+              <input type="range" class="channel-slider" data-channel="wind" min="0" max="100" value="35" aria-label="Alpine Wind volume">
+              <span class="channel-val" id="val-wind">35%</span>
+            </div>
+
+            <div class="channel-row" data-channel="brown">
+              <div class="channel-info">
+                <span class="channel-emoji" aria-hidden="true">🌊</span>
+                <div>
+                  <div class="channel-name">Brown Noise</div>
+                  <div class="channel-desc">Warm low-pass flow masking</div>
+                </div>
+              </div>
+              <input type="range" class="channel-slider" data-channel="brown" min="0" max="100" value="30" aria-label="Brown Noise volume">
+              <span class="channel-val" id="val-brown">30%</span>
+            </div>
+
+            <div class="channel-row" data-channel="binaural">
+              <div class="channel-info">
+                <span class="channel-emoji" aria-hidden="true">🧠</span>
+                <div>
+                  <div class="channel-name">Binaural Focus</div>
+                  <div class="channel-desc" id="binaural-freq-label">10Hz Alpha Flow (200/210Hz)</div>
+                </div>
+              </div>
+              <select id="binaural-band" class="mini-select" aria-label="Binaural Frequency Band">
+                <option value="40">40Hz Gamma</option>
+                <option value="14">14Hz Beta</option>
+                <option value="10" selected>10Hz Alpha</option>
+                <option value="6">6Hz Theta</option>
+              </select>
+              <input type="range" class="channel-slider" data-channel="binaural" min="0" max="100" value="25" aria-label="Binaural Focus volume">
+              <span class="channel-val" id="val-binaural">25%</span>
+            </div>
+
+            <div class="channel-row" data-channel="pad">
+              <div class="channel-info">
+                <span class="channel-emoji" aria-hidden="true">🎹</span>
+                <div>
+                  <div class="channel-name">Biophilic Pad</div>
+                  <div class="channel-desc">Harmonic fifth ambient drone</div>
+                </div>
+              </div>
+              <input type="range" class="channel-slider" data-channel="pad" min="0" max="100" value="20" aria-label="Biophilic Pad volume">
+              <span class="channel-val" id="val-pad">20%</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- CENTER COLUMN: Eisenhower Priority Matrix + Split Markdown Notes -->
+      <section class="panel-column panel-center" aria-label="Eisenhower Matrix and Split Markdown Notes">
+
+        <!-- Eisenhower Matrix Card -->
+        <article class="glass-card matrix-card" id="module-matrix">
+          <div class="card-header">
+            <div class="card-title-group">
+              <span class="card-icon" aria-hidden="true">🎯</span>
+              <div>
+                <h2 class="card-title">Eisenhower Priority Matrix</h2>
+                <p class="card-subtitle">Drag tasks across quadrants or click ◎ to lock as active Focus Target</p>
+              </div>
+            </div>
+            <div class="matrix-actions">
+              <span class="task-counter-badge" id="matrix-task-count">0 active</span>
+              <button type="button" id="btn-clear-done" class="btn-ghost btn-sm">Clear Completed</button>
+            </div>
+          </div>
+
+          <!-- Quick Task Composer -->
+          <form class="task-composer" id="task-composer">
+            <input type="text" id="task-input" class="input-field" placeholder="Capture a deep-work objective (e.g., Implement WebSocket reconnection logic)..." required maxlength="140">
+            <select id="task-quadrant" class="select-field" aria-label="Priority Quadrant">
+              <option value="q1">🔥 Q1: Urgent &amp; Important</option>
+              <option value="q2" selected>🌱 Q2: Deep Work (Important)</option>
+              <option value="q3">⚡ Q3: Delegate / Batch</option>
+              <option value="q4">🧊 Q4: Backlog / Eliminate</option>
+            </select>
+            <select id="task-category" class="select-field" aria-label="Task Category">
+              <option value="Engineering">Engineering</option>
+              <option value="Research">Research</option>
+              <option value="Design">Design</option>
+              <option value="Strategy">Strategy</option>
+            </select>
+            <button type="submit" class="btn-primary btn-sm">+ Add Task</button>
+          </form>
+
+          <!-- 4-Quadrant Grid -->
+          <div class="matrix-grid">
+            <div class="quadrant-box q1" data-quadrant="q1">
+              <div class="quadrant-head">
+                <span class="q-badge q1-badge">Q1 • DO FIRST</span>
+                <span class="q-sub">Urgent &amp; Important</span>
+              </div>
+              <ul class="quadrant-list" id="list-q1" data-quadrant="q1"></ul>
+            </div>
+
+            <div class="quadrant-box q2" data-quadrant="q2">
+              <div class="quadrant-head">
+                <span class="q-badge q2-badge">Q2 • DEEP WORK</span>
+                <span class="q-sub">Important, Not Urgent</span>
+              </div>
+              <ul class="quadrant-list" id="list-q2" data-quadrant="q2"></ul>
+            </div>
+
+            <div class="quadrant-box q3" data-quadrant="q3">
+              <div class="quadrant-head">
+                <span class="q-badge q3-badge">Q3 • DELEGATE</span>
+                <span class="q-sub">Urgent, Low Leverage</span>
+              </div>
+              <ul class="quadrant-list" id="list-q3" data-quadrant="q3"></ul>
+            </div>
+
+            <div class="quadrant-box q4" data-quadrant="q4">
+              <div class="quadrant-head">
+                <span class="q-badge q4-badge">Q4 • PARKING LOT</span>
+                <span class="q-sub">Defer or Eliminate</span>
+              </div>
+              <ul class="quadrant-list" id="list-q4" data-quadrant="q4"></ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- Split Markdown Notes Card -->
+        <article class="glass-card notes-card" id="module-notes">
+          <div class="card-header">
+            <div class="card-title-group">
+              <span class="card-icon" aria-hidden="true">📝</span>
+              <div>
+                <h2 class="card-title">Split Markdown Knowledge Pad</h2>
+                <p class="card-subtitle">Real-time dual-pane Markdown editor with live sanitized preview &amp; export</p>
+              </div>
+            </div>
+            <div class="notes-toolbar">
+              <div class="note-tabs" id="note-tabs" role="tablist" aria-label="Note Documents"></div>
+              <button type="button" id="btn-new-note" class="btn-ghost btn-sm" title="Create New Note">+ Note</button>
+              <div class="split-toggle" role="group" aria-label="Editor View Mode">
+                <button type="button" class="split-btn" data-split="edit">Edit</button>
+                <button type="button" class="split-btn is-active" data-split="both">Split</button>
+                <button type="button" class="split-btn" data-split="preview">Preview</button>
+              </div>
+              <button type="button" id="btn-export-md" class="btn-ghost btn-sm" title="Download Active Note as .md">⬇ .md</button>
+            </div>
+          </div>
+
+          <div class="notes-workspace" id="notes-workspace" data-split="both">
+            <div class="note-editor-pane">
+              <textarea id="markdown-editor" class="markdown-textarea" spellcheck="true" aria-label="Markdown Note Editor" placeholder="# Write your deep-work brief in Markdown..."></textarea>
+            </div>
+            <div class="note-preview-pane">
+              <div id="markdown-preview" class="markdown-preview" aria-live="polite"></div>
+            </div>
+          </div>
+
+          <div class="notes-footer">
+            <span id="note-stats">0 words • 0 chars • 1 min read</span>
+            <span class="autosave-indicator" id="note-save-status">● Synced to localStorage</span>
+          </div>
+        </article>
+      </section>
+
+      <!-- RIGHT COLUMN: Deep-Work Velocity Analytics -->
+      <section class="panel-column panel-right" id="module-analytics" aria-label="Deep-Work Velocity Analytics">
+        <article class="glass-card analytics-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <span class="card-icon" aria-hidden="true">📊</span>
+              <div>
+                <h2 class="card-title">Deep-Work Velocity</h2>
+                <p class="card-subtitle">7-day cognitive output &amp; category allocation</p>
+              </div>
+            </div>
+            <div class="analytics-actions">
+              <button type="button" id="btn-export-snapshot" class="btn-ghost btn-sm" title="Export 1200x720 Velocity Card PNG">📸 PNG</button>
+              <button type="button" id="btn-export-json" class="btn-ghost btn-sm" title="Backup Workspace JSON">💾 JSON</button>
+            </div>
+          </div>
+
+          <!-- KPI Bento Strip -->
+          <div class="kpi-grid">
+            <div class="kpi-tile">
+              <span class="kpi-label">Velocity Score</span>
+              <span class="kpi-value accent-emerald" id="kpi-velocity-score">92</span>
+              <span class="kpi-delta">+14% vs last wk</span>
+            </div>
+            <div class="kpi-tile">
+              <span class="kpi-label">Weekly Deep Work</span>
+              <span class="kpi-value accent-cyan" id="kpi-weekly-hours">18.5h</span>
+              <span class="kpi-delta" id="kpi-sessions-count">24 sessions</span>
+            </div>
+            <div class="kpi-tile">
+              <span class="kpi-label">Q1/Q2 Focus Ratio</span>
+              <span class="kpi-value accent-violet" id="kpi-focus-ratio">84%</span>
+              <span class="kpi-delta">High-leverage</span>
+            </div>
+            <div class="kpi-tile">
+              <span class="kpi-label">Tasks Completed</span>
+              <span class="kpi-value accent-amber" id="kpi-tasks-done">0</span>
+              <span class="kpi-delta">Logged locally</span>
+            </div>
+          </div>
+
+          <!-- 7-Day Velocity Bar + Trend Canvas -->
+          <div class="chart-panel">
+            <div class="chart-header">
+              <h3>7-Day Deep-Work Minutes</h3>
+              <span class="chart-legend">Goal: 180m / day</span>
+            </div>
+            <div class="canvas-box">
+              <canvas id="velocity-chart-canvas" aria-label="7-Day Deep-Work Minutes Chart"></canvas>
+            </div>
+          </div>
+
+          <!-- Category Allocation Ring + Legend -->
+          <div class="chart-panel">
+            <div class="chart-header">
+              <h3>Cognitive Domain Allocation</h3>
+              <span class="chart-legend">Active + Completed</span>
+            </div>
+            <div class="allocation-wrap">
+              <canvas id="allocation-chart-canvas" aria-label="Category Allocation Donut Chart"></canvas>
+              <ul class="allocation-legend" id="allocation-legend"></ul>
+            </div>
+          </div>
+
+          <!-- Recent Focus Log -->
+          <div class="chart-panel">
+            <div class="chart-header">
+              <h3>Recent Focus Telemetry</h3>
+              <button type="button" id="btn-reset-demo" class="btn-link">Reset Demo Data</button>
+            </div>
+            <ul class="session-log" id="session-log"></ul>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <!-- Zen Mode Overlay -->
+  <div class="zen-overlay" id="zen-overlay" hidden>
+    <div class="zen-content">
+      <div class="zen-badge">🪷 BIOPHILIC ZEN CHAMBER</div>
+      <h2 class="zen-target" id="zen-target-name">Deep Work Session</h2>
+      <div class="zen-breathe-orb" aria-hidden="true"></div>
+      <div class="zen-clock" id="zen-timer-display">25:00</div>
+      <p class="zen-hint" id="zen-breathe-cue">Inhale 4s • Hold 4s • Exhale 6s</p>
+      <div class="zen-controls">
+        <button type="button" id="btn-zen-toggle" class="btn-primary">▶ Start / Pause</button>
+        <button type="button" id="btn-zen-audio" class="btn-glass">🌿 Toggle Audio</button>
+        <button type="button" id="btn-zen-exit" class="btn-ghost">✕ Exit Zen (Esc)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Command Palette Dialog -->
+  <dialog id="command-dialog" class="command-dialog" aria-labelledby="cmd-title">
+    <div class="cmd-shell">
+      <div class="cmd-input-row">
+        <span aria-hidden="true">⌘</span>
+        <input type="text" id="cmd-search" placeholder="Type a command (e.g., zen, forest, start timer, export)..." aria-label="Command search">
+        <button type="button" id="cmd-close" class="btn-ghost btn-sm">Esc</button>
+      </div>
+      <h2 id="cmd-title" class="sr-only">Command Palette</h2>
+      <ul class="cmd-list" id="cmd-list"></ul>
+    </div>
+  </dialog>
+
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
