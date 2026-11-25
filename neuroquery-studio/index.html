@@ -6,7 +6,2001 @@
   <title>NeuroQuery Studio — Professional Database Explorer & AI SQL Studio</title>
   <meta name="description" content="Enterprise-grade in-memory relational database explorer, multi-tab SQL IDE, natural language copilot, interactive ERD architect, and dynamic analytics workbench.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
-  <link rel="stylesheet" href="style.css">
+  <style>
+/* ==========================================================================
+   NEUROQUERY STUDIO — ENTERPRISE DEVELOPER IDE DESIGN SYSTEM
+   Bespoke DataGrip / Supabase Studio Dark Slate Architecture
+   ========================================================================== */
+
+:root {
+  --bg-deep: #07090e;
+  --bg-canvas: #0b0e14;
+  --bg-panel: #0f131a;
+  --bg-surface: #141923;
+  --bg-elevated: #1a212e;
+  --bg-hover: #212a3b;
+  --bg-active: #283347;
+
+  --border-subtle: #1c2331;
+  --border-medium: #263145;
+  --border-strong: #33415c;
+  --border-focus: #38bdf8;
+
+  --accent-cyan: #38bdf8;
+  --accent-cyan-dim: rgba(56, 189, 248, 0.12);
+  --accent-emerald: #10b981;
+  --accent-emerald-dim: rgba(16, 185, 129, 0.12);
+  --accent-purple: #a855f7;
+  --accent-purple-dim: rgba(168, 85, 247, 0.12);
+  --accent-amber: #f59e0b;
+  --accent-amber-dim: rgba(245, 158, 11, 0.12);
+  --accent-rose: #f43f5e;
+
+  --text-main: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --text-code: #e2e8f0;
+
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'Fira Code', ui-monospace, Menlo, Monaco, Consolas, monospace;
+
+  --header-height: 46px;
+  --footer-height: 26px;
+  --dock-width: 46px;
+  --sidebar-width: 250px;
+
+  --radius-xs: 3px;
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+/* Base Resets */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Custom Sleek Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-canvas);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-medium);
+  border-radius: var(--radius-xs);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
+}
+
+/* ==========================================================================
+   TOP GLOBAL HEADER (SLIM 46px ENTERPRISE BAR)
+   ========================================================================== */
+.studio-header {
+  height: var(--header-height);
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  user-select: none;
+  z-index: 100;
+}
+
+.header-left-cluster {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.studio-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-glyph {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: white;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+.brand-text {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  color: var(--text-main);
+}
+
+.brand-env {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent-cyan);
+  background: var(--accent-cyan-dim);
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+
+.nav-divider {
+  color: var(--border-strong);
+  font-size: 12px;
+}
+
+/* Cluster Selector Pill */
+.cluster-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+}
+
+.cluster-name {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.cluster-badge {
+  background: var(--border-medium);
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+/* Database Selector Dropdown Pill */
+.db-select-pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+}
+
+.db-select-pill:hover {
+  border-color: var(--accent-cyan);
+}
+
+.db-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.db-dot.online {
+  background-color: var(--accent-emerald);
+  box-shadow: 0 0 6px var(--accent-emerald);
+}
+
+.db-select-pill select {
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  font-size: 11px;
+  font-weight: 600;
+  padding-right: 14px;
+  cursor: pointer;
+  outline: none;
+}
+
+.db-select-pill select option {
+  background: var(--bg-panel);
+  color: var(--text-main);
+}
+
+.chevron-down {
+  position: absolute;
+  right: 6px;
+  font-size: 9px;
+  color: var(--text-dim);
+  pointer-events: none;
+}
+
+/* Breadcrumb Center */
+.header-center-cluster {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-trail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.crumb-separator {
+  color: var(--border-medium);
+}
+
+.crumb {
+  color: var(--text-muted);
+}
+
+.crumb-badge {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--accent-emerald);
+  font-size: 10px;
+  font-family: var(--font-mono);
+  padding: 1px 6px;
+  border-radius: var(--radius-xs);
+}
+
+/* Header Buttons Right */
+.header-right-cluster {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-studio {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.btn-studio:hover {
+  background: var(--bg-elevated);
+  border-color: var(--border-medium);
+  color: var(--text-main);
+}
+
+.btn-ai-sparkle {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(168, 85, 247, 0.15));
+  border-color: rgba(56, 189, 248, 0.35);
+  color: var(--accent-cyan);
+}
+
+.btn-ai-sparkle:hover {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(168, 85, 247, 0.25));
+  border-color: var(--accent-cyan);
+}
+
+.kbd-shortcut {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-size: 9px;
+  font-family: var(--font-mono);
+}
+
+.btn-icon-only {
+  padding: 4px 7px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.btn-github {
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   STUDIO SHELL LAYOUT (ACTIVITY DOCK + SIDEBAR + CANVAS)
+   ========================================================================== */
+.studio-shell {
+  display: flex;
+  height: calc(100vh - var(--header-height) - var(--footer-height));
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Far-Left Slim Activity Dock */
+.activity-dock {
+  width: var(--dock-width);
+  background: var(--bg-deep);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  flex-shrink: 0;
+  z-index: 20;
+}
+
+.dock-top, .dock-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.dock-btn {
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.dock-btn:hover {
+  color: var(--text-main);
+  background: var(--bg-surface);
+}
+
+.dock-btn.active {
+  color: var(--accent-cyan);
+  background: var(--bg-panel);
+}
+
+.dock-btn.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--accent-cyan);
+  border-radius: 0 2px 2px 0;
+}
+
+.dock-icon {
+  font-size: 14px;
+}
+
+.dock-label {
+  font-size: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+/* Secondary Schema & Object Explorer Sidebar */
+.explorer-sidebar {
+  width: var(--sidebar-width);
+  background: var(--bg-panel);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.explorer-header {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.explorer-title-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.explorer-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+.table-badge {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--accent-cyan);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 0 5px;
+  border-radius: var(--radius-xs);
+}
+
+.explorer-filter-box {
+  padding: 8px 10px;
+  position: relative;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.explorer-filter-box .filter-icon {
+  position: absolute;
+  left: 16px;
+  top: 14px;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.explorer-filter-box input {
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 5px 8px 5px 24px;
+  font-size: 11px;
+  color: var(--text-main);
+  outline: none;
+}
+
+.explorer-filter-box input:focus {
+  border-color: var(--accent-cyan);
+}
+
+/* Tree Hierarchy in Sidebar */
+.explorer-tree {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tree-table-node {
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+  transition: all 0.15s ease;
+}
+
+.tree-node-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 8px;
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+}
+
+.tree-node-row:hover {
+  background: var(--bg-surface);
+}
+
+.tree-node-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tree-caret {
+  font-size: 9px;
+  color: var(--text-dim);
+  transition: transform 0.15s;
+}
+
+.tree-table-node.expanded .tree-caret {
+  transform: rotate(90deg);
+}
+
+.tree-tbl-name {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.tree-node-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tree-row-count {
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.tree-quick-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 1px 3px;
+  border-radius: 2px;
+  font-size: 10px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.tree-node-row:hover .tree-quick-btn {
+  opacity: 1;
+}
+
+.tree-quick-btn:hover {
+  color: var(--accent-cyan);
+  background: var(--bg-hover);
+}
+
+/* Tree Columns Sub-level */
+.tree-columns-box {
+  display: none;
+  padding: 2px 0 4px 18px;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.tree-table-node.expanded .tree-columns-box {
+  display: flex;
+}
+
+.tree-col-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+
+.tree-col-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.col-tag {
+  font-size: 8px;
+  padding: 0 3px;
+  border-radius: 2px;
+  font-weight: 700;
+}
+
+.col-tag.pk {
+  background: var(--accent-amber-dim);
+  color: var(--accent-amber);
+}
+
+.col-tag.fk {
+  background: var(--accent-purple-dim);
+  color: var(--accent-purple);
+}
+
+.tree-col-type {
+  color: var(--text-dim);
+  font-size: 9px;
+}
+
+/* Explorer Footer */
+.explorer-footer {
+  padding: 8px 12px;
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-panel);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.explorer-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+}
+
+.explorer-meta-row .meta-label {
+  color: var(--text-dim);
+}
+
+.explorer-meta-row .meta-val {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* ==========================================================================
+   STUDIO MAIN CANVAS (SPLIT IDE VIEW)
+   ========================================================================== */
+.studio-canvas {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-canvas);
+}
+
+/* Top Pane: Editor */
+.editor-pane {
+  flex: 0 0 42%;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-panel);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Multi-tab Bar */
+.editor-tabs-bar {
+  height: 34px;
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  gap: 2px;
+  user-select: none;
+}
+
+.tabs-scroll-container {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  overflow-x: auto;
+}
+
+.editor-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  padding: 6px 12px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.editor-tab:hover {
+  background: var(--bg-surface);
+  color: var(--text-main);
+}
+
+.editor-tab.active {
+  background: var(--bg-panel);
+  color: var(--text-main);
+  border-bottom-color: var(--accent-cyan);
+}
+
+.tab-indicator {
+  font-size: 7px;
+  color: var(--accent-cyan);
+}
+
+.tab-close {
+  font-size: 9px;
+  color: var(--text-dim);
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+
+.tab-close:hover {
+  color: var(--accent-rose);
+  background: rgba(244, 63, 94, 0.15);
+}
+
+.btn-new-tab {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 14px;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+}
+
+.btn-new-tab:hover {
+  color: var(--text-main);
+  background: var(--bg-surface);
+}
+
+/* Editor Toolbar */
+.editor-toolbar {
+  height: 34px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.toolbar-left, .toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-run-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--accent-emerald);
+  border: none;
+  color: #042f1a;
+  padding: 4px 10px;
+  border-radius: var(--radius-xs);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-run-primary:hover {
+  background: #34d399;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+
+.btn-run-primary .kbd-pill {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1px 4px;
+  border-radius: 2px;
+  font-size: 9px;
+}
+
+.btn-tool {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  padding: 4px 8px;
+  border-radius: var(--radius-xs);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-tool:hover {
+  color: var(--text-main);
+  border-color: var(--border-medium);
+  background: var(--bg-elevated);
+}
+
+.btn-copilot-trigger {
+  border-color: rgba(56, 189, 248, 0.4);
+  color: var(--accent-cyan);
+  background: var(--accent-cyan-dim);
+}
+
+.btn-copilot-trigger:hover {
+  background: rgba(56, 189, 248, 0.2);
+}
+
+.toolbar-sep {
+  width: 1px;
+  height: 16px;
+  background: var(--border-medium);
+  margin: 0 4px;
+}
+
+.editor-metric {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+/* Expandable Inline AI Copilot Drawer */
+.ai-copilot-drawer {
+  background: linear-gradient(180deg, #101622 0%, #0d121c 100%);
+  border-bottom: 1px solid var(--accent-cyan);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+
+.copilot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.copilot-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ai-title {
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--accent-cyan);
+}
+
+.ai-model-tag {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-dim);
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 2px;
+}
+
+.btn-icon-subtle {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.btn-icon-subtle:hover {
+  color: var(--text-main);
+}
+
+.copilot-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.copilot-input-box {
+  flex: 1;
+  position: relative;
+}
+
+.copilot-input-box .sparkle-hint {
+  position: absolute;
+  left: 10px;
+  top: 8px;
+  font-size: 11px;
+  color: var(--accent-cyan);
+}
+
+.copilot-input-box input {
+  width: 100%;
+  background: var(--bg-deep);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 7px 10px 7px 28px;
+  font-size: 12px;
+  color: var(--text-main);
+  outline: none;
+}
+
+.copilot-input-box input:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+}
+
+.btn-copilot-generate {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  border: none;
+  color: white;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-copilot-generate:hover {
+  background: #0284c7;
+}
+
+.copilot-chips-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.chips-title {
+  font-size: 10px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.chips-list {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+}
+
+.chip-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  padding: 2px 8px;
+  border-radius: var(--radius-xs);
+  font-size: 10px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.chip-item:hover {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+/* Code Editor Surface */
+.editor-surface {
+  flex: 1;
+  display: flex;
+  background: #090c13;
+  position: relative;
+  overflow: hidden;
+}
+
+.line-gutter {
+  width: 36px;
+  padding: 10px 6px;
+  background: rgba(0, 0, 0, 0.15);
+  border-right: 1px solid var(--border-subtle);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-align: right;
+  line-height: 1.6;
+  user-select: none;
+}
+
+.textarea-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+#sql-textarea {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  padding: 10px 12px;
+  color: #38bdf8;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  white-space: pre;
+  tab-size: 2;
+}
+
+/* Editor Statusbar */
+.editor-statusbar {
+  height: 22px;
+  background: var(--bg-deep);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.stat-left, .stat-right {
+  display: flex;
+  gap: 12px;
+}
+
+.status-token {
+  font-family: var(--font-mono);
+}
+
+/* Pane Splitter Handle */
+.pane-splitter {
+  height: 6px;
+  background: var(--bg-deep);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  cursor: row-resize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.splitter-grip {
+  width: 30px;
+  height: 2px;
+  background: var(--border-medium);
+  border-radius: 1px;
+}
+
+.pane-splitter:hover .splitter-grip {
+  background: var(--accent-cyan);
+}
+
+/* ==========================================================================
+   RESULTS PANE & WORKSTATION TABS
+   ========================================================================== */
+.results-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-panel);
+  overflow: hidden;
+}
+
+/* Results Navigation Bar */
+.results-nav-strip {
+  height: 34px;
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+}
+
+.results-tabs-left {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.res-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.res-tab:hover {
+  color: var(--text-main);
+  background: var(--bg-surface);
+}
+
+.res-tab.active {
+  color: var(--accent-cyan);
+  background: var(--bg-panel);
+  border-bottom-color: var(--accent-cyan);
+}
+
+.res-count-badge {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 9px;
+  font-family: var(--font-mono);
+  padding: 0 4px;
+  border-radius: 2px;
+}
+
+.res-pill {
+  background: var(--accent-purple-dim);
+  color: var(--accent-purple);
+  font-size: 9px;
+  padding: 0 4px;
+  border-radius: 2px;
+}
+
+/* Results Toolbar Right */
+.results-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.grid-search-wrapper input {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  padding: 3px 8px;
+  font-size: 11px;
+  color: var(--text-main);
+  outline: none;
+  width: 150px;
+}
+
+.grid-search-wrapper input:focus {
+  border-color: var(--accent-cyan);
+}
+
+.export-dropdown-wrapper {
+  position: relative;
+}
+
+.btn-res-action {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  font-size: 11px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-res-action:hover {
+  background: var(--bg-elevated);
+  border-color: var(--border-medium);
+  color: var(--text-main);
+}
+
+.btn-accent-visualize {
+  background: var(--accent-cyan-dim);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: var(--accent-cyan);
+}
+
+.btn-accent-visualize:hover {
+  background: var(--accent-cyan);
+  color: #042f1a;
+}
+
+.export-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 4px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  min-width: 170px;
+  overflow: hidden;
+}
+
+.export-item {
+  background: transparent;
+  border: none;
+  padding: 6px 12px;
+  text-align: left;
+  font-size: 11px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.export-item:hover {
+  background: var(--bg-hover);
+  color: var(--accent-cyan);
+}
+
+/* Results Content Viewport */
+.results-viewport {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.res-view-panel {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.res-view-panel.active {
+  display: flex;
+}
+
+/* ==========================================================================
+   VIEW 1: HIGH-DENSITY PROFESSIONAL DATA GRID
+   ========================================================================== */
+.table-container {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+  background: var(--bg-canvas);
+}
+
+.enterprise-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-align: left;
+}
+
+.enterprise-table thead {
+  position: sticky;
+  top: 0;
+  background: var(--bg-surface);
+  z-index: 2;
+  box-shadow: 0 1px 0 var(--border-medium);
+}
+
+.enterprise-table th {
+  padding: 6px 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+  white-space: nowrap;
+  border-right: 1px solid var(--border-subtle);
+  user-select: none;
+  cursor: pointer;
+}
+
+.enterprise-table th:hover {
+  color: var(--accent-cyan);
+}
+
+.th-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.th-type-pill {
+  font-size: 9px;
+  color: var(--text-dim);
+  font-weight: 400;
+}
+
+.enterprise-table td {
+  padding: 5px 12px;
+  color: var(--text-code);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  border-right: 1px solid rgba(255, 255, 255, 0.02);
+  white-space: nowrap;
+}
+
+.enterprise-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.012);
+}
+
+.enterprise-table tbody tr:hover {
+  background: rgba(56, 189, 248, 0.06);
+}
+
+/* Row Index Column */
+.td-index {
+  color: var(--text-dim) !important;
+  user-select: none;
+  width: 38px;
+  text-align: center;
+}
+
+.val-null {
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.val-bool-true {
+  color: var(--accent-emerald);
+  font-weight: 600;
+}
+
+.val-bool-false {
+  color: var(--accent-rose);
+  font-weight: 600;
+}
+
+/* Grid Empty Placeholder */
+.grid-empty-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: var(--text-dim);
+  gap: 8px;
+}
+
+.grid-empty-card .empty-icon {
+  font-size: 24px;
+}
+
+/* Grid Pagination Bar */
+.grid-pagination-bar {
+  height: 28px;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.pag-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-pag {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.btn-pag:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-pag:not(:disabled):hover {
+  border-color: var(--accent-cyan);
+  color: var(--text-main);
+}
+
+.pag-number {
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+/* ==========================================================================
+   VIEW 2: INTERACTIVE ERD SCHEMA ARCHITECT
+   ========================================================================== */
+.erd-studio-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: #06080d;
+}
+
+.erd-floating-toolbar {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.erd-legend, .erd-tool-buttons {
+  pointer-events: auto;
+  background: rgba(15, 19, 26, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge-pk {
+  background: var(--accent-amber);
+  color: black;
+  font-size: 8px;
+  font-weight: 700;
+  padding: 0 3px;
+  border-radius: 2px;
+}
+
+.badge-fk {
+  background: var(--accent-purple);
+  color: white;
+  font-size: 8px;
+  font-weight: 700;
+  padding: 0 3px;
+  border-radius: 2px;
+}
+
+.badge-line {
+  display: inline-block;
+  width: 12px;
+  height: 2px;
+  background: var(--accent-cyan);
+}
+
+.btn-erd-action {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 3px 6px;
+  border-radius: var(--radius-xs);
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.btn-erd-action:hover {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.erd-canvas-wrapper {
+  flex: 1;
+  position: relative;
+  cursor: grab;
+}
+
+.erd-canvas-wrapper:active {
+  cursor: grabbing;
+}
+
+#erd-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.erd-canvas-hint {
+  position: absolute;
+  bottom: 8px;
+  left: 12px;
+  background: rgba(15, 19, 26, 0.8);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  padding: 3px 8px;
+  font-size: 10px;
+  color: var(--text-dim);
+  pointer-events: none;
+}
+
+/* ERD Entity Drawer */
+.erd-entity-drawer {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 280px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+}
+
+.entity-drawer-header {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-surface);
+}
+
+.entity-drawer-header h4 {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent-cyan);
+}
+
+.entity-drawer-content {
+  padding: 10px 12px;
+  font-size: 11px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.entity-drawer-footer {
+  padding: 8px 12px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  gap: 6px;
+}
+
+.btn-drawer-action {
+  flex: 1;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 4px;
+  border-radius: var(--radius-xs);
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.btn-drawer-action.primary {
+  background: var(--accent-cyan);
+  color: #042f1a;
+  font-weight: 700;
+  border: none;
+}
+
+/* ==========================================================================
+   VIEW 3: VISUAL ANALYTICS & CHARTS
+   ========================================================================== */
+.analytics-studio-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-canvas);
+}
+
+.kpi-strip {
+  display: flex;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-panel);
+}
+
+.kpi-card {
+  flex: 1;
+  padding: 10px 16px;
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.kpi-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+}
+
+.kpi-value {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.text-accent-cyan { color: var(--accent-cyan); }
+.text-accent-emerald { color: var(--accent-emerald); }
+.text-accent-purple { color: var(--accent-purple); }
+
+.chart-config-bar {
+  padding: 8px 14px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.config-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.config-group label {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.chart-type-pills {
+  display: flex;
+  background: var(--bg-deep);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  padding: 1px;
+}
+
+.pill-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.pill-btn.active {
+  background: var(--bg-panel);
+  color: var(--accent-cyan);
+}
+
+.select-field {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.select-field select {
+  background: var(--bg-deep);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  font-size: 10px;
+  outline: none;
+}
+
+.analytics-canvas-box {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+#analytics-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* ==========================================================================
+   VIEW 4: EXECUTION PLAN ANALYZER
+   ========================================================================== */
+.plan-studio-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.plan-summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.plan-summary-header h3 {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.plan-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.plan-stats-badges {
+  display: flex;
+  gap: 8px;
+}
+
+.cost-badge, .grade-badge {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.cost-badge strong { color: var(--accent-amber); }
+.grade-badge strong { color: var(--accent-emerald); }
+
+.plan-nodes-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.plan-step-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  padding: 8px 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.plan-step-card:hover {
+  border-color: var(--accent-cyan);
+}
+
+.plan-step-title {
+  font-weight: 700;
+  color: var(--accent-cyan);
+}
+
+.plan-step-desc {
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.index-advisor-card {
+  background: rgba(245, 158, 11, 0.05);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: var(--radius-xs);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.advisor-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent-amber);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.index-advisor-card p {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   VIEW 5: QUERY HISTORY LOG
+   ========================================================================== */
+.history-studio-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history-header h3 {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.history-list-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.history-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.history-row:hover {
+  border-color: var(--border-medium);
+}
+
+.history-query-text {
+  color: var(--text-code);
+  max-width: 65%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.history-meta-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hist-time {
+  color: var(--accent-emerald);
+  font-size: 10px;
+}
+
+.btn-hist-run {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--accent-cyan);
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 9px;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   BOTTOM SYSTEM STATUS BAR (26px SLIM)
+   ========================================================================== */
+.studio-statusbar {
+  height: var(--footer-height);
+  background: var(--bg-deep);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  font-size: 10px;
+  color: var(--text-dim);
+  user-select: none;
+  z-index: 50;
+}
+
+.status-col-left, .status-col-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.engine-live-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-emerald);
+}
+
+.studio-statusbar kbd {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  padding: 0 3px;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+.author-tag strong {
+  color: var(--accent-cyan);
+}
+
+/* ==========================================================================
+   STUDIO MODAL DIALOGS
+   ========================================================================== */
+.studio-modal {
+  margin: auto;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  background: rgba(15, 19, 26, 0.95);
+  backdrop-filter: blur(16px);
+  color: var(--text-main);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8);
+  max-width: 600px;
+  width: 90vw;
+  outline: none;
+}
+
+.studio-modal::backdrop {
+  background: rgba(4, 6, 10, 0.75);
+  backdrop-filter: blur(4px);
+}
+
+.modal-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-head {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+}
+
+.modal-head h3 {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.modal-content {
+  padding: 16px;
+  max-height: 380px;
+  overflow-y: auto;
+  font-size: 12px;
+}
+
+.modal-content pre {
+  background: #090c13;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  padding: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-cyan);
+  white-space: pre-wrap;
+}
+
+.modal-foot {
+  padding: 10px 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+}
+
+.shortcuts-table {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.sc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 8px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-xs);
+  font-size: 11px;
+}
+
+.sc-row kbd {
+  background: var(--bg-deep);
+  border: 1px solid var(--border-medium);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  color: var(--accent-cyan);
+}
+
+.guide-note h4 {
+  font-size: 12px;
+  color: var(--accent-purple);
+  margin-bottom: 4px;
+}
+
+.guide-note p {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+</style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -594,6 +2588,2250 @@ LIMIT 15;</textarea>
     </div>
   </dialog>
 
-  <script src="app.js"></script>
+  <script>
+/**
+ * ============================================================================
+ * NEUROQUERY STUDIO — ENTERPRISE ENGINE (v1.0 • Launchpad Cycle #4)
+ * Professional Relational SQL IDE, Multi-Tab Workbench, AI Copilot & ERD Architect
+ *
+ * Developer: Divyansh Shandil (0612divyansh)
+ * ============================================================================
+ */
+
+(function () {
+  'use strict';
+
+  // ============================================================================
+  // 1. TACTILE AUDIO SYNTHESIZER
+  // ============================================================================
+  class AudioSynthesizer {
+    constructor() {
+      this.ctx = null;
+      this.muted = false;
+      this.initialized = false;
+    }
+
+    init() {
+      if (this.initialized) return;
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) {
+          this.ctx = new AudioCtx();
+          this.initialized = true;
+        }
+      } catch (e) {
+        console.warn('Web Audio unavailable', e);
+      }
+    }
+
+    ensureContext() {
+      if (!this.initialized) this.init();
+      if (this.ctx && this.ctx.state === 'suspended') {
+        this.ctx.resume();
+      }
+    }
+
+    playClick() {
+      if (this.muted) return;
+      this.ensureContext();
+      if (!this.ctx) return;
+
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(550, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(160, this.ctx.currentTime + 0.035);
+
+      gain.gain.setValueAtTime(0.06, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.035);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.035);
+    }
+
+    playExecute() {
+      if (this.muted) return;
+      this.ensureContext();
+      if (!this.ctx) return;
+
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(200, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(750, this.ctx.currentTime + 0.1);
+
+      gain.gain.setValueAtTime(0.09, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.12);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.12);
+    }
+
+    playSuccess() {
+      if (this.muted) return;
+      this.ensureContext();
+      if (!this.ctx) return;
+
+      const freqs = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
+      freqs.forEach((f, idx) => {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        const start = this.ctx.currentTime + idx * 0.04;
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(f, start);
+
+        gain.gain.setValueAtTime(0.07, start);
+        gain.gain.exponentialRampToValueAtTime(0.001, start + 0.16);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(start);
+        osc.stop(start + 0.16);
+      });
+    }
+
+    playError() {
+      if (this.muted) return;
+      this.ensureContext();
+      if (!this.ctx) return;
+
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(140, this.ctx.currentTime);
+      osc.frequency.linearRampToValueAtTime(80, this.ctx.currentTime + 0.16);
+
+      gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.16);
+
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.16);
+    }
+  }
+
+  const audio = new AudioSynthesizer();
+
+  // ============================================================================
+  // 2. ENTERPRISE RELATIONAL SCHEMAS & PRE-SEEDED DATA
+  // ============================================================================
+  const DATABASES = {
+    saas_analytics: {
+      name: 'saas_analytics',
+      dialect: 'PostgreSQL 16.2',
+      tables: {
+        organizations: {
+          columns: [
+            { name: 'org_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'name', type: 'varchar(80)', isPk: false, isFk: false },
+            { name: 'tier', type: 'varchar(40)', isPk: false, isFk: false },
+            { name: 'created_at', type: 'date', isPk: false, isFk: false },
+            { name: 'mrr', type: 'numeric(10,2)', isPk: false, isFk: false },
+            { name: 'status', type: 'varchar(20)', isPk: false, isFk: false }
+          ],
+          rows: [
+            { org_id: 1, name: 'Vortex Dynamics', tier: 'Enterprise', created_at: '2025-02-14', mrr: 4500.00, status: 'active' },
+            { org_id: 2, name: 'Nova Labs', tier: 'Pro', created_at: '2025-05-19', mrr: 1200.00, status: 'active' },
+            { org_id: 3, name: 'Apex AI Systems', tier: 'Enterprise', created_at: '2025-01-10', mrr: 8900.00, status: 'active' },
+            { org_id: 4, name: 'ByteSync Corp', tier: 'Starter', created_at: '2025-08-22', mrr: 290.00, status: 'trial' },
+            { org_id: 5, name: 'Luminary Studios', tier: 'Pro', created_at: '2025-03-30', mrr: 1450.00, status: 'active' },
+            { org_id: 6, name: 'HyperFlow Media', tier: 'Enterprise', created_at: '2025-06-11', mrr: 6200.00, status: 'active' },
+            { org_id: 7, name: 'Krypton Security', tier: 'Pro', created_at: '2025-07-04', mrr: 1800.00, status: 'churned' },
+            { org_id: 8, name: 'PulseMetrics Global', tier: 'Enterprise', created_at: '2025-04-18', mrr: 9500.00, status: 'active' }
+          ]
+        },
+        users: {
+          columns: [
+            { name: 'user_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'org_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'organizations', col: 'org_id' } },
+            { name: 'email', type: 'varchar(120)', isPk: false, isFk: false },
+            { name: 'role', type: 'varchar(40)', isPk: false, isFk: false },
+            { name: 'last_login', type: 'timestamp', isPk: false, isFk: false },
+            { name: 'is_active', type: 'boolean', isPk: false, isFk: false }
+          ],
+          rows: [
+            { user_id: 101, org_id: 1, email: 'alice@vortex.io', role: 'admin', last_login: '2026-11-24 14:22:00', is_active: true },
+            { user_id: 102, org_id: 1, email: 'bob@vortex.io', role: 'developer', last_login: '2026-11-23 09:15:30', is_active: true },
+            { user_id: 103, org_id: 2, email: 'carol@novalabs.tech', role: 'admin', last_login: '2026-11-25 18:04:12', is_active: true },
+            { user_id: 104, org_id: 3, email: 'dan@apex-ai.com', role: 'owner', last_login: '2026-11-25 11:45:00', is_active: true },
+            { user_id: 105, org_id: 3, email: 'elena@apex-ai.com', role: 'developer', last_login: '2026-11-22 16:30:10', is_active: true },
+            { user_id: 106, org_id: 4, email: 'frank@bytesync.co', role: 'owner', last_login: '2026-11-15 08:12:00', is_active: false },
+            { user_id: 107, org_id: 5, email: 'grace@luminary.design', role: 'admin', last_login: '2026-11-24 19:20:00', is_active: true },
+            { user_id: 108, org_id: 6, email: 'hank@hyperflow.net', role: 'analyst', last_login: '2026-11-21 13:10:45', is_active: true },
+            { user_id: 109, org_id: 7, email: 'iris@krypton.io', role: 'owner', last_login: '2026-10-18 10:00:00', is_active: false },
+            { user_id: 110, org_id: 8, email: 'divyansh@pulsemetrics.io', role: 'owner', last_login: '2026-11-25 20:15:00', is_active: true }
+          ]
+        },
+        subscriptions: {
+          columns: [
+            { name: 'sub_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'org_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'organizations', col: 'org_id' } },
+            { name: 'plan', type: 'varchar(60)', isPk: false, isFk: false },
+            { name: 'seats', type: 'int4', isPk: false, isFk: false },
+            { name: 'monthly_amount', type: 'numeric(10,2)', isPk: false, isFk: false },
+            { name: 'renews_on', type: 'date', isPk: false, isFk: false },
+            { name: 'status', type: 'varchar(20)', isPk: false, isFk: false }
+          ],
+          rows: [
+            { sub_id: 501, org_id: 1, plan: 'Enterprise Unlimited', seats: 120, monthly_amount: 4500.00, renews_on: '2026-12-14', status: 'active' },
+            { sub_id: 502, org_id: 2, plan: 'Pro Team', seats: 25, monthly_amount: 1200.00, renews_on: '2026-12-19', status: 'active' },
+            { sub_id: 503, org_id: 3, plan: 'Enterprise Dedicated', seats: 250, monthly_amount: 8900.00, renews_on: '2026-12-10', status: 'active' },
+            { sub_id: 504, org_id: 4, plan: 'Starter Solo', seats: 5, monthly_amount: 290.00, renews_on: '2026-11-30', status: 'trial' },
+            { sub_id: 505, org_id: 5, plan: 'Pro Team', seats: 30, monthly_amount: 1450.00, renews_on: '2026-12-30', status: 'active' },
+            { sub_id: 506, org_id: 6, plan: 'Enterprise Unlimited', seats: 160, monthly_amount: 6200.00, renews_on: '2026-12-11', status: 'active' },
+            { sub_id: 507, org_id: 7, plan: 'Pro Team', seats: 35, monthly_amount: 1800.00, renews_on: '2026-10-31', status: 'cancelled' },
+            { sub_id: 508, org_id: 8, plan: 'Enterprise Cluster', seats: 300, monthly_amount: 9500.00, renews_on: '2026-12-18', status: 'active' }
+          ]
+        },
+        invoices: {
+          columns: [
+            { name: 'invoice_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'org_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'organizations', col: 'org_id' } },
+            { name: 'amount', type: 'numeric(10,2)', isPk: false, isFk: false },
+            { name: 'status', type: 'varchar(20)', isPk: false, isFk: false },
+            { name: 'paid_at', type: 'date', isPk: false, isFk: false },
+            { name: 'currency', type: 'varchar(6)', isPk: false, isFk: false }
+          ],
+          rows: [
+            { invoice_id: 9001, org_id: 1, amount: 4500.00, status: 'paid', paid_at: '2026-11-14', currency: 'USD' },
+            { invoice_id: 9002, org_id: 2, amount: 1200.00, status: 'paid', paid_at: '2026-11-19', currency: 'USD' },
+            { invoice_id: 9003, org_id: 3, amount: 8900.00, status: 'paid', paid_at: '2026-11-10', currency: 'USD' },
+            { invoice_id: 9004, org_id: 4, amount: 290.00, status: 'unpaid', paid_at: null, currency: 'USD' },
+            { invoice_id: 9005, org_id: 5, amount: 1450.00, status: 'paid', paid_at: '2026-10-30', currency: 'USD' },
+            { invoice_id: 9006, org_id: 6, amount: 6200.00, status: 'paid', paid_at: '2026-11-11', currency: 'USD' },
+            { invoice_id: 9007, org_id: 8, amount: 9500.00, status: 'paid', paid_at: '2026-11-18', currency: 'USD' }
+          ]
+        },
+        features_usage: {
+          columns: [
+            { name: 'usage_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'org_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'organizations', col: 'org_id' } },
+            { name: 'feature_key', type: 'varchar(60)', isPk: false, isFk: false },
+            { name: 'calls_count', type: 'int4', isPk: false, isFk: false },
+            { name: 'latency_p95_ms', type: 'numeric(6,2)', isPk: false, isFk: false }
+          ],
+          rows: [
+            { usage_id: 1, org_id: 1, feature_key: 'ai_copilot_inference', calls_count: 84000, latency_p95_ms: 124.5 },
+            { usage_id: 2, org_id: 1, feature_key: 'realtime_websocket_sync', calls_count: 512000, latency_p95_ms: 18.2 },
+            { usage_id: 3, org_id: 2, feature_key: 'pdf_export_pipeline', calls_count: 3200, latency_p95_ms: 450.0 },
+            { usage_id: 4, org_id: 3, feature_key: 'ai_copilot_inference', calls_count: 320000, latency_p95_ms: 112.0 },
+            { usage_id: 5, org_id: 3, feature_key: 'vector_search_rag', calls_count: 145000, latency_p95_ms: 48.6 },
+            { usage_id: 6, org_id: 6, feature_key: 'realtime_websocket_sync', calls_count: 890000, latency_p95_ms: 15.4 },
+            { usage_id: 7, org_id: 8, feature_key: 'ai_copilot_inference', calls_count: 420000, latency_p95_ms: 98.0 },
+            { usage_id: 8, org_id: 8, feature_key: 'vector_search_rag', calls_count: 280000, latency_p95_ms: 42.1 }
+          ]
+        }
+      },
+      prompts: [
+        { label: 'Top Organizations by MRR', query: 'SELECT org_id, name, tier, mrr, status FROM organizations ORDER BY mrr DESC LIMIT 5;' },
+        { label: 'Enterprise Subscriptions', query: 'SELECT sub_id, org_id, plan, seats, monthly_amount, status FROM subscriptions WHERE status = \'active\' ORDER BY monthly_amount DESC;' },
+        { label: 'Active Admins', query: 'SELECT user_id, email, role, last_login FROM users WHERE role = \'admin\' AND is_active = true;' },
+        { label: 'Unpaid Invoices', query: 'SELECT invoice_id, org_id, amount, status, currency FROM invoices WHERE status = \'unpaid\';' },
+        { label: 'High-Volume AI Features', query: 'SELECT usage_id, org_id, feature_key, calls_count, latency_p95_ms FROM features_usage WHERE feature_key = \'ai_copilot_inference\' ORDER BY calls_count DESC;' }
+      ]
+    },
+
+    fintech_ledger: {
+      name: 'fintech_ledger',
+      dialect: 'PostgreSQL 16.2',
+      tables: {
+        accounts: {
+          columns: [
+            { name: 'account_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'account_number', type: 'varchar(30)', isPk: false, isFk: false },
+            { name: 'holder_name', type: 'varchar(80)', isPk: false, isFk: false },
+            { name: 'tier', type: 'varchar(30)', isPk: false, isFk: false },
+            { name: 'balance', type: 'numeric(12,2)', isPk: false, isFk: false },
+            { name: 'currency', type: 'varchar(5)', isPk: false, isFk: false }
+          ],
+          rows: [
+            { account_id: 1001, account_number: 'ACC-883192', holder_name: 'Aarav Patel', tier: 'Platinum', balance: 48500.50, currency: 'INR' },
+            { account_id: 1002, account_number: 'ACC-912384', holder_name: 'Sneha Rao', tier: 'Gold', balance: 14200.00, currency: 'INR' },
+            { account_id: 1003, account_number: 'ACC-341902', holder_name: 'Vikram Malhotra', tier: 'Titanium', balance: 185000.75, currency: 'INR' },
+            { account_id: 1004, account_number: 'ACC-552190', holder_name: 'Priya Sharma', tier: 'Silver', balance: 5200.20, currency: 'INR' },
+            { account_id: 1005, account_number: 'ACC-774912', holder_name: 'Rohan Mehra', tier: 'Platinum', balance: 64000.00, currency: 'INR' },
+            { account_id: 1006, account_number: 'ACC-119283', holder_name: 'Divyansh Shandil', tier: 'Titanium', balance: 320000.00, currency: 'INR' }
+          ]
+        },
+        merchants: {
+          columns: [
+            { name: 'merchant_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'merchant_name', type: 'varchar(80)', isPk: false, isFk: false },
+            { name: 'category', type: 'varchar(50)', isPk: false, isFk: false },
+            { name: 'risk_score', type: 'numeric(4,2)', isPk: false, isFk: false },
+            { name: 'commission_rate', type: 'numeric(4,3)', isPk: false, isFk: false }
+          ],
+          rows: [
+            { merchant_id: 201, merchant_name: 'Swiggy Food Logistics', category: 'Food & Dining', risk_score: 0.12, commission_rate: 0.018 },
+            { merchant_id: 202, merchant_name: 'Groww Mutual Funds', category: 'Investments', risk_score: 0.05, commission_rate: 0.005 },
+            { merchant_id: 203, merchant_name: 'Razorpay Direct API', category: 'Payment Gateway', risk_score: 0.02, commission_rate: 0.015 },
+            { merchant_id: 204, merchant_name: 'Flipkart Electronics', category: 'E-Commerce', risk_score: 0.22, commission_rate: 0.022 },
+            { merchant_id: 205, merchant_name: 'Croma Retail', category: 'Electronics', risk_score: 0.15, commission_rate: 0.020 }
+          ]
+        },
+        transactions: {
+          columns: [
+            { name: 'txn_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'account_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'accounts', col: 'account_id' } },
+            { name: 'merchant_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'merchants', col: 'merchant_id' } },
+            { name: 'amount', type: 'numeric(10,2)', isPk: false, isFk: false },
+            { name: 'txn_type', type: 'varchar(20)', isPk: false, isFk: false },
+            { name: 'status', type: 'varchar(20)', isPk: false, isFk: false },
+            { name: 'created_at', type: 'date', isPk: false, isFk: false }
+          ],
+          rows: [
+            { txn_id: 8801, account_id: 1001, merchant_id: 201, amount: 650.00, txn_type: 'UPI', status: 'COMPLETED', created_at: '2026-11-25' },
+            { txn_id: 8802, account_id: 1001, merchant_id: 202, amount: 15000.00, txn_type: 'NET_BANKING', status: 'COMPLETED', created_at: '2026-11-24' },
+            { txn_id: 8803, account_id: 1003, merchant_id: 203, amount: 55000.00, txn_type: 'API_DIRECT', status: 'COMPLETED', created_at: '2026-11-25' },
+            { txn_id: 8804, account_id: 1004, merchant_id: 204, amount: 89000.00, txn_type: 'CREDIT_CARD', status: 'FLAGGED', created_at: '2026-11-25' },
+            { txn_id: 8805, account_id: 1002, merchant_id: 201, amount: 420.00, txn_type: 'UPI', status: 'COMPLETED', created_at: '2026-11-23' },
+            { txn_id: 8806, account_id: 1005, merchant_id: 205, amount: 48000.00, txn_type: 'DEBIT_CARD', status: 'COMPLETED', created_at: '2026-11-24' },
+            { txn_id: 8807, account_id: 1006, merchant_id: 202, amount: 120000.00, txn_type: 'IMPS', status: 'COMPLETED', created_at: '2026-11-25' }
+          ]
+        },
+        settlements: {
+          columns: [
+            { name: 'settlement_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'merchant_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'merchants', col: 'merchant_id' } },
+            { name: 'net_amount', type: 'numeric(12,2)', isPk: false, isFk: false },
+            { name: 'fee_deducted', type: 'numeric(10,2)', isPk: false, isFk: false },
+            { name: 'settled_at', type: 'date', isPk: false, isFk: false }
+          ],
+          rows: [
+            { settlement_id: 401, merchant_id: 201, net_amount: 1450000.00, fee_deducted: 26100.00, settled_at: '2026-11-24' },
+            { settlement_id: 402, merchant_id: 202, net_amount: 8900000.00, fee_deducted: 44500.00, settled_at: '2026-11-24' },
+            { settlement_id: 403, merchant_id: 203, net_amount: 5200000.00, fee_deducted: 78000.00, settled_at: '2026-11-25' },
+            { settlement_id: 404, merchant_id: 204, net_amount: 3200000.00, fee_deducted: 70400.00, settled_at: '2026-11-25' }
+          ]
+        },
+        fraud_alerts: {
+          columns: [
+            { name: 'alert_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'txn_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'transactions', col: 'txn_id' } },
+            { name: 'severity', type: 'varchar(20)', isPk: false, isFk: false },
+            { name: 'rule_triggered', type: 'varchar(80)', isPk: false, isFk: false },
+            { name: 'review_status', type: 'varchar(30)', isPk: false, isFk: false }
+          ],
+          rows: [
+            { alert_id: 701, txn_id: 8804, severity: 'HIGH', rule_triggered: 'VELOCITY_LIMIT_EXCEEDED', review_status: 'PENDING_MANUAL' }
+          ]
+        }
+      },
+      prompts: [
+        { label: 'High Balance Accounts', query: 'SELECT account_id, holder_name, tier, balance, currency FROM accounts WHERE balance > 50000 ORDER BY balance DESC;' },
+        { label: 'Flagged Transactions', query: 'SELECT txn_id, account_id, amount, txn_type, status FROM transactions WHERE status = \'FLAGGED\';' },
+        { label: 'Risk Ranking Merchants', query: 'SELECT merchant_id, merchant_name, category, risk_score FROM merchants ORDER BY risk_score DESC;' },
+        { label: 'UPI Volume', query: 'SELECT txn_id, account_id, amount, status FROM transactions WHERE txn_type = \'UPI\';' }
+      ]
+    },
+
+    ecommerce_global: {
+      name: 'ecommerce_global',
+      dialect: 'PostgreSQL 16.2',
+      tables: {
+        customers: {
+          columns: [
+            { name: 'customer_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'full_name', type: 'varchar(80)', isPk: false, isFk: false },
+            { name: 'country', type: 'varchar(40)', isPk: false, isFk: false },
+            { name: 'tier', type: 'varchar(30)', isPk: false, isFk: false },
+            { name: 'total_spend', type: 'numeric(10,2)', isPk: false, isFk: false }
+          ],
+          rows: [
+            { customer_id: 1, full_name: 'Liam Chen', country: 'Singapore', tier: 'VIP Gold', total_spend: 3450.00 },
+            { customer_id: 2, full_name: 'Sophia Mueller', country: 'Germany', tier: 'Standard', total_spend: 420.50 },
+            { customer_id: 3, full_name: 'Arjun Das', country: 'India', tier: 'VIP Platinum', total_spend: 8900.00 },
+            { customer_id: 4, full_name: 'Emily Watson', country: 'United States', tier: 'VIP Gold', total_spend: 2150.00 },
+            { customer_id: 5, full_name: 'Mateo Rossi', country: 'Italy', tier: 'Standard', total_spend: 680.00 }
+          ]
+        },
+        products: {
+          columns: [
+            { name: 'product_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'title', type: 'varchar(100)', isPk: false, isFk: false },
+            { name: 'category', type: 'varchar(50)', isPk: false, isFk: false },
+            { name: 'price', type: 'numeric(10,2)', isPk: false, isFk: false },
+            { name: 'stock_qty', type: 'int4', isPk: false, isFk: false },
+            { name: 'rating', type: 'numeric(3,2)', isPk: false, isFk: false }
+          ],
+          rows: [
+            { product_id: 101, title: 'Spatial ANC Headphones', category: 'Audio', price: 299.99, stock_qty: 450, rating: 4.8 },
+            { product_id: 102, title: 'Mechanical Ergonomic Keyboard', category: 'Peripherals', price: 189.50, stock_qty: 120, rating: 4.9 },
+            { product_id: 103, title: 'Ultrawide 4K OLED Monitor', category: 'Displays', price: 899.00, stock_qty: 65, rating: 4.7 },
+            { product_id: 104, title: 'USB-C Thunderbolt 4 Dock', category: 'Peripherals', price: 149.00, stock_qty: 320, rating: 4.6 },
+            { product_id: 105, title: 'Smart Sensor Lightbar', category: 'Lighting', price: 79.99, stock_qty: 850, rating: 4.5 }
+          ]
+        },
+        warehouses: {
+          columns: [
+            { name: 'warehouse_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'region', type: 'varchar(50)', isPk: false, isFk: false },
+            { name: 'capacity_sqft', type: 'int4', isPk: false, isFk: false },
+            { name: 'utilization_pct', type: 'numeric(5,2)', isPk: false, isFk: false }
+          ],
+          rows: [
+            { warehouse_id: 1, region: 'Asia-Pacific (Singapore)', capacity_sqft: 250000, utilization_pct: 82.5 },
+            { warehouse_id: 2, region: 'Europe (Frankfurt)', capacity_sqft: 400000, utilization_pct: 74.0 },
+            { warehouse_id: 3, region: 'North America (Dallas)', capacity_sqft: 650000, utilization_pct: 89.2 }
+          ]
+        },
+        orders: {
+          columns: [
+            { name: 'order_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'customer_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'customers', col: 'customer_id' } },
+            { name: 'total_amount', type: 'numeric(10,2)', isPk: false, isFk: false },
+            { name: 'order_status', type: 'varchar(30)', isPk: false, isFk: false },
+            { name: 'placed_at', type: 'date', isPk: false, isFk: false }
+          ],
+          rows: [
+            { order_id: 5001, customer_id: 1, total_amount: 599.98, order_status: 'DELIVERED', placed_at: '2026-11-20' },
+            { order_id: 5002, customer_id: 3, total_amount: 1088.50, order_status: 'SHIPPED', placed_at: '2026-11-24' },
+            { order_id: 5003, customer_id: 4, total_amount: 299.99, order_status: 'PROCESSING', placed_at: '2026-11-25' },
+            { order_id: 5004, customer_id: 3, total_amount: 899.00, order_status: 'DELIVERED', placed_at: '2026-11-15' }
+          ]
+        },
+        order_items: {
+          columns: [
+            { name: 'item_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'order_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'orders', col: 'order_id' } },
+            { name: 'product_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'products', col: 'product_id' } },
+            { name: 'quantity', type: 'int4', isPk: false, isFk: false },
+            { name: 'unit_price', type: 'numeric(10,2)', isPk: false, isFk: false }
+          ],
+          rows: [
+            { item_id: 1, order_id: 5001, product_id: 101, quantity: 2, unit_price: 299.99 },
+            { item_id: 2, order_id: 5002, product_id: 102, quantity: 1, unit_price: 189.50 },
+            { item_id: 3, order_id: 5002, product_id: 103, quantity: 1, unit_price: 899.00 },
+            { item_id: 4, order_id: 5003, product_id: 101, quantity: 1, unit_price: 299.99 },
+            { item_id: 5, order_id: 5004, product_id: 103, quantity: 1, unit_price: 899.00 }
+          ]
+        },
+        shipments: {
+          columns: [
+            { name: 'shipment_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'order_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'orders', col: 'order_id' } },
+            { name: 'warehouse_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'warehouses', col: 'warehouse_id' } },
+            { name: 'carrier', type: 'varchar(40)', isPk: false, isFk: false },
+            { name: 'tracking_status', type: 'varchar(30)', isPk: false, isFk: false },
+            { name: 'delivery_days', type: 'int4', isPk: false, isFk: false }
+          ],
+          rows: [
+            { shipment_id: 801, order_id: 5001, warehouse_id: 1, carrier: 'DHL Express', tracking_status: 'DELIVERED', delivery_days: 2 },
+            { shipment_id: 802, order_id: 5002, warehouse_id: 2, carrier: 'FedEx Priority', tracking_status: 'IN_TRANSIT', delivery_days: 3 },
+            { shipment_id: 803, order_id: 5003, warehouse_id: 3, carrier: 'UPS Ground', tracking_status: 'LABEL_CREATED', delivery_days: 4 },
+            { shipment_id: 804, order_id: 5004, warehouse_id: 1, carrier: 'BlueDart Air', tracking_status: 'DELIVERED', delivery_days: 2 }
+          ]
+        }
+      },
+      prompts: [
+        { label: 'Highest Rated Catalog', query: 'SELECT product_id, title, category, price, rating FROM products WHERE rating > 4.6 ORDER BY rating DESC;' },
+        { label: 'VIP Customer Lifetime Spend', query: 'SELECT customer_id, full_name, country, tier, total_spend FROM customers WHERE tier LIKE \'%VIP%\' ORDER BY total_spend DESC;' },
+        { label: 'Fastest Carrier Shipments', query: 'SELECT shipment_id, order_id, carrier, tracking_status, delivery_days FROM shipments WHERE delivery_days <= 3;' }
+      ]
+    }
+  };
+
+  // State
+  let currentDbKey = 'saas_analytics';
+  let activeDb = JSON.parse(JSON.stringify(DATABASES[currentDbKey]));
+  let currentQueryResult = null;
+  let currentSort = { column: null, direction: 'asc' };
+  let currentResultView = 'view-grid';
+
+  // Multi-tab query state
+  const queryTabs = [
+    {
+      id: 'tab-1',
+      title: 'query_main.sql',
+      content: 'SELECT \n  org_id, \n  name, \n  tier, \n  mrr, \n  status \nFROM organizations \nORDER BY mrr DESC \nLIMIT 15;'
+    },
+    {
+      id: 'tab-2',
+      title: 'revenue_by_tier.sql',
+      content: 'SELECT \n  sub_id, \n  org_id, \n  plan, \n  seats, \n  monthly_amount, \n  status \nFROM subscriptions \nWHERE status = \'active\' \nORDER BY monthly_amount DESC;'
+    },
+    {
+      id: 'tab-3',
+      title: 'active_admins.sql',
+      content: 'SELECT \n  user_id, \n  email, \n  role, \n  last_login \nFROM users \nWHERE role = \'admin\' AND is_active = true \nORDER BY last_login DESC;'
+    }
+  ];
+  let activeTabId = 'tab-1';
+
+  // Execution History log
+  const queryHistory = [];
+
+  // ============================================================================
+  // 3. RELATIONAL SQL ENGINE
+  // ============================================================================
+  class RelationalEngine {
+    constructor(db) {
+      this.db = db;
+    }
+
+    setDatabase(db) {
+      this.db = db;
+    }
+
+    execute(sqlStr) {
+      const startTime = performance.now();
+      const cleanSql = sqlStr.trim().replace(/;+$/, '');
+
+      if (!cleanSql) {
+        throw new Error('Empty query string provided.');
+      }
+
+      const selectMatch = cleanSql.match(/^SELECT\s+([\s\S]+?)\s+FROM\s+([a-zA-Z0-9_]+)([\s\S]*)$/i);
+      if (!selectMatch) {
+        throw new Error('Syntax Error: Only SELECT queries are supported in client-side preview engine.');
+      }
+
+      const rawCols = selectMatch[1].trim();
+      const primaryTable = selectMatch[2].trim().toLowerCase();
+      const remainingClauses = selectMatch[3] || '';
+
+      if (!this.db.tables[primaryTable]) {
+        throw new Error(`Table not found: "${primaryTable}" in current database.`);
+      }
+
+      let sourceRows = JSON.parse(JSON.stringify(this.db.tables[primaryTable].rows));
+      let scannedCount = sourceRows.length;
+      let planSteps = [];
+
+      planSteps.push({
+        op: 'Seq Scan',
+        detail: `Scan on public.${primaryTable}`,
+        rows: sourceRows.length,
+        cost: (sourceRows.length * 0.1).toFixed(1)
+      });
+
+      // 1. JOIN
+      const joinMatch = remainingClauses.match(/JOIN\s+([a-zA-Z0-9_]+)\s+ON\s+([a-zA-Z0-9_.]+)\s*=\s*([a-zA-Z0-9_.]+)/i);
+      if (joinMatch) {
+        const joinTable = joinMatch[1].trim().toLowerCase();
+        const leftKey = joinMatch[2].trim();
+        const rightKey = joinMatch[3].trim();
+
+        if (!this.db.tables[joinTable]) {
+          throw new Error(`Join target table not found: "${joinTable}".`);
+        }
+
+        const joinTargetRows = this.db.tables[joinTable].rows;
+        scannedCount += joinTargetRows.length;
+
+        const joined = [];
+        const leftColName = leftKey.includes('.') ? leftKey.split('.')[1] : leftKey;
+        const rightColName = rightKey.includes('.') ? rightKey.split('.')[1] : rightKey;
+
+        sourceRows.forEach(leftRow => {
+          joinTargetRows.forEach(rightRow => {
+            if (String(leftRow[leftColName]) === String(rightRow[rightColName])) {
+              joined.push({ ...leftRow, ...rightRow });
+            }
+          });
+        });
+
+        sourceRows = joined;
+        planSteps.push({
+          op: 'Hash Join',
+          detail: `Inner join on ${leftKey} = ${rightKey}`,
+          rows: sourceRows.length,
+          cost: (sourceRows.length * 0.25).toFixed(1)
+        });
+      }
+
+      // 2. WHERE
+      const whereMatch = remainingClauses.match(/WHERE\s+([\s\S]+?)(?=(ORDER\s+BY|GROUP\s+BY|LIMIT|$))/i);
+      if (whereMatch) {
+        const whereCond = whereMatch[1].trim();
+        sourceRows = sourceRows.filter(row => this.evaluateCondition(row, whereCond));
+        planSteps.push({
+          op: 'Filter',
+          detail: `Filter: (${whereCond})`,
+          rows: sourceRows.length,
+          cost: (sourceRows.length * 0.15).toFixed(1)
+        });
+      }
+
+      // 3. ORDER BY
+      const orderMatch = remainingClauses.match(/ORDER\s+BY\s+([a-zA-Z0-9_]+)(?:\s+(ASC|DESC))?/i);
+      if (orderMatch) {
+        const orderCol = orderMatch[1].trim();
+        const orderDir = (orderMatch[2] || 'ASC').toUpperCase();
+
+        sourceRows.sort((a, b) => {
+          let va = a[orderCol];
+          let vb = b[orderCol];
+          if (va === undefined) return 0;
+          if (!isNaN(Number(va)) && !isNaN(Number(vb))) {
+            va = Number(va);
+            vb = Number(vb);
+          }
+          if (va < vb) return orderDir === 'ASC' ? -1 : 1;
+          if (va > vb) return orderDir === 'ASC' ? 1 : -1;
+          return 0;
+        });
+
+        planSteps.push({
+          op: 'Sort',
+          detail: `Sort: ${orderCol} ${orderDir}`,
+          rows: sourceRows.length,
+          cost: (sourceRows.length * 0.08).toFixed(1)
+        });
+      }
+
+      // 4. LIMIT
+      const limitMatch = remainingClauses.match(/LIMIT\s+(\d+)/i);
+      if (limitMatch) {
+        const limitVal = parseInt(limitMatch[1], 10);
+        sourceRows = sourceRows.slice(0, limitVal);
+        planSteps.push({
+          op: 'Limit',
+          detail: `Limit: ${limitVal} rows`,
+          rows: sourceRows.length,
+          cost: '0.1'
+        });
+      }
+
+      // 5. Projection & Column Types
+      let outputColumns = [];
+      let columnTypes = {};
+      let outputRows = [];
+
+      const tblCols = this.db.tables[primaryTable].columns;
+
+      if (rawCols === '*') {
+        if (sourceRows.length > 0) {
+          outputColumns = Object.keys(sourceRows[0]);
+        } else {
+          outputColumns = tblCols.map(c => c.name);
+        }
+        outputRows = sourceRows;
+        outputColumns.forEach(cName => {
+          const matched = tblCols.find(tc => tc.name === cName);
+          columnTypes[cName] = matched ? matched.type : 'varchar';
+        });
+      } else {
+        const reqCols = rawCols.split(',').map(c => c.trim());
+        outputColumns = reqCols.map(c => {
+          const m = c.match(/(?:AS\s+)?([a-zA-Z0-9_]+)$/i);
+          return m ? m[1] : c;
+        });
+
+        outputRows = sourceRows.map(row => {
+          const r = {};
+          reqCols.forEach((colExpr, idx) => {
+            const key = colExpr.split(/\s+AS\s+/i)[0].trim();
+            const targetKey = outputColumns[idx];
+            r[targetKey] = row[key] !== undefined ? row[key] : null;
+
+            const matched = tblCols.find(tc => tc.name === key);
+            columnTypes[targetKey] = matched ? matched.type : 'varchar';
+          });
+          return r;
+        });
+      }
+
+      const durationMs = Number((performance.now() - startTime).toFixed(2));
+
+      return {
+        columns: outputColumns,
+        columnTypes: columnTypes,
+        rows: outputRows,
+        executionTimeMs: durationMs,
+        scannedRows: scannedCount,
+        queryPlan: planSteps
+      };
+    }
+
+    evaluateCondition(row, cond) {
+      cond = cond.trim();
+
+      if (/IS\s+NOT\s+NULL/i.test(cond)) {
+        const col = cond.split(/IS\s+NOT\s+NULL/i)[0].trim();
+        return row[col] !== null && row[col] !== undefined;
+      }
+      if (/IS\s+NULL/i.test(cond)) {
+        const col = cond.split(/IS\s+NULL/i)[0].trim();
+        return row[col] === null || row[col] === undefined;
+      }
+
+      const likeMatch = cond.match(/([a-zA-Z0-9_]+)\s+LIKE\s+['"]?([^'"]+)['"]?/i);
+      if (likeMatch) {
+        const col = likeMatch[1].trim();
+        const pattern = likeMatch[2].replace(/%/g, '.*');
+        return new RegExp(pattern, 'i').test(String(row[col] || ''));
+      }
+
+      const compMatch = cond.match(/([a-zA-Z0-9_]+)\s*(=|!=|>=|<=|>|<)\s*['"]?([^'"]+?)['"]?$/i);
+      if (compMatch) {
+        const col = compMatch[1].trim();
+        const op = compMatch[2].trim();
+        let val = compMatch[3].trim();
+
+        let rowVal = row[col];
+        if (!isNaN(Number(val)) && !isNaN(Number(rowVal))) {
+          val = Number(val);
+          rowVal = Number(rowVal);
+        }
+
+        switch (op) {
+          case '=': return String(rowVal).toLowerCase() === String(val).toLowerCase();
+          case '!=': return String(rowVal).toLowerCase() !== String(val).toLowerCase();
+          case '>': return rowVal > val;
+          case '<': return rowVal < val;
+          case '>=': return rowVal >= val;
+          case '<=': return rowVal <= val;
+        }
+      }
+
+      return true;
+    }
+  }
+
+  const engine = new RelationalEngine(activeDb);
+
+  // ============================================================================
+  // 4. NATURAL LANGUAGE AI COPILOT SYNTHESIZER
+  // ============================================================================
+  class NLSynthesizer {
+    constructor(db) {
+      this.db = db;
+    }
+
+    setDatabase(db) {
+      this.db = db;
+    }
+
+    synthesize(prompt) {
+      const p = prompt.toLowerCase().trim();
+
+      // Check pre-seeded prompt matches
+      for (const item of this.db.prompts || []) {
+        if (p.includes(item.label.toLowerCase())) {
+          return item.query;
+        }
+      }
+
+      // Entity matching rules
+      if (p.includes('top') && p.includes('org')) {
+        return `SELECT org_id, name, tier, mrr, status FROM organizations ORDER BY mrr DESC LIMIT 5;`;
+      }
+      if (p.includes('enterprise') && p.includes('sub')) {
+        return `SELECT sub_id, org_id, plan, seats, monthly_amount, status FROM subscriptions WHERE plan LIKE '%Enterprise%' ORDER BY monthly_amount DESC;`;
+      }
+      if (p.includes('admin') || p.includes('owner')) {
+        return `SELECT user_id, email, role, last_login, is_active FROM users WHERE role IN ('admin', 'owner') ORDER BY last_login DESC;`;
+      }
+      if (p.includes('unpaid') || p.includes('invoice')) {
+        return `SELECT invoice_id, org_id, amount, status, currency FROM invoices WHERE status = 'unpaid';`;
+      }
+      if (p.includes('high balance') || p.includes('account')) {
+        return `SELECT account_id, holder_name, tier, balance, currency FROM accounts WHERE balance > 50000 ORDER BY balance DESC;`;
+      }
+      if (p.includes('flagged') || p.includes('fraud')) {
+        return `SELECT txn_id, account_id, amount, txn_type, status FROM transactions WHERE status = 'FLAGGED';`;
+      }
+      if (p.includes('rating') || p.includes('product')) {
+        return `SELECT product_id, title, category, price, rating FROM products WHERE rating > 4.6 ORDER BY rating DESC;`;
+      }
+      if (p.includes('vip') || p.includes('spend')) {
+        return `SELECT customer_id, full_name, country, tier, total_spend FROM customers WHERE tier LIKE '%VIP%' ORDER BY total_spend DESC;`;
+      }
+
+      const firstTbl = Object.keys(this.db.tables)[0];
+      return `SELECT * FROM ${firstTbl} LIMIT 15;`;
+    }
+  }
+
+  const synthesizer = new NLSynthesizer(activeDb);
+
+  // ============================================================================
+  // 5. INTERACTIVE ERD SCHEMA ARCHITECT
+  // ============================================================================
+  class ErdVisualizer {
+    constructor(canvas, db) {
+      this.canvas = canvas;
+      this.ctx = canvas.getContext('2d');
+      this.db = db;
+      this.nodes = [];
+      this.links = [];
+      this.scale = 1.0;
+      this.panX = 50;
+      this.panY = 50;
+      this.draggingNode = null;
+      this.dragOffset = { x: 0, y: 0 };
+      this.isPanning = false;
+      this.lastMouse = { x: 0, y: 0 };
+
+      this.initNodes();
+      this.setupEventListeners();
+    }
+
+    setDatabase(db) {
+      this.db = db;
+      this.initNodes();
+      this.render();
+    }
+
+    initNodes() {
+      this.nodes = [];
+      this.links = [];
+      const tables = Object.keys(this.db.tables);
+
+      const colWidth = 230;
+      let curX = 50;
+      let curY = 50;
+
+      tables.forEach((tblKey, idx) => {
+        const tbl = this.db.tables[tblKey];
+        const nodeHeight = 36 + tbl.columns.length * 20 + 8;
+
+        this.nodes.push({
+          id: tblKey,
+          name: tblKey,
+          x: curX,
+          y: curY,
+          width: colWidth,
+          height: nodeHeight,
+          columns: tbl.columns,
+          rowCount: tbl.rows.length
+        });
+
+        curX += colWidth + 60;
+        if (curX > 800) {
+          curX = 50;
+          curY += 240;
+        }
+      });
+
+      tables.forEach(tblKey => {
+        const tbl = this.db.tables[tblKey];
+        tbl.columns.forEach(col => {
+          if (col.isFk && col.fkRef) {
+            this.links.push({
+              sourceTable: tblKey,
+              sourceCol: col.name,
+              targetTable: col.fkRef.table,
+              targetCol: col.fkRef.col
+            });
+          }
+        });
+      });
+    }
+
+    setupEventListeners() {
+      const c = this.canvas;
+
+      c.addEventListener('mousedown', (e) => {
+        const rect = c.getBoundingClientRect();
+        const mx = (e.clientX - rect.left - this.panX) / this.scale;
+        const my = (e.clientY - rect.top - this.panY) / this.scale;
+
+        for (let i = this.nodes.length - 1; i >= 0; i--) {
+          const n = this.nodes[i];
+          if (mx >= n.x && mx <= n.x + n.width && my >= n.y && my <= n.y + n.height) {
+            this.draggingNode = n;
+            this.dragOffset.x = mx - n.x;
+            this.dragOffset.y = my - n.y;
+            audio.playClick();
+            this.showTableDetailDrawer(n);
+            return;
+          }
+        }
+
+        this.isPanning = true;
+        this.lastMouse.x = e.clientX;
+        this.lastMouse.y = e.clientY;
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (this.draggingNode) {
+          const rect = c.getBoundingClientRect();
+          const mx = (e.clientX - rect.left - this.panX) / this.scale;
+          const my = (e.clientY - rect.top - this.panY) / this.scale;
+          this.draggingNode.x = mx - this.dragOffset.x;
+          this.draggingNode.y = my - this.dragOffset.y;
+          this.render();
+        } else if (this.isPanning) {
+          const dx = e.clientX - this.lastMouse.x;
+          const dy = e.clientY - this.lastMouse.y;
+          this.panX += dx;
+          this.panY += dy;
+          this.lastMouse.x = e.clientX;
+          this.lastMouse.y = e.clientY;
+          this.render();
+        }
+      });
+
+      window.addEventListener('mouseup', () => {
+        this.draggingNode = null;
+        this.isPanning = false;
+      });
+
+      c.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const factor = e.deltaY < 0 ? 1.06 : 0.94;
+        this.scale = Math.min(Math.max(this.scale * factor, 0.4), 2.2);
+        this.render();
+      }, { passive: false });
+    }
+
+    render() {
+      const ctx = this.ctx;
+      const w = this.canvas.width;
+      const h = this.canvas.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      ctx.save();
+      ctx.fillStyle = '#07090e';
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.translate(this.panX, this.panY);
+      ctx.scale(this.scale, this.scale);
+
+      // Dot Matrix Background
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.035)';
+      const step = 24;
+      for (let x = -800; x < 2400; x += step) {
+        for (let y = -800; y < 2400; y += step) {
+          ctx.fillRect(x, y, 1.2, 1.2);
+        }
+      }
+
+      // Draw Relationship Connectors
+      this.links.forEach(l => {
+        const src = this.nodes.find(n => n.id === l.sourceTable);
+        const tgt = this.nodes.find(n => n.id === l.targetTable);
+
+        if (src && tgt) {
+          const sIdx = src.columns.findIndex(c => c.name === l.sourceCol);
+          const tIdx = tgt.columns.findIndex(c => c.name === l.targetCol);
+
+          const startX = src.x + src.width;
+          const startY = src.y + 36 + (sIdx >= 0 ? sIdx : 0) * 20 + 10;
+          const endX = tgt.x;
+          const endY = tgt.y + 36 + (tIdx >= 0 ? tIdx : 0) * 20 + 10;
+
+          const cp1x = startX + 40;
+          const cp1y = startY;
+          const cp2x = endX - 40;
+          const cp2y = endY;
+
+          ctx.beginPath();
+          ctx.moveTo(startX, startY);
+          ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX, endY);
+          ctx.strokeStyle = '#38bdf8';
+          ctx.lineWidth = 1.8;
+          ctx.stroke();
+
+          ctx.fillStyle = '#a855f7';
+          ctx.beginPath();
+          ctx.arc(startX, startY, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = '#f59e0b';
+          ctx.beginPath();
+          ctx.arc(endX, endY, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+
+      // Draw Tables
+      this.nodes.forEach(n => {
+        // Card Body
+        ctx.fillStyle = '#10141d';
+        ctx.strokeStyle = '#263145';
+        ctx.lineWidth = 1.2;
+        this.roundRect(ctx, n.x, n.y, n.width, n.height, 6, true, true);
+
+        // Card Header
+        ctx.fillStyle = '#171e2c';
+        this.roundRect(ctx, n.x, n.y, n.width, 32, { tl: 6, tr: 6, bl: 0, br: 0 }, true, false);
+
+        ctx.beginPath();
+        ctx.moveTo(n.x, n.y + 32);
+        ctx.lineTo(n.x + n.width, n.y + 32);
+        ctx.strokeStyle = '#1c2331';
+        ctx.stroke();
+
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = 'bold 11px "Fira Code", monospace';
+        ctx.fillText(n.name, n.x + 10, n.y + 20);
+
+        ctx.fillStyle = '#64748b';
+        ctx.font = '10px "Inter", sans-serif';
+        ctx.fillText(`${n.rowCount} rows`, n.x + n.width - 48, n.y + 20);
+
+        // Columns
+        n.columns.forEach((col, idx) => {
+          const colY = n.y + 36 + idx * 20;
+
+          if (col.isPk) {
+            ctx.fillStyle = '#f59e0b';
+            ctx.fillRect(n.x + 8, colY + 4, 16, 11);
+            ctx.fillStyle = '#000';
+            ctx.font = 'bold 8px monospace';
+            ctx.fillText('PK', n.x + 10, colY + 12);
+          } else if (col.isFk) {
+            ctx.fillStyle = '#a855f7';
+            ctx.fillRect(n.x + 8, colY + 4, 16, 11);
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 8px monospace';
+            ctx.fillText('FK', n.x + 10, colY + 12);
+          } else {
+            ctx.fillStyle = '#334155';
+            ctx.beginPath();
+            ctx.arc(n.x + 16, colY + 9, 2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          ctx.fillStyle = '#cbd5e1';
+          ctx.font = '10px "Fira Code", monospace';
+          ctx.fillText(col.name, n.x + 30, colY + 13);
+
+          ctx.fillStyle = '#64748b';
+          ctx.font = '9px "Fira Code", monospace';
+          ctx.fillText(col.type, n.x + n.width - 70, colY + 13);
+        });
+      });
+
+      ctx.restore();
+    }
+
+    roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+      if (typeof radius === 'number') {
+        radius = { tl: radius, tr: radius, br: radius, bl: radius };
+      }
+      ctx.beginPath();
+      ctx.moveTo(x + radius.tl, y);
+      ctx.lineTo(x + width - radius.tr, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
+      ctx.lineTo(x + width, y + height - radius.br);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
+      ctx.lineTo(x + radius.bl, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
+      ctx.lineTo(x, y + radius.tl);
+      ctx.quadraticCurveTo(x, y, x + radius.tl, y);
+      ctx.closePath();
+      if (fill) ctx.fill();
+      if (stroke) ctx.stroke();
+    }
+
+    showTableDetailDrawer(node) {
+      const drawer = document.getElementById('erd-entity-drawer');
+      const title = document.getElementById('drawer-entity-name');
+      const content = document.getElementById('drawer-entity-content');
+      if (!drawer || !title || !content) return;
+
+      title.textContent = `Table: ${node.name}`;
+      let html = `<p style="margin-bottom: 6px;">Total Records: <strong>${node.rowCount}</strong></p>`;
+      html += `<div style="font-weight: 600; margin-bottom: 4px; color: var(--text-muted);">Columns:</div>`;
+      html += `<div style="display:flex; flex-direction:column; gap:4px;">`;
+      node.columns.forEach(c => {
+        html += `<div style="display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:10px;">
+          <span>${c.name} ${c.isPk ? '<span class="col-tag pk">PK</span>' : ''} ${c.isFk ? '<span class="col-tag fk">FK</span>' : ''}</span>
+          <span style="color:var(--text-dim);">${c.type}</span>
+        </div>`;
+      });
+      html += `</div>`;
+
+      content.innerHTML = html;
+      drawer.classList.remove('hidden');
+
+      document.getElementById('btn-drawer-query-table').onclick = () => {
+        setEditorContent(`SELECT * FROM ${node.name} LIMIT 20;`);
+        switchResultView('view-grid');
+        executeActiveQuery();
+      };
+
+      document.getElementById('btn-drawer-copy-name').onclick = () => {
+        navigator.clipboard.writeText(node.name);
+        audio.playClick();
+      };
+    }
+  }
+
+  // ============================================================================
+  // 6. DYNAMIC CANVAS CHARTING ENGINE
+  // ============================================================================
+  class DynamicChartEngine {
+    constructor(canvas) {
+      this.canvas = canvas;
+      this.ctx = canvas.getContext('2d');
+      this.chartType = 'bar';
+      this.xAxisCol = '';
+      this.yAxisCol = '';
+      this.data = [];
+      this.columns = [];
+      this.palette = ['#38bdf8', '#a855f7', '#10b981', '#f59e0b', '#ec4899', '#06b6d4'];
+    }
+
+    setData(rows, columns) {
+      this.data = rows;
+      this.columns = columns;
+      this.populateSelectors();
+      this.render();
+    }
+
+    populateSelectors() {
+      const selX = document.getElementById('chart-axis-x');
+      const selY = document.getElementById('chart-axis-y');
+      if (!selX || !selY) return;
+
+      selX.innerHTML = '';
+      selY.innerHTML = '';
+
+      this.columns.forEach(col => {
+        const ox = document.createElement('option');
+        ox.value = col;
+        ox.textContent = col;
+        selX.appendChild(ox);
+
+        const oy = document.createElement('option');
+        oy.value = col;
+        oy.textContent = col;
+        selY.appendChild(oy);
+      });
+
+      this.xAxisCol = this.columns[0];
+      const numericCol = this.columns.find(c => {
+        return this.data.length && !isNaN(Number(this.data[0][c])) && typeof this.data[0][c] !== 'boolean';
+      });
+      this.yAxisCol = numericCol || (this.columns[1] || this.columns[0]);
+
+      selX.value = this.xAxisCol;
+      selY.value = this.yAxisCol;
+    }
+
+    setChartType(type) {
+      this.chartType = type;
+      this.render();
+    }
+
+    render() {
+      const ctx = this.ctx;
+      const w = this.canvas.width;
+      const h = this.canvas.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      if (!this.data || this.data.length === 0) {
+        ctx.fillStyle = '#64748b';
+        ctx.font = '13px "Inter", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('No query rows available for plotting.', w / 2, h / 2);
+        return;
+      }
+
+      const xLabels = this.data.map(r => String(r[this.xAxisCol] ?? ''));
+      const yValues = this.data.map(r => Number(r[this.yAxisCol]) || 0);
+
+      const maxVal = Math.max(...yValues, 1);
+      const minVal = Math.min(...yValues, 0);
+
+      // Update KPI strip
+      const kpPoints = document.getElementById('kpi-total-points');
+      const kpMax = document.getElementById('kpi-max-value');
+      const kpMin = document.getElementById('kpi-min-value');
+      const kpAvg = document.getElementById('kpi-avg-value');
+
+      if (kpPoints) kpPoints.textContent = this.data.length;
+      if (kpMax) kpMax.textContent = maxVal.toLocaleString();
+      if (kpMin) kpMin.textContent = minVal.toLocaleString();
+      if (kpAvg) {
+        const sum = yValues.reduce((a, b) => a + b, 0);
+        kpAvg.textContent = (sum / yValues.length).toFixed(1);
+      }
+
+      const pad = { top: 30, right: 30, bottom: 50, left: 60 };
+      const cw = w - pad.left - pad.right;
+      const ch = h - pad.top - pad.bottom;
+
+      switch (this.chartType) {
+        case 'bar':
+          this.drawBar(ctx, xLabels, yValues, pad, cw, ch, maxVal);
+          break;
+        case 'line':
+          this.drawLine(ctx, xLabels, yValues, pad, cw, ch, maxVal, false);
+          break;
+        case 'area':
+          this.drawLine(ctx, xLabels, yValues, pad, cw, ch, maxVal, true);
+          break;
+        case 'donut':
+          this.drawDonut(ctx, xLabels, yValues, w, h);
+          break;
+        case 'scatter':
+          this.drawScatter(ctx, xLabels, yValues, pad, cw, ch, maxVal);
+          break;
+      }
+    }
+
+    drawBar(ctx, labels, values, pad, cw, ch, maxVal) {
+      this.drawAxes(ctx, pad, cw, ch, maxVal);
+
+      const gap = cw / values.length;
+      const barW = Math.min(gap * 0.55, 48);
+
+      values.forEach((v, idx) => {
+        const barH = (v / maxVal) * ch;
+        const x = pad.left + idx * gap + (gap - barW) / 2;
+        const y = pad.top + ch - barH;
+
+        const grad = ctx.createLinearGradient(0, y, 0, y + barH);
+        grad.addColorStop(0, '#38bdf8');
+        grad.addColorStop(1, 'rgba(56, 189, 248, 0.2)');
+
+        ctx.fillStyle = grad;
+        ctx.fillRect(x, y, barW, barH);
+
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillRect(x, y, barW, 2);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '10px "Inter", sans-serif';
+        ctx.textAlign = 'center';
+        const lbl = labels[idx].length > 9 ? labels[idx].slice(0, 7) + '..' : labels[idx];
+        ctx.fillText(lbl, x + barW / 2, pad.top + ch + 18);
+
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = '9px "Fira Code", monospace';
+        ctx.fillText(v.toLocaleString(), x + barW / 2, y - 5);
+      });
+    }
+
+    drawLine(ctx, labels, values, pad, cw, ch, maxVal, isArea) {
+      this.drawAxes(ctx, pad, cw, ch, maxVal);
+
+      const step = cw / (values.length - 1 || 1);
+      const pts = values.map((v, i) => ({
+        x: pad.left + i * step,
+        y: pad.top + ch - (v / maxVal) * ch
+      }));
+
+      if (isArea) {
+        ctx.beginPath();
+        ctx.moveTo(pts[0].x, pad.top + ch);
+        pts.forEach(p => ctx.lineTo(p.x, p.y));
+        ctx.lineTo(pts[pts.length - 1].x, pad.top + ch);
+        ctx.closePath();
+
+        const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + ch);
+        grad.addColorStop(0, 'rgba(168, 85, 247, 0.35)');
+        grad.addColorStop(1, 'rgba(168, 85, 247, 0.0)');
+        ctx.fillStyle = grad;
+        ctx.fill();
+      }
+
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      pts.forEach(p => ctx.lineTo(p.x, p.y));
+      ctx.strokeStyle = '#a855f7';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      pts.forEach((p, idx) => {
+        ctx.fillStyle = '#0f131a';
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '10px "Inter", sans-serif';
+        ctx.textAlign = 'center';
+        const lbl = labels[idx].length > 8 ? labels[idx].slice(0, 6) + '..' : labels[idx];
+        ctx.fillText(lbl, p.x, pad.top + ch + 18);
+      });
+    }
+
+    drawDonut(ctx, labels, values, w, h) {
+      const cx = w / 2;
+      const cy = h / 2;
+      const rad = Math.min(w, h) * 0.32;
+      const inRad = rad * 0.6;
+      const total = values.reduce((a, b) => a + b, 0) || 1;
+
+      let cur = -Math.PI / 2;
+
+      values.forEach((v, idx) => {
+        const slice = (v / total) * Math.PI * 2;
+        const color = this.palette[idx % this.palette.length];
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, rad, cur, cur + slice);
+        ctx.arc(cx, cy, inRad, cur + slice, cur, true);
+        ctx.closePath();
+
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.strokeStyle = '#07090e';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        cur += slice;
+      });
+
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = 'bold 15px "Inter", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Distribution', cx, cy - 4);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '11px "Fira Code", monospace';
+      ctx.fillText(`${values.length} records`, cx, cy + 14);
+    }
+
+    drawScatter(ctx, labels, values, pad, cw, ch, maxVal) {
+      this.drawAxes(ctx, pad, cw, ch, maxVal);
+
+      values.forEach((v, idx) => {
+        const x = pad.left + Math.random() * cw;
+        const y = pad.top + ch - (v / maxVal) * ch;
+
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.6)';
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      });
+    }
+
+    drawAxes(ctx, pad, cw, ch, maxVal) {
+      ctx.strokeStyle = '#1c2331';
+      ctx.lineWidth = 1;
+
+      const steps = 4;
+      for (let i = 0; i <= steps; i++) {
+        const y = pad.top + (ch / steps) * i;
+        ctx.beginPath();
+        ctx.moveTo(pad.left, y);
+        ctx.lineTo(pad.left + cw, y);
+        ctx.stroke();
+
+        const val = Math.round(maxVal - (maxVal / steps) * i);
+        ctx.fillStyle = '#64748b';
+        ctx.font = '9px "Fira Code", monospace';
+        ctx.textAlign = 'right';
+        ctx.fillText(val.toLocaleString(), pad.left - 8, y + 3);
+      }
+
+      ctx.beginPath();
+      ctx.moveTo(pad.left, pad.top + ch);
+      ctx.lineTo(pad.left + cw, pad.top + ch);
+      ctx.strokeStyle = '#263145';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+  }
+
+  // ============================================================================
+  // 7. STUDIO CONTROLLER & UI SETUP
+  // ============================================================================
+  let erdVisualizer = null;
+  let chartEngine = null;
+
+  function initApp() {
+    renderSidebarTree();
+    renderPromptChips();
+    updateLineNumbers();
+
+    const erdCanvas = document.getElementById('erd-canvas');
+    if (erdCanvas) {
+      erdVisualizer = new ErdVisualizer(erdCanvas, activeDb);
+      erdVisualizer.render();
+    }
+
+    const chartCanvas = document.getElementById('analytics-canvas');
+    if (chartCanvas) {
+      chartEngine = new DynamicChartEngine(chartCanvas);
+    }
+
+    setupEventListeners();
+    setupSplitResizer();
+
+    // Execute Initial Query
+    executeActiveQuery();
+  }
+
+  function setupEventListeners() {
+    // Database Select
+    const dbSelect = document.getElementById('db-select');
+    if (dbSelect) {
+      dbSelect.addEventListener('change', (e) => {
+        currentDbKey = e.target.value;
+        activeDb = JSON.parse(JSON.stringify(DATABASES[currentDbKey]));
+        engine.setDatabase(activeDb);
+        synthesizer.setDatabase(activeDb);
+        if (erdVisualizer) erdVisualizer.setDatabase(activeDb);
+
+        renderSidebarTree();
+        renderPromptChips();
+
+        const firstTbl = Object.keys(activeDb.tables)[0];
+        document.getElementById('header-active-table').textContent = firstTbl;
+        setEditorContent(`SELECT * FROM ${firstTbl} LIMIT 15;`);
+
+        audio.playExecute();
+        executeActiveQuery();
+      });
+    }
+
+    // Run Query Button
+    const btnRun = document.getElementById('btn-run-query');
+    if (btnRun) btnRun.addEventListener('click', () => executeActiveQuery());
+
+    // Format SQL Button
+    const btnFormat = document.getElementById('btn-format-sql');
+    if (btnFormat) {
+      btnFormat.addEventListener('click', () => {
+        const textarea = document.getElementById('sql-textarea');
+        textarea.value = formatSql(textarea.value);
+        updateLineNumbers();
+        audio.playClick();
+      });
+    }
+
+    // Clear SQL Button
+    const btnClear = document.getElementById('btn-clear-sql');
+    if (btnClear) {
+      btnClear.addEventListener('click', () => {
+        setEditorContent('');
+        audio.playClick();
+      });
+    }
+
+    // AI Copilot Toggle & Synthesis
+    const btnAi = document.getElementById('btn-toggle-ai-copilot');
+    const btnAiInline = document.getElementById('btn-open-copilot-inline');
+    const copilotDrawer = document.getElementById('ai-copilot-drawer');
+    const btnCloseCopilot = document.getElementById('btn-close-copilot');
+    const btnCopilotGen = document.getElementById('btn-copilot-synthesize');
+    const copilotInput = document.getElementById('copilot-nl-input');
+
+    const toggleCopilot = () => {
+      copilotDrawer.classList.toggle('hidden');
+      if (!copilotDrawer.classList.contains('hidden')) {
+        copilotInput.focus();
+        audio.playClick();
+      }
+    };
+
+    if (btnAi) btnAi.addEventListener('click', toggleCopilot);
+    if (btnAiInline) btnAiInline.addEventListener('click', toggleCopilot);
+    if (btnCloseCopilot) btnCloseCopilot.addEventListener('click', () => copilotDrawer.classList.add('hidden'));
+
+    if (btnCopilotGen && copilotInput) {
+      const handleGen = () => {
+        const prompt = copilotInput.value.trim();
+        if (!prompt) return;
+
+        audio.playExecute();
+        const synthesizedSql = synthesizer.synthesize(prompt);
+        setEditorContent(synthesizedSql);
+        copilotDrawer.classList.add('hidden');
+        switchResultView('view-grid');
+        executeActiveQuery();
+      };
+
+      btnCopilotGen.addEventListener('click', handleGen);
+      copilotInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleGen();
+        }
+      });
+    }
+
+    // Editor Textarea Events
+    const textarea = document.getElementById('sql-textarea');
+    if (textarea) {
+      textarea.addEventListener('input', () => {
+        updateLineNumbers();
+        saveActiveTabContent();
+      });
+
+      textarea.addEventListener('keyup', updateCursorPosition);
+      textarea.addEventListener('click', updateCursorPosition);
+
+      textarea.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          const start = textarea.selectionStart;
+          const end = textarea.selectionEnd;
+          textarea.value = textarea.value.substring(0, start) + '  ' + textarea.value.substring(end);
+          textarea.selectionStart = textarea.selectionEnd = start + 2;
+          updateLineNumbers();
+        }
+      });
+    }
+
+    // Results Tabs Navigation
+    document.querySelectorAll('.res-tab').forEach(t => {
+      t.addEventListener('click', () => {
+        const viewId = t.getAttribute('data-res-view');
+        switchResultView(viewId);
+        audio.playClick();
+      });
+    });
+
+    // Activity Dock Left Navigation
+    document.querySelectorAll('.dock-btn[data-dock]').forEach(b => {
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.dock-btn').forEach(btn => btn.classList.remove('active'));
+        b.classList.add('active');
+        const dock = b.getAttribute('data-dock');
+
+        if (dock === 'editor' || dock === 'tables') {
+          switchResultView('view-grid');
+        } else if (dock === 'erd') {
+          switchResultView('view-erd');
+        } else if (dock === 'analytics') {
+          switchResultView('view-charts');
+        } else if (dock === 'history') {
+          switchResultView('view-history');
+        }
+        audio.playClick();
+      });
+    });
+
+    // Quick Auto-Chart Button
+    document.getElementById('btn-quick-chart').addEventListener('click', () => {
+      switchResultView('view-charts');
+      audio.playClick();
+    });
+
+    // Chart Type Selector
+    document.querySelectorAll('#chart-type-selector .pill-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#chart-type-selector .pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (chartEngine) {
+          chartEngine.setChartType(btn.getAttribute('data-type'));
+          audio.playClick();
+        }
+      });
+    });
+
+    // Chart Axes Selectors
+    document.getElementById('chart-axis-x').addEventListener('change', (e) => {
+      if (chartEngine) {
+        chartEngine.xAxisCol = e.target.value;
+        chartEngine.render();
+      }
+    });
+
+    document.getElementById('chart-axis-y').addEventListener('change', (e) => {
+      if (chartEngine) {
+        chartEngine.yAxisCol = e.target.value;
+        chartEngine.render();
+      }
+    });
+
+    // ERD Canvas Controls
+    document.getElementById('btn-erd-zoom-in').addEventListener('click', () => {
+      if (erdVisualizer) {
+        erdVisualizer.scale = Math.min(erdVisualizer.scale * 1.15, 2.2);
+        erdVisualizer.render();
+        audio.playClick();
+      }
+    });
+
+    document.getElementById('btn-erd-zoom-out').addEventListener('click', () => {
+      if (erdVisualizer) {
+        erdVisualizer.scale = Math.max(erdVisualizer.scale * 0.85, 0.4);
+        erdVisualizer.render();
+        audio.playClick();
+      }
+    });
+
+    document.getElementById('btn-erd-reset-fit').addEventListener('click', () => {
+      if (erdVisualizer) {
+        erdVisualizer.scale = 1.0;
+        erdVisualizer.panX = 50;
+        erdVisualizer.panY = 50;
+        erdVisualizer.render();
+        audio.playClick();
+      }
+    });
+
+    document.getElementById('btn-erd-auto-layout').addEventListener('click', () => {
+      if (erdVisualizer) {
+        erdVisualizer.initNodes();
+        erdVisualizer.render();
+        audio.playExecute();
+      }
+    });
+
+    document.getElementById('btn-close-entity-drawer').addEventListener('click', () => {
+      document.getElementById('erd-entity-drawer').classList.add('hidden');
+    });
+
+    // Export Dropdown
+    const btnExpDrop = document.getElementById('btn-export-dropdown');
+    const expMenu = document.getElementById('export-menu');
+    if (btnExpDrop && expMenu) {
+      btnExpDrop.addEventListener('click', (e) => {
+        e.stopPropagation();
+        expMenu.classList.toggle('hidden');
+      });
+      window.addEventListener('click', () => expMenu.classList.add('hidden'));
+
+      document.getElementById('opt-export-csv').addEventListener('click', exportCsv);
+      document.getElementById('opt-export-json').addEventListener('click', exportJson);
+      document.getElementById('opt-export-markdown').addEventListener('click', exportMarkdown);
+      document.getElementById('opt-export-sql').addEventListener('click', exportSqlInserts);
+    }
+
+    // Modal DDL Dialog
+    const btnDdl = document.getElementById('btn-schema-ddl');
+    const ddlDialog = document.getElementById('ddl-dialog');
+    if (btnDdl && ddlDialog) {
+      btnDdl.addEventListener('click', () => {
+        document.getElementById('ddl-code-display').textContent = generateDdl(activeDb);
+        ddlDialog.showModal();
+        audio.playClick();
+      });
+      document.getElementById('btn-close-ddl-x').addEventListener('click', () => ddlDialog.close());
+      document.getElementById('btn-close-ddl-done').addEventListener('click', () => ddlDialog.close());
+      document.getElementById('btn-copy-ddl-clipboard').addEventListener('click', () => {
+        navigator.clipboard.writeText(generateDdl(activeDb));
+        audio.playSuccess();
+        alert('Database DDL copied to clipboard.');
+      });
+    }
+
+    // Modal Shortcuts Dialog
+    const btnShortcuts = document.getElementById('btn-help-shortcuts');
+    const dockShortcuts = document.getElementById('dock-btn-shortcuts');
+    const scDialog = document.getElementById('shortcuts-dialog');
+    if (scDialog) {
+      if (btnShortcuts) btnShortcuts.addEventListener('click', () => scDialog.showModal());
+      if (dockShortcuts) dockShortcuts.addEventListener('click', () => scDialog.showModal());
+      document.getElementById('btn-close-shortcuts-x').addEventListener('click', () => scDialog.close());
+      document.getElementById('btn-close-shortcuts-done').addEventListener('click', () => scDialog.close());
+    }
+
+    // Audio Toggle
+    const btnAudio = document.getElementById('btn-toggle-audio');
+    if (btnAudio) {
+      btnAudio.addEventListener('click', () => {
+        audio.muted = !audio.muted;
+        document.getElementById('audio-icon').textContent = audio.muted ? '🔇' : '🔊';
+      });
+    }
+
+    // History Toggle & Clear
+    const btnHist = document.getElementById('btn-toggle-history');
+    if (btnHist) {
+      btnHist.addEventListener('click', () => {
+        switchResultView('view-history');
+        audio.playClick();
+      });
+    }
+
+    const btnClearHist = document.getElementById('btn-clear-history');
+    if (btnClearHist) {
+      btnClearHist.addEventListener('click', () => {
+        queryHistory.length = 0;
+        renderHistory();
+        audio.playClick();
+      });
+    }
+
+    // Client-side Grid Filter Search
+    const gridSearch = document.getElementById('grid-filter-search');
+    if (gridSearch) {
+      gridSearch.addEventListener('input', (e) => {
+        filterGridRows(e.target.value.toLowerCase());
+      });
+    }
+
+    // Global Keyboard Shortcuts
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        e.preventDefault();
+        executeActiveQuery();
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        toggleCopilot();
+      }
+      if (e.key.toLowerCase() === 'm' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        audio.muted = !audio.muted;
+        document.getElementById('audio-icon').textContent = audio.muted ? '🔇' : '🔊';
+      }
+      if (e.key === 'Escape') {
+        const dialogs = document.querySelectorAll('dialog[open]');
+        dialogs.forEach(d => d.close());
+        document.getElementById('ai-copilot-drawer').classList.add('hidden');
+        document.getElementById('erd-entity-drawer').classList.add('hidden');
+      }
+    });
+
+    // Multi-tab Click Listener
+    setupTabListeners();
+  }
+
+  function setupTabListeners() {
+    document.querySelectorAll('.editor-tab').forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        if (e.target.classList.contains('tab-close')) return;
+        const tabId = tab.getAttribute('data-tab-id');
+        switchQueryTab(tabId);
+        audio.playClick();
+      });
+    });
+
+    const btnNewTab = document.getElementById('btn-new-sql-tab');
+    if (btnNewTab) {
+      btnNewTab.addEventListener('click', () => {
+        const newId = `tab-${queryTabs.length + 1}`;
+        queryTabs.push({
+          id: newId,
+          title: `query_${queryTabs.length + 1}.sql`,
+          content: 'SELECT * FROM organizations LIMIT 10;'
+        });
+        renderQueryTabs();
+        switchQueryTab(newId);
+        audio.playClick();
+      });
+    }
+  }
+
+  function renderQueryTabs() {
+    const container = document.getElementById('editor-tabs-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    queryTabs.forEach(t => {
+      const btn = document.createElement('button');
+      btn.className = `editor-tab ${t.id === activeTabId ? 'active' : ''}`;
+      btn.setAttribute('data-tab-id', t.id);
+      btn.innerHTML = `
+        <span class="tab-indicator">●</span>
+        <span class="tab-title">${t.title}</span>
+        <span class="tab-close" title="Close Tab">✕</span>
+      `;
+
+      btn.addEventListener('click', (e) => {
+        if (e.target.classList.contains('tab-close')) {
+          e.stopPropagation();
+          closeQueryTab(t.id);
+          return;
+        }
+        switchQueryTab(t.id);
+        audio.playClick();
+      });
+
+      container.appendChild(btn);
+    });
+  }
+
+  function switchQueryTab(tabId) {
+    saveActiveTabContent();
+    activeTabId = tabId;
+    const tab = queryTabs.find(t => t.id === tabId);
+    if (tab) {
+      const textarea = document.getElementById('sql-textarea');
+      textarea.value = tab.content;
+      updateLineNumbers();
+      renderQueryTabs();
+    }
+  }
+
+  function closeQueryTab(tabId) {
+    if (queryTabs.length <= 1) return;
+    const idx = queryTabs.findIndex(t => t.id === tabId);
+    if (idx >= 0) {
+      queryTabs.splice(idx, 1);
+      if (activeTabId === tabId) {
+        activeTabId = queryTabs[Math.max(0, idx - 1)].id;
+      }
+      renderQueryTabs();
+      switchQueryTab(activeTabId);
+    }
+  }
+
+  function saveActiveTabContent() {
+    const tab = queryTabs.find(t => t.id === activeTabId);
+    if (tab) {
+      tab.content = document.getElementById('sql-textarea').value;
+    }
+  }
+
+  function setEditorContent(sql) {
+    const textarea = document.getElementById('sql-textarea');
+    textarea.value = sql;
+    updateLineNumbers();
+    saveActiveTabContent();
+  }
+
+  function setupSplitResizer() {
+    const splitter = document.getElementById('pane-splitter');
+    const editorPane = document.getElementById('editor-pane');
+    if (!splitter || !editorPane) return;
+
+    let isResizing = false;
+
+    splitter.addEventListener('mousedown', (e) => {
+      isResizing = true;
+      document.body.style.cursor = 'row-resize';
+      e.preventDefault();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isResizing) return;
+      const totalH = window.innerHeight - 72; // minus headers
+      const newH = Math.max(140, Math.min(e.clientY - 46, totalH - 180));
+      editorPane.style.flex = `0 0 ${newH}px`;
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isResizing) {
+        isResizing = false;
+        document.body.style.cursor = 'default';
+        if (erdVisualizer) erdVisualizer.render();
+        if (chartEngine) chartEngine.render();
+      }
+    });
+  }
+
+  function updateLineNumbers() {
+    const textarea = document.getElementById('sql-textarea');
+    const gutter = document.getElementById('line-gutter');
+    if (!textarea || !gutter) return;
+
+    const lineCount = textarea.value.split('\n').length;
+    let linesHtml = '';
+    for (let i = 1; i <= Math.max(lineCount, 3); i++) {
+      linesHtml += `${i}<br>`;
+    }
+    gutter.innerHTML = linesHtml;
+  }
+
+  function updateCursorPosition() {
+    const textarea = document.getElementById('sql-textarea');
+    const display = document.getElementById('cursor-position-display');
+    if (!textarea || !display) return;
+
+    const textLines = textarea.value.substr(0, textarea.selectionStart).split('\n');
+    const line = textLines.length;
+    const col = textLines[textLines.length - 1].length + 1;
+    display.textContent = `Ln ${line}, Col ${col}`;
+  }
+
+  function switchResultView(viewId) {
+    currentResultView = viewId;
+    document.querySelectorAll('.res-tab').forEach(t => {
+      t.classList.toggle('active', t.getAttribute('data-res-view') === viewId);
+    });
+    document.querySelectorAll('.res-view-panel').forEach(p => {
+      p.classList.toggle('active', p.id === viewId);
+    });
+
+    if (viewId === 'view-erd' && erdVisualizer) {
+      setTimeout(() => erdVisualizer.render(), 40);
+    }
+    if (viewId === 'view-charts' && chartEngine) {
+      setTimeout(() => chartEngine.render(), 40);
+    }
+    if (viewId === 'view-history') {
+      renderHistory();
+    }
+  }
+
+  function executeActiveQuery() {
+    const sql = document.getElementById('sql-textarea').value;
+    const metricTime = document.getElementById('metric-query-time');
+    const metricRows = document.getElementById('metric-rows-returned');
+    const statusAnnounce = document.getElementById('global-status-announcement');
+    const toast = document.getElementById('editor-toast-msg');
+
+    try {
+      const res = engine.execute(sql);
+      currentQueryResult = res;
+
+      metricTime.textContent = `${res.executionTimeMs}ms`;
+      metricRows.textContent = `${res.rows.length} rows`;
+      statusAnnounce.textContent = `Executed in ${res.executionTimeMs}ms (${res.rows.length} records)`;
+      toast.textContent = `Query Success (${res.executionTimeMs}ms)`;
+
+      document.getElementById('res-grid-count').textContent = res.rows.length;
+
+      renderGridTable(res);
+      renderExecutionPlan(res.queryPlan, res.executionTimeMs);
+
+      if (chartEngine) {
+        chartEngine.setData(res.rows, res.columns);
+      }
+
+      // Add to history
+      queryHistory.unshift({
+        sql: sql.trim(),
+        duration: res.executionTimeMs,
+        rows: res.rows.length,
+        status: 'SUCCESS',
+        time: new Date().toLocaleTimeString()
+      });
+
+      audio.playSuccess();
+    } catch (err) {
+      metricTime.textContent = '0ms';
+      metricRows.textContent = '0 rows';
+      statusAnnounce.textContent = `Error: ${err.message}`;
+      toast.textContent = 'Syntax / Execution Error';
+
+      const tbody = document.getElementById('grid-table-body');
+      if (tbody) {
+        tbody.innerHTML = `<tr><td colspan="12" style="color:var(--accent-rose); padding:16px;"><strong>Execution Error:</strong> ${err.message}</td></tr>`;
+      }
+
+      queryHistory.unshift({
+        sql: sql.trim(),
+        duration: 0,
+        rows: 0,
+        status: 'ERROR',
+        time: new Date().toLocaleTimeString()
+      });
+
+      audio.playError();
+    }
+  }
+
+  function renderGridTable(res) {
+    const thead = document.getElementById('grid-table-head');
+    const tbody = document.getElementById('grid-table-body');
+    const emptyCard = document.getElementById('grid-empty-card');
+    const pagSummary = document.getElementById('grid-pagination-summary');
+
+    thead.innerHTML = '';
+    tbody.innerHTML = '';
+
+    if (!res.rows || res.rows.length === 0) {
+      emptyCard.classList.remove('hidden');
+      pagSummary.textContent = 'Showing 0 rows';
+      return;
+    }
+
+    emptyCard.classList.add('hidden');
+    pagSummary.textContent = `Showing 1–${res.rows.length} of ${res.rows.length} records`;
+
+    // Header row with Row Index `#`
+    const trHead = document.createElement('tr');
+    const thIdx = document.createElement('th');
+    thIdx.className = 'td-index';
+    thIdx.textContent = '#';
+    trHead.appendChild(thIdx);
+
+    res.columns.forEach(col => {
+      const th = document.createElement('th');
+      const colType = res.columnTypes[col] || 'varchar';
+      th.innerHTML = `
+        <div class="th-content">
+          <span>${col}</span>
+          <span class="th-type-pill">${colType}</span>
+        </div>
+      `;
+      th.addEventListener('click', () => sortGridBy(col));
+      trHead.appendChild(th);
+    });
+    thead.appendChild(trHead);
+
+    // Body rows
+    res.rows.forEach((row, idx) => {
+      const tr = document.createElement('tr');
+
+      const tdIdx = document.createElement('td');
+      tdIdx.className = 'td-index';
+      tdIdx.textContent = idx + 1;
+      tr.appendChild(tdIdx);
+
+      res.columns.forEach(col => {
+        const td = document.createElement('td');
+        const val = row[col];
+
+        if (val === null || val === undefined) {
+          td.innerHTML = `<span class="val-null">NULL</span>`;
+        } else if (typeof val === 'boolean') {
+          td.innerHTML = val ? `<span class="val-bool-true">true</span>` : `<span class="val-bool-false">false</span>`;
+        } else {
+          td.textContent = val;
+        }
+
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+  }
+
+  function filterGridRows(query) {
+    const rows = document.querySelectorAll('#grid-table-body tr');
+    rows.forEach(r => {
+      const text = r.textContent.toLowerCase();
+      r.style.display = text.includes(query) ? '' : 'none';
+    });
+  }
+
+  function sortGridBy(col) {
+    if (!currentQueryResult || !currentQueryResult.rows) return;
+    const dir = currentSort.column === col && currentSort.direction === 'asc' ? 'desc' : 'asc';
+    currentSort = { column: col, direction: dir };
+
+    currentQueryResult.rows.sort((a, b) => {
+      let va = a[col];
+      let vb = b[col];
+      if (!isNaN(Number(va)) && !isNaN(Number(vb))) {
+        va = Number(va);
+        vb = Number(vb);
+      }
+      if (va < vb) return dir === 'asc' ? -1 : 1;
+      if (va > vb) return dir === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    renderGridTable(currentQueryResult);
+    audio.playClick();
+  }
+
+  function renderExecutionPlan(plan, duration) {
+    const container = document.getElementById('plan-nodes-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    plan.forEach(step => {
+      const div = document.createElement('div');
+      div.className = 'plan-step-card';
+      div.innerHTML = `
+        <div>
+          <span class="plan-step-title">${step.op}</span>
+          <span class="plan-step-desc">${step.detail}</span>
+        </div>
+        <div style="text-align:right;">
+          <span style="color:var(--accent-cyan); font-weight:700;">${step.rows} rows</span>
+          <span style="color:var(--text-dim); margin-left:8px;">(cost: ${step.cost})</span>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  function renderHistory() {
+    const list = document.getElementById('history-list-box');
+    if (!list) return;
+    list.innerHTML = '';
+
+    if (queryHistory.length === 0) {
+      list.innerHTML = `<div style="color:var(--text-dim); font-size:11px; padding:12px;">No executed queries recorded yet.</div>`;
+      return;
+    }
+
+    queryHistory.forEach(h => {
+      const div = document.createElement('div');
+      div.className = 'history-row';
+      div.innerHTML = `
+        <span class="history-query-text" title="${h.sql}">${h.sql}</span>
+        <div class="history-meta-box">
+          <span class="hist-time">${h.duration}ms</span>
+          <span style="color:var(--text-dim); font-size:9px;">${h.rows} rows</span>
+          <span style="color:var(--text-dim); font-size:9px;">${h.time}</span>
+          <button class="btn-hist-run">Load</button>
+        </div>
+      `;
+
+      div.querySelector('.btn-hist-run').addEventListener('click', () => {
+        setEditorContent(h.sql);
+        switchResultView('view-grid');
+        executeActiveQuery();
+      });
+
+      list.appendChild(div);
+    });
+  }
+
+  function renderSidebarTree() {
+    const tree = document.getElementById('explorer-tree');
+    const badge = document.getElementById('sidebar-tables-badge');
+    const fkCount = document.getElementById('explorer-fk-count');
+    if (!tree) return;
+    tree.innerHTML = '';
+
+    const tables = Object.keys(activeDb.tables);
+    if (badge) badge.textContent = tables.length;
+
+    let totalFk = 0;
+
+    tables.forEach(tblKey => {
+      const tbl = activeDb.tables[tblKey];
+      const node = document.createElement('div');
+      node.className = 'tree-table-node';
+
+      let colsHtml = '';
+      tbl.columns.forEach(col => {
+        if (col.isFk) totalFk++;
+        colsHtml += `
+          <div class="tree-col-row">
+            <span>
+              ${col.isPk ? '<span class="col-tag pk">PK</span>' : ''}
+              ${col.isFk ? '<span class="col-tag fk">FK</span>' : ''}
+              ${col.name}
+            </span>
+            <span class="tree-col-type">${col.type}</span>
+          </div>
+        `;
+      });
+
+      node.innerHTML = `
+        <div class="tree-node-row">
+          <div class="tree-node-left">
+            <span class="tree-caret">▶</span>
+            <span class="tree-tbl-name">${tblKey}</span>
+          </div>
+          <div class="tree-node-right">
+            <span class="tree-row-count">${tbl.rows.length}</span>
+            <button class="tree-quick-btn" title="SELECT * FROM table">⚡</button>
+          </div>
+        </div>
+        <div class="tree-columns-box">${colsHtml}</div>
+      `;
+
+      node.querySelector('.tree-node-row').addEventListener('click', (e) => {
+        if (e.target.classList.contains('tree-quick-btn')) return;
+        node.classList.toggle('expanded');
+        audio.playClick();
+      });
+
+      node.querySelector('.tree-quick-btn').addEventListener('click', () => {
+        setEditorContent(`SELECT * FROM ${tblKey} LIMIT 20;`);
+        switchResultView('view-grid');
+        executeActiveQuery();
+      });
+
+      tree.appendChild(node);
+    });
+
+    if (fkCount) fkCount.textContent = `${totalFk} linked keys`;
+  }
+
+  function renderPromptChips() {
+    const container = document.getElementById('copilot-prompt-chips');
+    if (!container) return;
+    container.innerHTML = '';
+
+    (activeDb.prompts || []).forEach(p => {
+      const chip = document.createElement('div');
+      chip.className = 'chip-item';
+      chip.textContent = p.label;
+      chip.addEventListener('click', () => {
+        setEditorContent(p.query);
+        document.getElementById('ai-copilot-drawer').classList.add('hidden');
+        switchResultView('view-grid');
+        executeActiveQuery();
+      });
+      container.appendChild(chip);
+    });
+  }
+
+  function formatSql(sql) {
+    return sql
+      .replace(/\s+/g, ' ')
+      .replace(/\s*(SELECT|FROM|WHERE|JOIN|ON|ORDER BY|GROUP BY|LIMIT)\s*/gi, '\n$1 ')
+      .trim();
+  }
+
+  function generateDdl(db) {
+    let ddl = `-- NeuroQuery Studio Auto-Generated Schema DDL\n-- Dialect: ${db.dialect}\n\n`;
+    Object.keys(db.tables).forEach(tKey => {
+      const tbl = db.tables[tKey];
+      ddl += `CREATE TABLE ${tKey} (\n`;
+      const cols = tbl.columns.map(c => {
+        let def = `  ${c.name.padEnd(16)} ${c.type}`;
+        if (c.isPk) def += ' PRIMARY KEY';
+        if (c.isFk && c.fkRef) def += ` REFERENCES ${c.fkRef.table}(${c.fkRef.col})`;
+        return def;
+      });
+      ddl += cols.join(',\n') + '\n);\n\n';
+    });
+    return ddl;
+  }
+
+  function exportCsv() {
+    if (!currentQueryResult || !currentQueryResult.rows.length) return;
+    const cols = currentQueryResult.columns;
+    const rows = [cols.join(',')];
+    currentQueryResult.rows.forEach(r => {
+      const row = cols.map(c => `"${String(r[c] ?? '').replace(/"/g, '""')}"`);
+      rows.push(row.join(','));
+    });
+    downloadBlob(rows.join('\n'), 'neuroquery_export.csv', 'text/csv');
+    audio.playSuccess();
+  }
+
+  function exportJson() {
+    if (!currentQueryResult || !currentQueryResult.rows.length) return;
+    downloadBlob(JSON.stringify(currentQueryResult.rows, null, 2), 'neuroquery_export.json', 'application/json');
+    audio.playSuccess();
+  }
+
+  function exportMarkdown() {
+    if (!currentQueryResult || !currentQueryResult.rows.length) return;
+    const cols = currentQueryResult.columns;
+    let md = '| ' + cols.join(' | ') + ' |\n';
+    md += '| ' + cols.map(() => '---').join(' | ') + ' |\n';
+    currentQueryResult.rows.forEach(r => {
+      md += '| ' + cols.map(c => r[c] ?? '').join(' | ') + ' |\n';
+    });
+    navigator.clipboard.writeText(md);
+    audio.playSuccess();
+    alert('Results copied to clipboard as Markdown table!');
+  }
+
+  function exportSqlInserts() {
+    if (!currentQueryResult || !currentQueryResult.rows.length) return;
+    const cols = currentQueryResult.columns;
+    const tbl = 'query_results';
+    let sql = '';
+    currentQueryResult.rows.forEach(r => {
+      const vals = cols.map(c => {
+        const v = r[c];
+        return v === null ? 'NULL' : typeof v === 'number' ? v : `'${String(v).replace(/'/g, "''")}'`;
+      });
+      sql += `INSERT INTO ${tbl} (${cols.join(', ')}) VALUES (${vals.join(', ')});\n`;
+    });
+    navigator.clipboard.writeText(sql);
+    audio.playSuccess();
+    alert('SQL INSERT statements copied to clipboard!');
+  }
+
+  function downloadBlob(content, filename, type) {
+    const blob = new Blob([content], { type });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+  } else {
+    initApp();
+  }
+})();
+
+</script>
 </body>
 </html>
