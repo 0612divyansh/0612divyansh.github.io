@@ -1690,6 +1690,11 @@
       }
     });
 
+    // Dribbble & Framer UI Features
+    setupIslandHandlers();
+    setupTemplatesGallery();
+    setupEntityPopover();
+
     // Multi-tab Click Listener
     setupTabListeners();
   }
@@ -2116,10 +2121,19 @@
         <div class="tree-columns-box">${colsHtml}</div>
       `;
 
-      node.querySelector('.tree-node-row').addEventListener('click', (e) => {
+      const rowEl = node.querySelector('.tree-node-row');
+      rowEl.addEventListener('click', (e) => {
         if (e.target.classList.contains('tree-quick-btn')) return;
         node.classList.toggle('expanded');
         audio.playClick();
+      });
+
+      rowEl.addEventListener('mouseenter', () => {
+        showEntityPopover(tblKey, rowEl);
+      });
+
+      rowEl.addEventListener('mouseleave', () => {
+        scheduleHideEntityPopover();
       });
 
       node.querySelector('.tree-quick-btn').addEventListener('click', () => {
@@ -2158,6 +2172,486 @@
       .replace(/\s+/g, ' ')
       .replace(/\s*(SELECT|FROM|WHERE|JOIN|ON|ORDER BY|GROUP BY|LIMIT)\s*/gi, '\n$1 ')
       .trim();
+  }
+
+  
+  // ============================================================================
+  // DRIBBLE SHOWCASE & PRO+ TEMPLATES DATA
+  // ============================================================================
+  const FEATURED_SHOTS = [
+    {
+      id: 'shot-saas-mrr',
+      category: 'saas',
+      dbKey: 'saas_analytics',
+      title: 'SaaS Multi-Tier ARR & Cohort LTV',
+      desc: 'Computes monthly recurring revenue by plan tier, seat volume, and subscription health.',
+      author: 'Phenomenon Studio',
+      isPro: true,
+      likes: '1.4k',
+      views: '555k',
+      video: true,
+      svg: `<svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.05"/>
+          </linearGradient>
+          <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#38bdf8"/>
+            <stop offset="50%" stop-color="#a855f7"/>
+            <stop offset="100%" stop-color="#ec4899"/>
+          </linearGradient>
+        </defs>
+        <rect width="260" height="130" fill="#0d1117" rx="8"/>
+        <line x1="20" y1="105" x2="240" y2="105" stroke="#1f293d" stroke-width="1"/>
+        <line x1="20" y1="70" x2="240" y2="70" stroke="#1f293d" stroke-dasharray="3,3"/>
+        <line x1="20" y1="35" x2="240" y2="35" stroke="#1f293d" stroke-dasharray="3,3"/>
+        <path d="M 25 95 Q 60 85 95 60 T 165 45 T 235 25 L 235 105 L 25 105 Z" fill="url(#grad1)"/>
+        <path d="M 25 95 Q 60 85 95 60 T 165 45 T 235 25" fill="none" stroke="url(#lineGrad)" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="165" cy="45" r="4" fill="#a855f7" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="235" cy="25" r="4" fill="#ec4899" stroke="#fff" stroke-width="1.5"/>
+        <text x="160" y="38" fill="#e2e8f0" font-size="9" font-family="sans-serif" font-weight="700">+48.2% ARR</text>
+      </svg>`,
+      sql: `-- SaaS Multi-Tier ARR & Cohort LTV Analytics
+SELECT 
+  o.name AS organization,
+  o.tier AS subscription_tier,
+  COUNT(s.id) AS active_subscriptions,
+  SUM(s.monthly_price) AS total_mrr_usd,
+  ROUND(AVG(s.monthly_price), 2) AS avg_seat_price,
+  o.region
+FROM organizations o
+JOIN subscriptions s ON o.id = s.org_id
+WHERE s.status = 'active'
+GROUP BY o.name, o.tier, o.region
+ORDER BY total_mrr_usd DESC;`
+    },
+    {
+      id: 'shot-fintech-anomaly',
+      category: 'fintech',
+      dbKey: 'fintech_ledger',
+      title: 'High-Frequency Ledger Anomaly Detection',
+      desc: 'Detects cross-border transaction spikes, flag frequencies, and settlement risks.',
+      author: 'Framer Architecture',
+      isPro: true,
+      likes: '2.1k',
+      views: '861k',
+      video: false,
+      svg: `<svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg">
+        <rect width="260" height="130" fill="#0d1117" rx="8"/>
+        <rect x="30" y="55" width="16" height="50" rx="3" fill="#10b981" opacity="0.8"/>
+        <rect x="55" y="40" width="16" height="65" rx="3" fill="#10b981" opacity="0.8"/>
+        <rect x="80" y="65" width="16" height="40" rx="3" fill="#10b981" opacity="0.8"/>
+        <rect x="105" y="30" width="16" height="75" rx="3" fill="#38bdf8" opacity="0.8"/>
+        <rect x="130" y="48" width="16" height="57" rx="3" fill="#38bdf8" opacity="0.8"/>
+        <rect x="155" y="20" width="16" height="85" rx="3" fill="#f59e0b" opacity="0.9"/>
+        <rect x="180" y="70" width="16" height="35" rx="3" fill="#10b981" opacity="0.8"/>
+        <rect x="205" y="12" width="16" height="93" rx="3" fill="#f43f5e"/>
+        <circle cx="213" cy="8" r="3" fill="#f43f5e"/>
+        <text x="165" y="24" fill="#f43f5e" font-size="8" font-family="sans-serif" font-weight="700">ALERT: 0.94</text>
+      </svg>`,
+      sql: `-- High-Frequency Ledger Anomaly & Risk Detection
+SELECT 
+  t.account_id,
+  a.account_number,
+  a.currency,
+  COUNT(t.id) AS transaction_count,
+  SUM(t.amount) AS total_settlement,
+  ROUND(AVG(t.risk_score), 3) AS avg_risk_score,
+  MAX(t.risk_score) AS max_spike_score
+FROM transactions t
+JOIN accounts a ON t.account_id = a.id
+WHERE t.status = 'flagged' OR t.risk_score >= 0.70
+GROUP BY t.account_id, a.account_number, a.currency
+ORDER BY avg_risk_score DESC;`
+    },
+    {
+      id: 'shot-logistics-transit',
+      category: 'ecommerce',
+      dbKey: 'ecommerce_global',
+      title: 'Global Fulfillment SLA & Carrier Latency',
+      desc: 'Tracks real-time dispatch fulfillment states, transit delays, and cargo valuations.',
+      author: 'Auralis Design',
+      isPro: true,
+      likes: '940',
+      views: '412k',
+      video: true,
+      svg: `<svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg">
+        <rect width="260" height="130" fill="#0d1117" rx="8"/>
+        <circle cx="130" cy="65" r="50" fill="none" stroke="#1f293d" stroke-width="1"/>
+        <circle cx="130" cy="65" r="32" fill="none" stroke="#263145" stroke-width="1"/>
+        <circle cx="130" cy="65" r="14" fill="none" stroke="#38bdf8" stroke-opacity="0.3" stroke-width="1"/>
+        <circle cx="130" cy="65" r="5" fill="#38bdf8"/>
+        <line x1="130" y1="65" x2="165" y2="40" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="165" cy="40" r="4" fill="#a855f7"/>
+        <line x1="130" y1="65" x2="90" y2="85" stroke="#10b981" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="90" cy="85" r="4" fill="#10b981"/>
+        <line x1="130" y1="65" x2="175" y2="80" stroke="#f59e0b" stroke-width="2" stroke-dasharray="3,2"/>
+        <circle cx="175" cy="80" r="3" fill="#f59e0b"/>
+        <text x="25" y="25" fill="#38bdf8" font-size="9" font-family="sans-serif" font-weight="700">99.4% ON-TIME SLA</text>
+      </svg>`,
+      sql: `-- Global Carrier Logistics & Dispatch SLA
+SELECT 
+  o.shipping_carrier,
+  o.fulfillment_status,
+  COUNT(o.id) AS order_volume,
+  ROUND(SUM(o.total_amount), 2) AS total_cargo_usd,
+  ROUND(AVG(o.transit_days), 1) AS avg_transit_days
+FROM orders o
+WHERE o.fulfillment_status IN ('processing', 'in_transit')
+GROUP BY o.shipping_carrier, o.fulfillment_status
+ORDER BY total_cargo_usd DESC;`
+    },
+    {
+      id: 'shot-customer-churn',
+      category: 'saas',
+      dbKey: 'saas_analytics',
+      title: 'Customer Health & Churn Risk Cohorts',
+      desc: 'Detects dormant enterprise accounts nearing license renewal with low query engagement.',
+      author: 'Phenomenon Studio',
+      isPro: true,
+      likes: '1.7k',
+      views: '690k',
+      video: false,
+      svg: `<svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg">
+        <rect width="260" height="130" fill="#0d1117" rx="8"/>
+        <path d="M 25 35 Q 80 38 120 65 T 200 100 T 235 110" fill="none" stroke="#f43f5e" stroke-width="3" stroke-linecap="round"/>
+        <path d="M 25 75 Q 80 60 140 45 T 235 30" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="140" cy="45" r="4" fill="#10b981" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="200" cy="100" r="4" fill="#f43f5e" stroke="#fff" stroke-width="1.5"/>
+        <text x="25" y="25" fill="#cbd5e1" font-size="9" font-family="sans-serif" font-weight="700">RETENTION HEATMAP</text>
+      </svg>`,
+      sql: `-- Customer Retention Health & At-Risk Accounts
+SELECT 
+  c.id AS customer_id,
+  c.company_name,
+  c.contract_tier,
+  c.last_login_days_ago,
+  c.nps_score,
+  CASE 
+    WHEN c.last_login_days_ago > 30 THEN 'CRITICAL RISK'
+    WHEN c.last_login_days_ago > 14 THEN 'MODERATE RISK'
+    ELSE 'HEALTHY'
+  END AS retention_health
+FROM customers c
+ORDER BY c.last_login_days_ago DESC;`
+    },
+    {
+      id: 'shot-window-moving',
+      category: 'complex',
+      dbKey: 'fintech_ledger',
+      title: 'Advanced Window: Running Totals & 4-Tx MA',
+      desc: 'Demonstrates analytical SQL partitions, cumulative revenue curves, and rolling moving averages.',
+      author: 'DataGrip Pro',
+      isPro: true,
+      likes: '3.5k',
+      views: '1.4M',
+      video: true,
+      svg: `<svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg">
+        <rect width="260" height="130" fill="#0d1117" rx="8"/>
+        <path d="M 25 105 L 50 95 L 75 90 L 100 75 L 125 70 L 150 55 L 175 48 L 200 35 L 225 20" fill="none" stroke="#a855f7" stroke-width="3" stroke-linecap="round"/>
+        <path d="M 25 105 L 50 100 L 75 92 L 100 82 L 125 74 L 150 60 L 175 50 L 200 38 L 225 22" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <circle cx="225" cy="20" r="4" fill="#a855f7" stroke="#fff" stroke-width="1.5"/>
+        <text x="25" y="25" fill="#a855f7" font-size="9" font-family="sans-serif" font-weight="700">OVER (ORDER BY)</text>
+      </svg>`,
+      sql: `-- Running Cumulative Revenue & Moving Average
+SELECT 
+  t.created_at,
+  t.amount,
+  SUM(t.amount) OVER (ORDER BY t.created_at) AS cumulative_revenue,
+  ROUND(AVG(t.amount) OVER (ORDER BY t.created_at ROWS BETWEEN 3 PRECEDING AND CURRENT ROW), 2) AS rolling_avg_4tx
+FROM transactions t
+ORDER BY t.created_at ASC;`
+    },
+    {
+      id: 'shot-index-efficiency',
+      category: 'complex',
+      dbKey: 'saas_analytics',
+      title: 'PostgreSQL Index Efficiency & Scan Ratio',
+      desc: 'System catalog analysis showing seq_scan vs idx_scan ratios to diagnose missing indexes.',
+      author: 'Supabase Studio',
+      isPro: true,
+      likes: '890',
+      views: '310k',
+      video: false,
+      svg: `<svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg">
+        <rect width="260" height="130" fill="#0d1117" rx="8"/>
+        <ellipse cx="65" cy="40" rx="30" ry="12" fill="none" stroke="#38bdf8" stroke-width="2"/>
+        <path d="M 35 40 L 35 85 A 30 12 0 0 0 95 85 L 95 40" fill="none" stroke="#38bdf8" stroke-width="2"/>
+        <path d="M 35 62 A 30 12 0 0 0 95 62" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3,3"/>
+        <rect x="120" y="40" width="110" height="10" rx="3" fill="#1c2331"/>
+        <rect x="120" y="40" width="98" height="10" rx="3" fill="#10b981"/>
+        <text x="120" y="32" fill="#94a3b8" font-size="8" font-family="sans-serif">Index Hit Ratio (98.4%)</text>
+        <rect x="120" y="75" width="110" height="10" rx="3" fill="#1c2331"/>
+        <rect x="120" y="75" width="22" height="10" rx="3" fill="#f43f5e"/>
+        <text x="120" y="67" fill="#94a3b8" font-size="8" font-family="sans-serif">Sequential Scans (1.6%)</text>
+      </svg>`,
+      sql: `-- Index Efficiency & Sequential Scan Health
+SELECT 
+  relname AS table_name,
+  seq_scan,
+  idx_scan,
+  ROUND(100.0 * idx_scan / NULLIF(seq_scan + idx_scan, 0), 2) AS index_efficiency_pct
+FROM pg_stat_user_tables
+ORDER BY seq_scan DESC;`
+    }
+  ];
+
+  function renderTemplatesGallery(filterCategory = 'all') {
+    const grid = document.getElementById('gallery-shots-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    const filtered = filterCategory === 'all' 
+      ? FEATURED_SHOTS 
+      : FEATURED_SHOTS.filter(s => s.category === filterCategory);
+
+    filtered.forEach(shot => {
+      const card = document.createElement('div');
+      card.className = 'dribbble-shot-card';
+      card.innerHTML = `
+        <div class="shot-thumbnail">
+          ${shot.svg}
+          ${shot.video ? '<span class="shot-video-badge">🎥</span>' : ''}
+        </div>
+        <div class="shot-body">
+          <div class="shot-title-row">
+            <h5>${shot.title}</h5>
+          </div>
+          <p class="shot-desc">${shot.desc}</p>
+          <div class="shot-footer">
+            <div class="shot-author">
+              <span class="shot-author-name">${shot.author}</span>
+              ${shot.isPro ? '<span class="avatar-pro-badge" style="position:static; margin-left:2px;">PRO+</span>' : ''}
+            </div>
+            <div class="shot-stats">
+              <span>❤️ ${shot.likes}</span>
+              <span>👁️ ${shot.views}</span>
+            </div>
+          </div>
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        audio.playSuccess();
+        const dialog = document.getElementById('templates-gallery-dialog');
+        if (dialog) dialog.close();
+
+        // Switch database if needed
+        if (shot.dbKey && currentDbKey !== shot.dbKey) {
+          const dbSelect = document.getElementById('db-select');
+          if (dbSelect) {
+            dbSelect.value = shot.dbKey;
+            currentDbKey = shot.dbKey;
+            activeDb = JSON.parse(JSON.stringify(DATABASES[currentDbKey]));
+            engine.setDatabase(activeDb);
+            synthesizer.setDatabase(activeDb);
+            if (erdVisualizer) erdVisualizer.setDatabase(activeDb);
+            renderSidebarTree();
+            renderPromptChips();
+          }
+        }
+
+        setEditorContent(shot.sql);
+        switchResultView('view-grid');
+        executeActiveQuery();
+        
+        const toast = document.getElementById('editor-toast-msg');
+        if (toast) toast.textContent = `✨ Template Applied: ${shot.title}`;
+      });
+
+      grid.appendChild(card);
+    });
+  }
+
+  function setupTemplatesGallery() {
+    const btnExplore = document.getElementById('btn-explore-templates');
+    const dialog = document.getElementById('templates-gallery-dialog');
+    const btnClose = document.getElementById('btn-close-gallery-x');
+
+    if (btnExplore && dialog) {
+      btnExplore.addEventListener('click', () => {
+        audio.playClick();
+        renderTemplatesGallery('all');
+        dialog.showModal();
+      });
+    }
+
+    if (btnClose && dialog) {
+      btnClose.addEventListener('click', () => {
+        audio.playClick();
+        dialog.close();
+      });
+    }
+
+    // Filter Chips
+    const chips = document.querySelectorAll('.gallery-chip');
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        audio.playClick();
+        chips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        const filter = chip.getAttribute('data-filter') || 'all';
+        renderTemplatesGallery(filter);
+      });
+    });
+  }
+
+  // ============================================================================
+  // FRAMER-STYLE HOVER POPOVER CARD LOGIC
+  // ============================================================================
+  let activePopoverTable = null;
+  let popoverHideTimer = null;
+
+  function showEntityPopover(tblKey, targetEl) {
+    if (popoverHideTimer) {
+      clearTimeout(popoverHideTimer);
+      popoverHideTimer = null;
+    }
+    const popover = document.getElementById('framer-entity-popover');
+    if (!popover || !activeDb.tables[tblKey]) return;
+
+    activePopoverTable = tblKey;
+    const tbl = activeDb.tables[tblKey];
+
+    const icons = {
+      organizations: '🏢',
+      subscriptions: '💳',
+      invoices: '🧾',
+      users: '👤',
+      audit_logs: '📜',
+      accounts: '🏦',
+      transactions: '💸',
+      merchants: '🏪',
+      fraud_rules: '🛡️',
+      settlements: '⚖️',
+      customers: '👥',
+      orders: '📦',
+      order_items: '🛍️',
+      products: '🏷️',
+      shipments: '🚚'
+    };
+
+    const iconEl = document.getElementById('popover-avatar-icon');
+    if (iconEl) iconEl.textContent = icons[tblKey] || '🗄️';
+
+    const nameEl = document.getElementById('popover-entity-name');
+    if (nameEl) nameEl.textContent = tblKey;
+
+    const metaEl = document.getElementById('popover-entity-meta');
+    if (metaEl) metaEl.textContent = `public schema • ${tbl.columns.length} columns`;
+
+    const statRecords = document.getElementById('popover-stat-records');
+    if (statRecords) statRecords.textContent = `${tbl.rows.length.toLocaleString()} rows`;
+
+    const fkCount = tbl.columns.filter(c => c.isFk).length;
+    const statRelations = document.getElementById('popover-stat-relations');
+    if (statRelations) statRelations.textContent = `${fkCount} FK link${fkCount === 1 ? '' : 's'}`;
+
+    const pkCol = tbl.columns.find(c => c.isPk);
+    const statIndexes = document.getElementById('popover-stat-indexes');
+    if (statIndexes) statIndexes.textContent = `B-Tree PK (${pkCol ? pkCol.name : 'id'})`;
+
+    const rect = targetEl.getBoundingClientRect();
+    const popoverWidth = 320;
+    const popoverHeight = 170;
+    
+    let left = rect.right + 14;
+    let top = rect.top - 12;
+
+    if (left + popoverWidth > window.innerWidth - 10) {
+      left = Math.max(10, rect.left - popoverWidth - 14);
+    }
+    if (top + popoverHeight > window.innerHeight - 10) {
+      top = Math.max(10, window.innerHeight - popoverHeight - 15);
+    }
+    if (top < 10) top = 10;
+
+    popover.style.left = `${left}px`;
+    popover.style.top = `${top}px`;
+    popover.classList.add('visible');
+  }
+
+  function scheduleHideEntityPopover() {
+    if (popoverHideTimer) clearTimeout(popoverHideTimer);
+    popoverHideTimer = setTimeout(() => {
+      const popover = document.getElementById('framer-entity-popover');
+      if (popover) popover.classList.remove('visible');
+    }, 220);
+  }
+
+  function setupEntityPopover() {
+    const popover = document.getElementById('framer-entity-popover');
+    if (!popover) return;
+
+    popover.addEventListener('mouseenter', () => {
+      if (popoverHideTimer) {
+        clearTimeout(popoverHideTimer);
+        popoverHideTimer = null;
+      }
+    });
+
+    popover.addEventListener('mouseleave', () => {
+      scheduleHideEntityPopover();
+    });
+
+    const btnAction = document.getElementById('popover-btn-action');
+    if (btnAction) {
+      btnAction.addEventListener('click', () => {
+        if (!activePopoverTable) return;
+        audio.playExecute();
+        setEditorContent(`SELECT * FROM ${activePopoverTable} LIMIT 25;`);
+        switchResultView('view-grid');
+        executeActiveQuery();
+        popover.classList.remove('visible');
+      });
+    }
+
+    const btnBookmark = document.getElementById('popover-btn-bookmark');
+    if (btnBookmark) {
+      btnBookmark.addEventListener('click', () => {
+        audio.playSuccess();
+        btnBookmark.classList.toggle('bookmarked');
+        const isBkm = btnBookmark.classList.contains('bookmarked');
+        btnBookmark.textContent = isBkm ? '⭐' : '🔖';
+        btnBookmark.style.borderColor = isBkm ? 'var(--accent-amber)' : '';
+        btnBookmark.style.color = isBkm ? 'var(--accent-amber)' : '';
+        
+        const toast = document.getElementById('editor-toast-msg');
+        if (toast) toast.textContent = isBkm ? `⭐ Bookmarked ${activePopoverTable}` : `Removed bookmark`;
+      });
+    }
+  }
+
+  // ============================================================================
+  // DRIBBLE-STYLE FLOATING BOTTOM ISLAND LOGIC
+  // ============================================================================
+  function setupIslandHandlers() {
+    const island = document.getElementById('floating-brief-island');
+    const btnGetStarted = document.getElementById('btn-island-copilot');
+    const btnClose = document.getElementById('btn-island-close');
+
+    if (btnGetStarted) {
+      btnGetStarted.addEventListener('click', () => {
+        audio.playClick();
+        const copilotDrawer = document.getElementById('ai-copilot-drawer');
+        if (copilotDrawer) {
+          copilotDrawer.classList.remove('hidden');
+          const input = document.getElementById('copilot-input');
+          if (input) input.focus();
+        }
+      });
+    }
+
+    if (btnClose && island) {
+      btnClose.addEventListener('click', () => {
+        audio.playClick();
+        island.style.transition = 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
+        island.style.opacity = '0';
+        island.style.transform = 'translate(-50%, 40px) scale(0.92)';
+        setTimeout(() => { island.style.display = 'none'; }, 350);
+      });
+    }
   }
 
   function generateDdl(db) {
