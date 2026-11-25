@@ -899,15 +899,17 @@
 
       ctx.clearRect(0, 0, w, h);
 
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+
       ctx.save();
-      ctx.fillStyle = '#07090e';
+      ctx.fillStyle = isLight ? '#f8f8f9' : '#07090e';
       ctx.fillRect(0, 0, w, h);
 
       ctx.translate(this.panX, this.panY);
       ctx.scale(this.scale, this.scale);
 
       // Dot Matrix Background
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.035)';
+      ctx.fillStyle = isLight ? 'rgba(0, 0, 0, 0.07)' : 'rgba(255, 255, 255, 0.035)';
       const step = 24;
       for (let x = -800; x < 2400; x += step) {
         for (let y = -800; y < 2400; y += step) {
@@ -956,26 +958,26 @@
       // Draw Tables
       this.nodes.forEach(n => {
         // Card Body
-        ctx.fillStyle = '#10141d';
-        ctx.strokeStyle = '#263145';
+        ctx.fillStyle = isLight ? '#ffffff' : '#10141d';
+        ctx.strokeStyle = isLight ? '#e7e7e9' : '#263145';
         ctx.lineWidth = 1.2;
         this.roundRect(ctx, n.x, n.y, n.width, n.height, 6, true, true);
 
         // Card Header
-        ctx.fillStyle = '#171e2c';
+        ctx.fillStyle = isLight ? '#f3f3f4' : '#171e2c';
         this.roundRect(ctx, n.x, n.y, n.width, 32, { tl: 6, tr: 6, bl: 0, br: 0 }, true, false);
 
         ctx.beginPath();
         ctx.moveTo(n.x, n.y + 32);
         ctx.lineTo(n.x + n.width, n.y + 32);
-        ctx.strokeStyle = '#1c2331';
+        ctx.strokeStyle = isLight ? '#e7e7e9' : '#1c2331';
         ctx.stroke();
 
-        ctx.fillStyle = '#38bdf8';
+        ctx.fillStyle = isLight ? '#0d0c22' : '#38bdf8';
         ctx.font = 'bold 11px "Fira Code", monospace';
         ctx.fillText(n.name, n.x + 10, n.y + 20);
 
-        ctx.fillStyle = '#64748b';
+        ctx.fillStyle = isLight ? '#6e6d7a' : '#64748b';
         ctx.font = '10px "Inter", sans-serif';
         ctx.fillText(`${n.rowCount} rows`, n.x + n.width - 48, n.y + 20);
 
@@ -1319,7 +1321,8 @@
     }
 
     drawAxes(ctx, pad, cw, ch, maxVal) {
-      ctx.strokeStyle = '#1c2331';
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      ctx.strokeStyle = isLight ? '#e7e7e9' : '#1c2331';
       ctx.lineWidth = 1;
 
       const steps = 4;
@@ -1373,6 +1376,43 @@
 
     // Execute Initial Query
     executeActiveQuery();
+  }
+
+  
+  // ============================================================================
+  // THEME SWITCHER (Dribbble Light ☀️ / Pro Dark 🌙)
+  // ============================================================================
+  function setupThemeSwitcher() {
+    const btnTheme = document.getElementById('btn-theme-toggle');
+    const iconEl = document.getElementById('theme-toggle-icon');
+    const labelEl = document.getElementById('theme-toggle-label');
+
+    // Default to 'light' (as requested for Dribbble theme), or use saved choice
+    const savedTheme = localStorage.getItem('neuroquery-theme') || 'light';
+    applyTheme(savedTheme);
+
+    if (btnTheme) {
+      btnTheme.addEventListener('click', () => {
+        audio.playClick();
+        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        const targetTheme = current === 'light' ? 'dark' : 'light';
+        applyTheme(targetTheme);
+      });
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('neuroquery-theme', theme);
+      if (theme === 'light') {
+        if (iconEl) iconEl.textContent = '🌙';
+        if (labelEl) labelEl.textContent = 'Dark';
+      } else {
+        if (iconEl) iconEl.textContent = '☀️';
+        if (labelEl) labelEl.textContent = 'Light';
+      }
+      if (erdVisualizer) erdVisualizer.render();
+      if (chartEngine) chartEngine.render();
+    }
   }
 
   function setupEventListeners() {
@@ -1691,6 +1731,7 @@
     });
 
     // Dribbble & Framer UI Features
+    setupThemeSwitcher();
     setupIslandHandlers();
     setupTemplatesGallery();
     setupEntityPopover();
