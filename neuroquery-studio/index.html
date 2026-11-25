@@ -3,465 +3,597 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NeuroQuery Studio — Natural Language Database Explorer & Dynamic SQL Studio</title>
-  <meta name="description" content="Production-grade Natural Language to SQL exploration workbench with client-side relational execution, dynamic interactive ERD visualizer, multi-curve canvas analytics, and query execution plan analyzer.">
+  <title>NeuroQuery Studio — Professional Database Explorer & AI SQL Studio</title>
+  <meta name="description" content="Enterprise-grade in-memory relational database explorer, multi-tab SQL IDE, natural language copilot, interactive ERD architect, and dynamic analytics workbench.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="theme-obsidian">
-  <!-- Audio Context Activator Banner (for autoplay restrictions) -->
-  <div id="sound-hint-banner" class="sound-hint-banner hidden">
-    <span>🔊 Click anywhere to activate tactile synthesizer audio feedback</span>
-    <button id="dismiss-sound-banner" class="btn-icon" aria-label="Dismiss banner">✕</button>
-  </div>
+<body class="studio-body">
 
-  <div class="app-layout">
-    <!-- Top Navigation Header -->
-    <header class="app-header">
-      <div class="header-left">
-        <div class="brand-container">
-          <div class="brand-badge">⚡</div>
-          <div class="brand-info">
-            <h1 class="brand-title">NeuroQuery <span class="highlight">Studio</span></h1>
-            <span class="cycle-pill">v1.0 • Cycle #4 Launchpad</span>
-          </div>
-        </div>
-
-        <div class="db-selector-wrapper">
-          <label for="db-select" class="visually-hidden">Select Active Database</label>
-          <div class="custom-select-container">
-            <span class="select-icon">🗄️</span>
-            <select id="db-select" aria-label="Select Active Relational Database">
-              <option value="saas_analytics">🏢 SaaS Multi-Tenant Analytics (5 tables)</option>
-              <option value="fintech_ledger">💳 FinTech Transaction Ledger (5 tables)</option>
-              <option value="ecommerce_global">📦 E-Commerce Global Logistics (6 tables)</option>
-            </select>
-          </div>
+  <!-- TOP GLOBAL HEADER (Supabase / DataGrip Style) -->
+  <header class="studio-header">
+    <div class="header-left-cluster">
+      <div class="studio-brand">
+        <div class="brand-glyph">⚡</div>
+        <div class="brand-text">
+          <span class="brand-name">NeuroQuery</span>
+          <span class="brand-env">STUDIO</span>
         </div>
       </div>
 
-      <div class="header-center">
-        <div class="quick-status-chip">
-          <span class="status-dot pulsating"></span>
-          <span id="engine-status-text">Relational Engine Online</span>
-          <span class="divider">•</span>
-          <span id="header-records-count">1,420 rows loaded</span>
+      <div class="nav-divider">/</div>
+
+      <!-- Project & Cluster Selector -->
+      <div class="cluster-pill" title="Active Cluster Environment">
+        <span class="cluster-icon">☁️</span>
+        <span class="cluster-name">divyansh-prod</span>
+        <span class="cluster-badge">v1.0</span>
+      </div>
+
+      <div class="nav-divider">/</div>
+
+      <!-- Active Database Selector -->
+      <div class="db-select-pill">
+        <span class="db-dot online"></span>
+        <select id="db-select" aria-label="Select Active Relational Database">
+          <option value="saas_analytics">saas_analytics (SaaS Multi-Tenant)</option>
+          <option value="fintech_ledger">fintech_ledger (Fintech Transaction Ledger)</option>
+          <option value="ecommerce_global">ecommerce_global (Global Logistics)</option>
+        </select>
+        <span class="chevron-down">▾</span>
+      </div>
+    </div>
+
+    <!-- Center Breadcrumb Trail -->
+    <div class="header-center-cluster">
+      <div class="breadcrumb-trail">
+        <span class="crumb">public</span>
+        <span class="crumb-separator">›</span>
+        <span class="crumb" id="header-active-table">organizations</span>
+        <span class="crumb-separator">›</span>
+        <span class="crumb-badge" id="header-engine-status">Engine: Ready (1.2ms)</span>
+      </div>
+    </div>
+
+    <!-- Header Actions Right -->
+    <div class="header-right-cluster">
+      <!-- AI Copilot Quick Button -->
+      <button id="btn-toggle-ai-copilot" class="btn-studio btn-ai-sparkle" title="Toggle AI SQL Copilot (Cmd+K)">
+        <span class="icon">✨</span>
+        <span class="label">AI Copilot</span>
+        <kbd class="kbd-shortcut">⌘K</kbd>
+      </button>
+
+      <button id="btn-toggle-history" class="btn-studio" title="View Query Execution History">
+        <span class="icon">📜</span>
+        <span class="label">History</span>
+      </button>
+
+      <button id="btn-toggle-audio" class="btn-studio" title="Toggle Tactile Audio Synthesizer (M)">
+        <span id="audio-icon">🔊</span>
+      </button>
+
+      <button id="btn-schema-ddl" class="btn-studio" title="View Complete Database DDL">
+        <span class="icon">📄</span>
+        <span class="label">DDL</span>
+      </button>
+
+      <button id="btn-help-shortcuts" class="btn-studio btn-icon-only" title="Keyboard Shortcuts (?)">
+        <span>?</span>
+      </button>
+
+      <a href="https://github.com/0612divyansh/neuroquery-studio" target="_blank" rel="noopener noreferrer" class="btn-studio btn-github" title="View GitHub Source">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN APPLICATION SHELL -->
+  <div class="studio-shell">
+    
+    <!-- LEFT ACTIVITY RAIL (Slim Dock) -->
+    <aside class="activity-dock" role="navigation" aria-label="Activity Rail">
+      <div class="dock-top">
+        <button class="dock-btn active" data-dock="editor" title="SQL Query Editor" aria-label="SQL Editor">
+          <span class="dock-icon">⚡</span>
+          <span class="dock-label">Editor</span>
+        </button>
+        <button class="dock-btn" data-dock="tables" title="Table & Schema Explorer" aria-label="Tables">
+          <span class="dock-icon">🗄️</span>
+          <span class="dock-label">Tables</span>
+        </button>
+        <button class="dock-btn" data-dock="erd" title="Interactive ERD Schema Architect" aria-label="ERD Diagram">
+          <span class="dock-icon">🕸️</span>
+          <span class="dock-label">ERD</span>
+        </button>
+        <button class="dock-btn" data-dock="analytics" title="Visual Analytics & Dashboards" aria-label="Charts">
+          <span class="dock-icon">📊</span>
+          <span class="dock-label">Charts</span>
+        </button>
+        <button class="dock-btn" data-dock="history" title="Query Execution Logs" aria-label="Logs">
+          <span class="dock-icon">📜</span>
+          <span class="dock-label">Logs</span>
+        </button>
+      </div>
+
+      <div class="dock-bottom">
+        <button class="dock-btn" id="dock-btn-shortcuts" title="Keyboard Shortcuts" aria-label="Shortcuts">
+          <span class="dock-icon">⌘</span>
+        </button>
+        <button class="dock-btn" id="dock-btn-reset-seeds" title="Reset Database Seed Data" aria-label="Reset Seeds">
+          <span class="dock-icon">🔄</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- SECONDARY SIDEBAR: SCHEMA & OBJECT EXPLORER -->
+    <aside class="explorer-sidebar" id="explorer-sidebar">
+      <div class="explorer-header">
+        <div class="explorer-title-box">
+          <span class="explorer-title">DATABASE OBJECTS</span>
+          <span class="table-badge" id="sidebar-tables-badge">5</span>
         </div>
       </div>
 
-      <div class="header-right">
-        <button id="btn-sample-prompts" class="btn-header" title="Sample natural language query prompts">
-          <span>💡 Sample Queries</span>
-        </button>
-
-        <button id="btn-audio-toggle" class="btn-header" aria-label="Toggle Sound Effects" title="Toggle Synthesizer Feedback (M)">
-          <span id="audio-icon">🔊</span>
-          <span id="audio-text">Audio ON</span>
-        </button>
-
-        <button id="btn-schema-ddl" class="btn-header" title="Inspect Full Database DDL">
-          <span>📜 View DDL</span>
-        </button>
-
-        <button id="btn-help-modal" class="btn-header btn-icon-only" aria-label="Help & Shortcuts" title="Shortcuts & Documentation (?)">
-          <span>⌘K</span>
-        </button>
-
-        <a href="https://github.com/0612divyansh/neuroquery-studio" target="_blank" rel="noopener noreferrer" class="btn-header btn-primary-outline" title="View Source on GitHub">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          <span>GitHub</span>
-        </a>
+      <!-- Object Filter Input -->
+      <div class="explorer-filter-box">
+        <span class="filter-icon">🔍</span>
+        <input type="text" id="explorer-filter-input" placeholder="Filter tables & fields..." aria-label="Filter database objects">
       </div>
-    </header>
 
-    <!-- Main Workspace Container -->
-    <div class="workspace-body">
-      <!-- Left Sidebar: Schema & Entity Explorer -->
-      <aside class="sidebar-schema" id="sidebar-schema">
-        <div class="sidebar-header">
-          <div class="sidebar-title">
-            <span class="icon">🗂️</span>
-            <h2>Schema Explorer</h2>
+      <!-- Schema Tree Hierarchy -->
+      <div class="explorer-tree" id="explorer-tree">
+        <!-- Dynamically rendered schema tree -->
+      </div>
+
+      <!-- Sidebar Status Strip -->
+      <div class="explorer-footer">
+        <div class="explorer-meta-row">
+          <span class="meta-label">Relations (FK)</span>
+          <span class="meta-val" id="explorer-fk-count">6 linked keys</span>
+        </div>
+        <div class="explorer-meta-row">
+          <span class="meta-label">Dialect</span>
+          <span class="meta-val">PostgreSQL 16.2</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN WORKING CANVAS (SPLIT IDE VIEW) -->
+    <main class="studio-canvas">
+      
+      <!-- TOP PANE: MULTI-TAB SQL EDITOR & AI COPILOT -->
+      <section class="editor-pane" id="editor-pane">
+        <!-- Editor Tab Bar -->
+        <div class="editor-tabs-bar">
+          <div class="tabs-scroll-container" id="editor-tabs-container">
+            <button class="editor-tab active" data-tab-id="tab-1">
+              <span class="tab-indicator">●</span>
+              <span class="tab-title">query_main.sql</span>
+              <span class="tab-close" title="Close Tab">✕</span>
+            </button>
+            <button class="editor-tab" data-tab-id="tab-2">
+              <span class="tab-indicator">●</span>
+              <span class="tab-title">revenue_by_tier.sql</span>
+              <span class="tab-close" title="Close Tab">✕</span>
+            </button>
+            <button class="editor-tab" data-tab-id="tab-3">
+              <span class="tab-indicator">●</span>
+              <span class="tab-title">active_admins.sql</span>
+              <span class="tab-close" title="Close Tab">✕</span>
+            </button>
           </div>
-          <span class="badge" id="table-count-badge">5 Tables</span>
+          <button class="btn-new-tab" id="btn-new-sql-tab" title="New SQL Query Tab">+</button>
         </div>
 
-        <div class="schema-search-box">
-          <input type="text" id="schema-filter-input" placeholder="Filter tables or columns..." aria-label="Filter tables or columns">
-          <span class="search-icon">🔍</span>
-        </div>
+        <!-- Editor Command Toolbar -->
+        <div class="editor-toolbar">
+          <div class="toolbar-left">
+            <button id="btn-run-query" class="btn-run-primary" title="Execute Query (Cmd+Enter)">
+              <span class="run-icon">▶</span>
+              <span class="run-text">Run</span>
+              <kbd class="kbd-pill">⌘↵</kbd>
+            </button>
 
-        <div class="schema-tables-list" id="schema-tables-list" role="tree" aria-label="Database Tables and Columns">
-          <!-- Dynamically populated tables & columns -->
-        </div>
+            <button id="btn-format-sql" class="btn-tool" title="Format SQL (Prettify)">
+              <span>🪄 Format</span>
+            </button>
 
-        <div class="sidebar-footer">
-          <div class="quick-metric">
-            <span class="label">Relations (FK)</span>
-            <span class="val" id="fk-count-val">6 foreign keys</span>
+            <button id="btn-clear-sql" class="btn-tool" title="Clear Editor">
+              <span>Clear</span>
+            </button>
+
+            <div class="toolbar-sep"></div>
+
+            <button id="btn-open-copilot-inline" class="btn-tool btn-copilot-trigger" title="Generate SQL with Natural Language">
+              <span>✨ Ask AI Copilot</span>
+            </button>
           </div>
-          <button id="btn-reset-db" class="btn-text-action" title="Reload original seed data">
-            🔄 Reset Database Seeds
-          </button>
-        </div>
-      </aside>
 
-      <!-- Center-Right Main Engineering Canvas -->
-      <main class="main-canvas">
-        <!-- Natural Language Query Bar Section -->
-        <section class="nl-input-section" aria-label="Natural Language Query Bar">
-          <div class="nl-input-card">
-            <div class="nl-icon-badge">
-              <span class="sparkle-icon">✨</span>
-              <span class="nl-label">Natural Language Prompt</span>
+          <div class="toolbar-right">
+            <span class="editor-metric" id="metric-query-time">Ready</span>
+            <span class="editor-metric" id="metric-rows-returned">0 rows</span>
+          </div>
+        </div>
+
+        <!-- INLINE AI COPILOT EXPANDABLE DRAWER -->
+        <div class="ai-copilot-drawer hidden" id="ai-copilot-drawer">
+          <div class="copilot-header">
+            <div class="copilot-brand">
+              <span class="ai-spark">✨</span>
+              <span class="ai-title">NeuroQuery AI Copilot</span>
+              <span class="ai-model-tag">Natural Language → SQL AST</span>
+            </div>
+            <button id="btn-close-copilot" class="btn-icon-subtle" title="Close Copilot Drawer">✕</button>
+          </div>
+
+          <div class="copilot-input-row">
+            <div class="copilot-input-box">
+              <span class="sparkle-hint">⚡</span>
+              <input 
+                type="text" 
+                id="copilot-nl-input" 
+                placeholder="Ask in natural language (e.g. 'Show top 5 organizations by MRR' or 'Find active users who logged in this week')..."
+                autocomplete="off"
+                spellcheck="false"
+              >
+            </div>
+            <button id="btn-copilot-synthesize" class="btn-copilot-generate">
+              <span>Generate & Run</span>
+              <kbd>↵</kbd>
+            </button>
+          </div>
+
+          <!-- Prompt Suggestions Chips -->
+          <div class="copilot-chips-row">
+            <span class="chips-title">Quick Prompts:</span>
+            <div class="chips-list" id="copilot-prompt-chips">
+              <!-- Dynamically populated based on active database -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Code Editor Surface (Monaco / Dark IDE Look) -->
+        <div class="editor-surface">
+          <div class="line-gutter" id="line-gutter">
+            1<br>2<br>3<br>4
+          </div>
+          <div class="textarea-wrapper">
+            <textarea id="sql-textarea" spellcheck="false" aria-label="SQL Code Editor">SELECT 
+  org_id, 
+  name, 
+  tier, 
+  mrr, 
+  status 
+FROM organizations 
+ORDER BY mrr DESC 
+LIMIT 15;</textarea>
+          </div>
+        </div>
+
+        <!-- Editor Status Footer -->
+        <div class="editor-statusbar">
+          <div class="stat-left">
+            <span class="status-token" id="cursor-position-display">Ln 1, Col 1</span>
+            <span class="status-token">UTF-8</span>
+            <span class="status-token">PostgreSQL 16 Dialect</span>
+          </div>
+          <div class="stat-right">
+            <span class="status-token" id="editor-toast-msg">Ready for queries</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESIZABLE SPLIT DIVIDER -->
+      <div class="pane-splitter" id="pane-splitter" title="Drag to resize panels">
+        <div class="splitter-grip"></div>
+      </div>
+
+      <!-- BOTTOM PANE: WORKSTATION RESULTS & TOOLS -->
+      <section class="results-pane" id="results-pane">
+        
+        <!-- Results View Navigation Tabs -->
+        <div class="results-nav-strip">
+          <div class="results-tabs-left">
+            <button class="res-tab active" data-res-view="view-grid">
+              <span class="res-icon">▦</span>
+              <span class="res-label">Results Grid</span>
+              <span class="res-count-badge" id="res-grid-count">0</span>
+            </button>
+
+            <button class="res-tab" data-res-view="view-erd">
+              <span class="res-icon">🕸️</span>
+              <span class="res-label">Schema ERD</span>
+              <span class="res-pill">Interactive</span>
+            </button>
+
+            <button class="res-tab" data-res-view="view-charts">
+              <span class="res-icon">📊</span>
+              <span class="res-label">Visual Analytics</span>
+            </button>
+
+            <button class="res-tab" data-res-view="view-plan">
+              <span class="res-icon">⏱️</span>
+              <span class="res-label">Execution Plan</span>
+            </button>
+
+            <button class="res-tab" data-res-view="view-history">
+              <span class="res-icon">📜</span>
+              <span class="res-label">Query Logs</span>
+            </button>
+          </div>
+
+          <div class="results-actions-right">
+            <!-- Table Search -->
+            <div class="grid-search-wrapper" id="grid-search-wrapper">
+              <input type="text" id="grid-filter-search" placeholder="Filter result records..." aria-label="Filter results">
             </div>
 
-            <div class="nl-input-row">
-              <div class="input-glow-wrapper">
-                <input 
-                  type="text" 
-                  id="nl-query-input" 
-                  placeholder="e.g. 'Show me the top 5 customers by revenue with their subscription tier' or 'Find transactions above $5,000 flagged for fraud'"
-                  autocomplete="off"
-                  spellcheck="false"
-                  aria-label="Natural Language Query Input"
-                >
-              </div>
-
-              <button id="btn-generate-sql" class="btn-execute-primary" title="Synthesize SQL and Execute (Cmd+Enter)">
-                <span class="btn-icon">⚡</span>
-                <span class="btn-text">Synthesize & Run</span>
-                <kbd class="btn-kbd">⌘↵</kbd>
+            <!-- Export Dropdown -->
+            <div class="export-dropdown-wrapper">
+              <button id="btn-export-dropdown" class="btn-res-action">
+                <span>Export</span>
+                <span class="arrow-down">▾</span>
               </button>
+              <div class="export-menu hidden" id="export-menu">
+                <button id="opt-export-csv" class="export-item">📥 Export CSV (.csv)</button>
+                <button id="opt-export-json" class="export-item">📋 Export JSON (.json)</button>
+                <button id="opt-export-markdown" class="export-item">📝 Copy Markdown Table</button>
+                <button id="opt-export-sql" class="export-item">💾 Copy SQL INSERT Statements</button>
+              </div>
             </div>
 
-            <!-- Suggestion Chips Bar -->
-            <div class="prompt-chips-wrapper">
-              <span class="chips-label">Try asking:</span>
-              <div class="prompt-chips-container" id="prompt-chips-container">
-                <!-- Dynamically populated based on active database -->
+            <button id="btn-quick-chart" class="btn-res-action btn-accent-visualize" title="Instantly render results as interactive chart">
+              <span>📊 Auto-Chart</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- RESULTS CONTENT VIEWPORT -->
+        <div class="results-viewport">
+          
+          <!-- VIEW 1: HIGH-DENSITY PROFESSIONAL DATA GRID -->
+          <div class="res-view-panel active" id="view-grid">
+            <div class="table-container" id="grid-table-container">
+              <table class="enterprise-table" id="enterprise-table">
+                <thead id="grid-table-head">
+                  <!-- Dynamically injected headers -->
+                </thead>
+                <tbody id="grid-table-body">
+                  <!-- Dynamically injected rows -->
+                </tbody>
+              </table>
+
+              <!-- Empty Results Placeholder -->
+              <div class="grid-empty-card hidden" id="grid-empty-card">
+                <span class="empty-icon">🔍</span>
+                <h4>No records to display</h4>
+                <p>Run a query above to inspect returned database rows.</p>
+              </div>
+            </div>
+
+            <!-- Table Pagination & Record Status -->
+            <div class="grid-pagination-bar">
+              <div class="pag-left">
+                <span id="grid-pagination-summary">Showing 0 rows</span>
+              </div>
+              <div class="pag-right">
+                <button class="btn-pag" id="btn-pag-prev" disabled>‹ Previous</button>
+                <span class="pag-number" id="pag-number-indicator">Page 1 of 1</span>
+                <button class="btn-pag" id="btn-pag-next" disabled>Next ›</button>
               </div>
             </div>
           </div>
-        </section>
 
-        <!-- Main Engineering Workstation with Tabs -->
-        <section class="workstation-section">
-          <nav class="workstation-nav" role="tablist" aria-label="Workspace View Tabs">
-            <button class="nav-tab active" role="tab" aria-selected="true" data-tab="tab-sql-grid" id="tab-btn-sql">
-              <span class="tab-icon">💻</span>
-              <span class="tab-title">SQL & Result Grid</span>
-            </button>
-
-            <button class="nav-tab" role="tab" aria-selected="false" data-tab="tab-erd-canvas" id="tab-btn-erd">
-              <span class="tab-icon">🕸️</span>
-              <span class="tab-title">Interactive ERD Canvas</span>
-              <span class="tab-indicator-badge">Dynamic</span>
-            </button>
-
-            <button class="nav-tab" role="tab" aria-selected="false" data-tab="tab-data-charts" id="tab-btn-charts">
-              <span class="tab-icon">📊</span>
-              <span class="tab-title">Analytics & Charts</span>
-            </button>
-
-            <button class="nav-tab" role="tab" aria-selected="false" data-tab="tab-plan-analyzer" id="tab-btn-plan">
-              <span class="tab-icon">⏱️</span>
-              <span class="tab-title">Execution Plan & Cost</span>
-            </button>
-          </nav>
-
-          <!-- TAB 1: SQL WORKBENCH & RESULTS GRID -->
-          <div class="tab-content active" id="tab-sql-grid" role="tabpanel" aria-labelledby="tab-btn-sql">
-            <!-- SQL Editor Box -->
-            <div class="sql-editor-container">
-              <div class="editor-header">
-                <div class="editor-header-left">
-                  <span class="editor-badge">SQL (PostgreSQL 16 Dialect)</span>
-                  <span id="nl-trans-confidence" class="trans-pill hidden">✨ Translated from NL (100% confidence)</span>
+          <!-- VIEW 2: INTERACTIVE ERD SCHEMA ARCHITECT -->
+          <div class="res-view-panel" id="view-erd">
+            <div class="erd-studio-container">
+              <div class="erd-floating-toolbar">
+                <div class="erd-legend">
+                  <span class="legend-item"><span class="badge-pk">PK</span> Primary Key</span>
+                  <span class="legend-item"><span class="badge-fk">FK</span> Foreign Key</span>
+                  <span class="legend-item"><span class="badge-line"></span> Relation</span>
                 </div>
-                <div class="editor-actions">
-                  <button id="btn-format-sql" class="btn-editor-tool" title="Format SQL query">🪄 Format</button>
-                  <button id="btn-clear-sql" class="btn-editor-tool" title="Clear SQL editor">✕ Clear</button>
-                  <button id="btn-run-sql" class="btn-editor-run" title="Execute SQL (Cmd+Enter)">
-                    ▶ Run SQL
-                  </button>
+                <div class="erd-tool-buttons">
+                  <button id="btn-erd-zoom-in" class="btn-erd-action" title="Zoom In">+</button>
+                  <button id="btn-erd-zoom-out" class="btn-erd-action" title="Zoom Out">−</button>
+                  <button id="btn-erd-reset-fit" class="btn-erd-action" title="Fit to View">⛶ Fit</button>
+                  <button id="btn-erd-auto-layout" class="btn-erd-action" title="Auto-Organize Nodes">⚡ Auto-Layout</button>
+                  <button id="btn-erd-snapshot" class="btn-erd-action" title="Export High-Res PNG">📷 Save PNG</button>
                 </div>
               </div>
 
-              <div class="editor-code-wrapper">
-                <div class="line-numbers" id="line-numbers">1<br>2<br>3</div>
-                <textarea id="sql-input" spellcheck="false" aria-label="SQL Query Input">SELECT * FROM users LIMIT 15;</textarea>
-              </div>
-
-              <!-- Query Performance Strip -->
-              <div class="query-stats-strip">
-                <div class="stat-item">
-                  <span class="label">Status:</span>
-                  <span class="val success" id="stat-query-status">SUCCESS</span>
-                </div>
-                <div class="stat-item">
-                  <span class="label">Duration:</span>
-                  <span class="val" id="stat-query-time">1.4 ms</span>
-                </div>
-                <div class="stat-item">
-                  <span class="label">Rows:</span>
-                  <span class="val" id="stat-query-rows">15 rows</span>
-                </div>
-                <div class="stat-item">
-                  <span class="label">Columns:</span>
-                  <span class="val" id="stat-query-cols">7 cols</span>
-                </div>
-                <div class="stat-item">
-                  <span class="label">Scanned:</span>
-                  <span class="val" id="stat-scanned-rows">120 rows</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Results Data Grid Area -->
-            <div class="results-grid-container">
-              <div class="results-toolbar">
-                <div class="toolbar-left">
-                  <h3>Query Results</h3>
-                  <input type="text" id="grid-search-input" placeholder="Search result records..." aria-label="Search within returned results">
-                </div>
-                <div class="toolbar-right">
-                  <button id="btn-export-csv" class="btn-grid-tool" title="Export results as CSV">📥 CSV</button>
-                  <button id="btn-export-json" class="btn-grid-tool" title="Export results as JSON">📋 JSON</button>
-                  <button id="btn-export-markdown" class="btn-grid-tool" title="Copy results as Markdown Table">📝 Copy Markdown</button>
-                  <button id="btn-visualize-grid" class="btn-grid-tool btn-primary-accent" title="Switch to Chart View for these results">📊 Auto-Chart</button>
+              <div class="erd-canvas-wrapper" id="erd-canvas-wrapper">
+                <canvas id="erd-canvas" width="1400" height="750"></canvas>
+                <div class="erd-canvas-hint">
+                  <span>💡 Drag tables to rearrange • Scroll to zoom • Click table to query</span>
                 </div>
               </div>
 
-              <div class="table-scroll-container" id="table-scroll-container">
-                <table class="data-grid-table" id="data-grid-table">
-                  <thead id="grid-thead">
-                    <!-- Populated dynamically -->
-                  </thead>
-                  <tbody id="grid-tbody">
-                    <!-- Populated dynamically -->
-                  </tbody>
-                </table>
-                <div id="grid-empty-state" class="grid-empty-state hidden">
-                  <span class="icon">🔍</span>
-                  <p>No rows returned for this query</p>
+              <!-- ERD Entity Flyout Inspector Drawer -->
+              <div class="erd-entity-drawer hidden" id="erd-entity-drawer">
+                <div class="entity-drawer-header">
+                  <h4 id="drawer-entity-name">table_name</h4>
+                  <button id="btn-close-entity-drawer" class="btn-icon-subtle">✕</button>
                 </div>
-              </div>
-
-              <div class="results-pagination" id="results-pagination">
-                <span id="pagination-info">Showing 1-15 of 15 records</span>
-                <div class="pagination-buttons">
-                  <button id="btn-page-prev" class="btn-page" disabled>Previous</button>
-                  <span id="page-current">Page 1</span>
-                  <button id="btn-page-next" class="btn-page" disabled>Next</button>
+                <div class="entity-drawer-content" id="drawer-entity-content"></div>
+                <div class="entity-drawer-footer">
+                  <button id="btn-drawer-query-table" class="btn-drawer-action primary">Query Table</button>
+                  <button id="btn-drawer-copy-name" class="btn-drawer-action">Copy Name</button>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- TAB 2: INTERACTIVE DYNAMIC ERD CANVAS -->
-          <div class="tab-content" id="tab-erd-canvas" role="tabpanel" aria-labelledby="tab-btn-erd">
-            <div class="erd-view-wrapper">
-              <div class="erd-toolbar">
-                <div class="erd-toolbar-left">
-                  <span class="erd-legend-pill"><span class="pk-dot"></span> Primary Key (PK)</span>
-                  <span class="erd-legend-pill"><span class="fk-dot"></span> Foreign Key (FK)</span>
-                  <span class="erd-legend-pill"><span class="rel-line-dot"></span> 1:N Relation</span>
+          <!-- VIEW 3: DYNAMIC ANALYTICS & CHARTS -->
+          <div class="res-view-panel" id="view-charts">
+            <div class="analytics-studio-container">
+              <!-- KPI Metric Strip -->
+              <div class="kpi-strip">
+                <div class="kpi-card">
+                  <span class="kpi-label">TOTAL DATA POINTS</span>
+                  <span class="kpi-value" id="kpi-total-points">0</span>
                 </div>
-                <div class="erd-toolbar-right">
-                  <button id="btn-erd-zoom-in" class="btn-erd-tool" title="Zoom In">🔍 +</button>
-                  <button id="btn-erd-zoom-out" class="btn-erd-tool" title="Zoom Out">🔍 −</button>
-                  <button id="btn-erd-reset-view" class="btn-erd-tool" title="Reset Viewport">⛶ Fit View</button>
-                  <button id="btn-erd-rearrange" class="btn-erd-tool" title="Auto-Arrange Layout">⚡ Auto-Layout</button>
-                  <button id="btn-erd-export-png" class="btn-erd-tool" title="Export ERD Schema as PNG">📷 Export PNG</button>
+                <div class="kpi-card">
+                  <span class="kpi-label">PEAK VALUE (MAX)</span>
+                  <span class="kpi-value text-accent-cyan" id="kpi-max-value">0</span>
                 </div>
-              </div>
-
-              <div class="canvas-viewport" id="erd-canvas-viewport">
-                <canvas id="erd-canvas" width="1200" height="700"></canvas>
-                <div class="canvas-help-overlay">
-                  <span>💡 Drag tables to reposition • Hover foreign keys to trace relationships • Click table to query</span>
+                <div class="kpi-card">
+                  <span class="kpi-label">FLOOR VALUE (MIN)</span>
+                  <span class="kpi-value text-accent-emerald" id="kpi-min-value">0</span>
+                </div>
+                <div class="kpi-card">
+                  <span class="kpi-label">SERIES MEAN (AVG)</span>
+                  <span class="kpi-value text-accent-purple" id="kpi-avg-value">0</span>
                 </div>
               </div>
 
-              <!-- Selected Entity Detail Drawer -->
-              <div class="erd-detail-drawer hidden" id="erd-detail-drawer">
-                <div class="drawer-header">
-                  <h4 id="drawer-table-name">users</h4>
-                  <button id="drawer-close" class="btn-icon">✕</button>
+              <!-- Chart Type & Axis Controls -->
+              <div class="chart-config-bar">
+                <div class="config-group">
+                  <label>Chart Mode:</label>
+                  <div class="chart-type-pills" id="chart-type-selector">
+                    <button class="pill-btn active" data-type="bar">📊 Column</button>
+                    <button class="pill-btn" data-type="line">📈 Line Trend</button>
+                    <button class="pill-btn" data-type="area">🏔️ Area</button>
+                    <button class="pill-btn" data-type="donut">🍩 Donut</button>
+                    <button class="pill-btn" data-type="scatter">🫧 Scatter</button>
+                  </div>
                 </div>
-                <div class="drawer-body" id="drawer-table-details">
-                  <!-- Injected dynamically -->
+
+                <div class="config-group">
+                  <div class="select-field">
+                    <label for="chart-axis-x">X-Dimension:</label>
+                    <select id="chart-axis-x"></select>
+                  </div>
+                  <div class="select-field">
+                    <label for="chart-axis-y">Y-Metric:</label>
+                    <select id="chart-axis-y"></select>
+                  </div>
                 </div>
-                <div class="drawer-actions">
-                  <button id="drawer-btn-select-all" class="btn-primary-small">Query Table</button>
-                  <button id="drawer-btn-view-ddl" class="btn-outline-small">View DDL</button>
+
+                <div class="config-actions">
+                  <button id="btn-save-chart-png" class="btn-res-action">📷 Save Chart Image</button>
                 </div>
+              </div>
+
+              <!-- Main Canvas Chart Canvas Container -->
+              <div class="analytics-canvas-box">
+                <canvas id="analytics-canvas" width="1200" height="520"></canvas>
               </div>
             </div>
           </div>
 
-          <!-- TAB 3: DYNAMIC ANALYTICS & CHARTS -->
-          <div class="tab-content" id="tab-data-charts" role="tabpanel" aria-labelledby="tab-btn-charts">
-            <div class="charts-view-wrapper">
-              <div class="chart-controls-strip">
-                <div class="chart-type-selector">
-                  <label>Chart Type:</label>
-                  <div class="btn-group-toggle" id="chart-type-group">
-                    <button class="btn-toggle active" data-chart="bar">📊 Bar</button>
-                    <button class="btn-toggle" data-chart="line">📈 Line</button>
-                    <button class="btn-toggle" data-chart="area">🏔️ Area</button>
-                    <button class="btn-toggle" data-chart="donut">🍩 Donut</button>
-                    <button class="btn-toggle" data-chart="scatter">🫧 Scatter</button>
-                  </div>
+          <!-- VIEW 4: EXECUTION PLAN & AST COST DECOMPOSITION -->
+          <div class="res-view-panel" id="view-plan">
+            <div class="plan-studio-container">
+              <div class="plan-summary-header">
+                <div>
+                  <h3>Query AST Execution Decomposition</h3>
+                  <p class="plan-sub">Relational execution pipeline, cost estimation, and sequential scan audits.</p>
                 </div>
-
-                <div class="chart-axis-selectors">
-                  <div class="axis-field">
-                    <label for="chart-x-axis">Category (X-Axis):</label>
-                    <select id="chart-x-axis"></select>
-                  </div>
-                  <div class="axis-field">
-                    <label for="chart-y-axis">Metric (Y-Axis):</label>
-                    <select id="chart-y-axis"></select>
-                  </div>
-                  <div class="axis-field">
-                    <label for="chart-agg">Aggregation:</label>
-                    <select id="chart-agg">
-                      <option value="raw">Raw Values</option>
-                      <option value="sum">Sum (Total)</option>
-                      <option value="avg">Average</option>
-                      <option value="count">Count Frequency</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="chart-actions">
-                  <button id="btn-chart-export-png" class="btn-erd-tool" title="Download Chart as 1200x700 PNG">
-                    📷 Save Snapshot
-                  </button>
+                <div class="plan-stats-badges">
+                  <span class="cost-badge">Estimated Cost: <strong id="plan-cost-display">12.4 ops</strong></span>
+                  <span class="grade-badge">Optimizer Grade: <strong id="plan-grade-display">A+ (Optimal)</strong></span>
                 </div>
               </div>
 
-              <!-- Main Interactive Canvas Chart -->
-              <div class="chart-canvas-container">
-                <canvas id="analytics-canvas" width="1100" height="520"></canvas>
-                <div id="chart-tooltip" class="chart-tooltip hidden"></div>
+              <div class="plan-nodes-container" id="plan-nodes-container">
+                <!-- Dynamically rendered execution nodes -->
               </div>
 
-              <div class="chart-insights-summary" id="chart-insights-summary">
-                <div class="insight-pill" id="insight-count">Data Points: <span>0</span></div>
-                <div class="insight-pill" id="insight-max">Max: <span>0</span></div>
-                <div class="insight-pill" id="insight-min">Min: <span>0</span></div>
-                <div class="insight-pill" id="insight-avg">Mean: <span>0</span></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- TAB 4: QUERY EXECUTION PLAN & COST -->
-          <div class="tab-content" id="tab-plan-analyzer" role="tabpanel" aria-labelledby="tab-btn-plan">
-            <div class="plan-analyzer-wrapper">
-              <div class="plan-header">
-                <div class="plan-header-left">
-                  <h3>Query AST & Execution Plan Decomposition</h3>
-                  <p class="subtitle">Step-by-step cost breakdown, table scan strategy, and index recommendations.</p>
-                </div>
-                <div class="plan-badges">
-                  <span class="plan-cost-badge">Est. Cost: <strong id="plan-cost-val">14.2 ops</strong></span>
-                  <span class="plan-opt-badge">Efficiency: <strong id="plan-opt-grade">OPTIMAL (98%)</strong></span>
-                </div>
-              </div>
-
-              <!-- Execution Pipeline Nodes Flow -->
-              <div class="execution-pipeline-tree" id="execution-pipeline-tree">
-                <!-- Dynamically generated plan nodes -->
-              </div>
-
-              <!-- SQL Optimization Insights & Recommendations -->
-              <div class="optimization-card">
-                <div class="opt-card-header">
+              <div class="index-advisor-card">
+                <div class="advisor-title">
                   <span class="icon">💡</span>
-                  <h4>Query Optimization & Index Advisor</h4>
+                  <h4>Database Index & Performance Advisor</h4>
                 </div>
-                <div class="opt-card-content" id="optimization-recommendations">
-                  <p class="opt-note">✅ Query leverages primary key indices efficiently. No full table sequential scan bottlenecks detected.</p>
-                </div>
+                <p id="advisor-message">Query executed with index optimization on primary keys. Zero sequential scan bottlenecks detected.</p>
               </div>
             </div>
           </div>
-        </section>
-      </main>
-    </div>
 
-    <!-- Bottom Status Bar -->
-    <footer class="app-statusbar">
-      <div class="status-left">
-        <span class="status-item"><span class="engine-dot"></span> In-Memory Relational Engine v1.0</span>
-        <span class="status-item" id="active-db-indicator">DB: saas_analytics</span>
-        <span class="status-item" id="active-dialect-indicator">Dialect: ANSI SQL / Postgres 16</span>
-      </div>
-      <div class="status-center">
-        <span class="status-item">Engine Memory: <strong id="engine-memory-val">~1.2 MB</strong></span>
-        <span class="divider">|</span>
-        <span class="status-item">AST Parser: <strong>Active</strong></span>
-      </div>
-      <div class="status-right">
-        <span class="status-item"><kbd>Cmd+Enter</kbd> Run</span>
-        <span class="status-item"><kbd>M</kbd> Audio</span>
-        <span class="status-item"><kbd>?</kbd> Help</span>
-        <span class="status-item developer-tag">Crafted by <strong>0612divyansh</strong></span>
-      </div>
-    </footer>
+          <!-- VIEW 5: QUERY EXECUTION HISTORY LOG -->
+          <div class="res-view-panel" id="view-history">
+            <div class="history-studio-container">
+              <div class="history-header">
+                <h3>Query Execution History</h3>
+                <button id="btn-clear-history" class="btn-res-action">Clear Log</button>
+              </div>
+
+              <div class="history-list-box" id="history-list-box">
+                <!-- Dynamically populated past queries -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </main>
   </div>
 
-  <!-- DDL Schema Modal Dialog -->
-  <dialog id="ddl-dialog" class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>📜 Database DDL Definition</h3>
-        <button id="btn-close-ddl" class="btn-icon">✕</button>
+  <!-- BOTTOM SYSTEM STATUS BAR -->
+  <footer class="studio-statusbar">
+    <div class="status-col-left">
+      <span class="status-pill"><span class="engine-live-dot"></span> In-Memory PostgreSQL 16.2</span>
+      <span class="status-pill">Memory: <strong>1.4 MB</strong></span>
+      <span class="status-pill">Auto-Commit: <strong>ON</strong></span>
+    </div>
+    <div class="status-col-center">
+      <span class="status-pill" id="global-status-announcement">Ready</span>
+    </div>
+    <div class="status-col-right">
+      <span class="status-pill"><kbd>⌘↵</kbd> Run Query</span>
+      <span class="status-pill"><kbd>⌘K</kbd> AI Copilot</span>
+      <span class="status-pill"><kbd>M</kbd> Mute Audio</span>
+      <span class="status-pill author-tag">Crafted by <strong>0612divyansh</strong></span>
+    </div>
+  </footer>
+
+  <!-- DDL MODAL DIALOG -->
+  <dialog id="ddl-dialog" class="studio-modal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>📜 Complete Schema DDL (PostgreSQL 16)</h3>
+        <button id="btn-close-ddl-x" class="btn-icon-subtle">✕</button>
       </div>
-      <div class="modal-body">
-        <pre><code id="ddl-code-block" class="language-sql">-- Loading DDL...</code></pre>
+      <div class="modal-content">
+        <pre><code id="ddl-code-display">-- Schema DDL loading...</code></pre>
       </div>
-      <div class="modal-footer">
-        <button id="btn-copy-ddl" class="btn-primary-small">📋 Copy DDL</button>
-        <button id="btn-close-ddl-btn" class="btn-outline-small">Close</button>
+      <div class="modal-foot">
+        <button id="btn-copy-ddl-clipboard" class="btn-run-primary">📋 Copy DDL to Clipboard</button>
+        <button id="btn-close-ddl-done" class="btn-tool">Close</button>
       </div>
     </div>
   </dialog>
 
-  <!-- Keyboard Shortcuts & Help Modal Dialog -->
-  <dialog id="help-dialog" class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>⌨️ Keyboard Shortcuts & Quick Guide</h3>
-        <button id="btn-close-help" class="btn-icon">✕</button>
+  <!-- KEYBOARD SHORTCUTS & HELP DIALOG -->
+  <dialog id="shortcuts-dialog" class="studio-modal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>⌨️ Keyboard Shortcuts & Developer Guide</h3>
+        <button id="btn-close-shortcuts-x" class="btn-icon-subtle">✕</button>
       </div>
-      <div class="modal-body">
-        <div class="shortcuts-grid">
-          <div class="shortcut-row"><kbd>Cmd / Ctrl + Enter</kbd> <span>Synthesize & Execute Query</span></div>
-          <div class="shortcut-row"><kbd>Cmd / Ctrl + K</kbd> <span>Focus Natural Language Prompt Bar</span></div>
-          <div class="shortcut-row"><kbd>M</kbd> <span>Toggle Synthesizer Audio Effects</span></div>
-          <div class="shortcut-row"><kbd>1 / 2 / 3 / 4</kbd> <span>Switch Main Workspace Tabs</span></div>
-          <div class="shortcut-row"><kbd>Esc</kbd> <span>Close Modals / Deselect Active Element</span></div>
+      <div class="modal-content">
+        <div class="shortcuts-table">
+          <div class="sc-row"><kbd>⌘ / Ctrl + Enter</kbd> <span>Execute SQL Query</span></div>
+          <div class="sc-row"><kbd>⌘ / Ctrl + K</kbd> <span>Toggle AI SQL Copilot</span></div>
+          <div class="sc-row"><kbd>M</kbd> <span>Toggle Audio Synthesizer</span></div>
+          <div class="sc-row"><kbd>Esc</kbd> <span>Dismiss Drawer / Dialog</span></div>
         </div>
-
-        <div class="guide-section">
-          <h4>About NeuroQuery Studio</h4>
-          <p>Cycle #4 of the Antigravity Autonomous 4-Day Launchpad. Designed by Divyansh Shandil (IIT Mandi BS DS&AI graduate). A zero-dependency client-side relational SQL environment with natural language translation, dynamic canvas ERD visualizer, responsive data grid, and automated chart generator.</p>
+        <div class="guide-note">
+          <h4>NeuroQuery Studio v1.0 • Launchpad Cycle #4</h4>
+          <p>Professional zero-dependency in-browser database explorer and query copilot engineered by Divyansh Shandil (IIT Mandi BS DS&AI graduate).</p>
         </div>
       </div>
-      <div class="modal-footer">
-        <button id="btn-close-help-btn" class="btn-primary-small">Got It</button>
+      <div class="modal-foot">
+        <button id="btn-close-shortcuts-done" class="btn-run-primary">Done</button>
       </div>
     </div>
   </dialog>
 
-  <!-- Application Logic Scripts -->
   <script src="app.js"></script>
 </body>
 </html>

@@ -1,8 +1,7 @@
 /**
  * ============================================================================
- * NEUROQUERY STUDIO — CORE APPLICATION ENGINE (v1.0 • Launchpad Cycle #4)
- * Client-Side In-Memory Relational SQL Engine, Natural Language Synthesizer,
- * Dynamic Interactive Canvas ERD Visualizer & Dynamic Charting Engine
+ * NEUROQUERY STUDIO — ENTERPRISE ENGINE (v1.0 • Launchpad Cycle #4)
+ * Professional Relational SQL IDE, Multi-Tab Workbench, AI Copilot & ERD Architect
  *
  * Developer: Divyansh Shandil (0612divyansh)
  * ============================================================================
@@ -12,9 +11,9 @@
   'use strict';
 
   // ============================================================================
-  // 1. TACTILE WEB AUDIO API SYNTHESIZER
+  // 1. TACTILE AUDIO SYNTHESIZER
   // ============================================================================
-  class AudioSynth {
+  class AudioSynthesizer {
     constructor() {
       this.ctx = null;
       this.muted = false;
@@ -24,13 +23,13 @@
     init() {
       if (this.initialized) return;
       try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (AudioContext) {
-          this.ctx = new AudioContext();
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) {
+          this.ctx = new AudioCtx();
           this.initialized = true;
         }
       } catch (e) {
-        console.warn('Web Audio not supported', e);
+        console.warn('Web Audio unavailable', e);
       }
     }
 
@@ -49,19 +48,19 @@
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(600, this.ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(120, this.ctx.currentTime + 0.04);
+      osc.frequency.setValueAtTime(550, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(160, this.ctx.currentTime + 0.035);
 
-      gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
+      gain.gain.setValueAtTime(0.06, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.035);
 
       osc.connect(gain);
       gain.connect(this.ctx.destination);
       osc.start();
-      osc.stop(this.ctx.currentTime + 0.04);
+      osc.stop(this.ctx.currentTime + 0.035);
     }
 
-    playWhoosh() {
+    playExecute() {
       if (this.muted) return;
       this.ensureContext();
       if (!this.ctx) return;
@@ -69,16 +68,16 @@
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
       osc.type = 'triangle';
-      osc.frequency.setValueAtTime(140, this.ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.12);
+      osc.frequency.setValueAtTime(200, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(750, this.ctx.currentTime + 0.1);
 
-      gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.14);
+      gain.gain.setValueAtTime(0.09, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.12);
 
       osc.connect(gain);
       gain.connect(this.ctx.destination);
       osc.start();
-      osc.stop(this.ctx.currentTime + 0.14);
+      osc.stop(this.ctx.currentTime + 0.12);
     }
 
     playSuccess() {
@@ -86,22 +85,22 @@
       this.ensureContext();
       if (!this.ctx) return;
 
-      const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
-      notes.forEach((freq, idx) => {
+      const freqs = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
+      freqs.forEach((f, idx) => {
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        const start = this.ctx.currentTime + idx * 0.05;
+        const start = this.ctx.currentTime + idx * 0.04;
 
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, start);
+        osc.frequency.setValueAtTime(f, start);
 
-        gain.gain.setValueAtTime(0.09, start);
-        gain.gain.exponentialRampToValueAtTime(0.001, start + 0.18);
+        gain.gain.setValueAtTime(0.07, start);
+        gain.gain.exponentialRampToValueAtTime(0.001, start + 0.16);
 
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(start);
-        osc.stop(start + 0.18);
+        osc.stop(start + 0.16);
       });
     }
 
@@ -113,37 +112,37 @@
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
       osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(130, this.ctx.currentTime);
-      osc.frequency.linearRampToValueAtTime(90, this.ctx.currentTime + 0.18);
+      osc.frequency.setValueAtTime(140, this.ctx.currentTime);
+      osc.frequency.linearRampToValueAtTime(80, this.ctx.currentTime + 0.16);
 
-      gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.18);
+      gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.16);
 
       osc.connect(gain);
       gain.connect(this.ctx.destination);
       osc.start();
-      osc.stop(this.ctx.currentTime + 0.18);
+      osc.stop(this.ctx.currentTime + 0.16);
     }
   }
 
-  const audio = new AudioSynth();
+  const audio = new AudioSynthesizer();
 
   // ============================================================================
-  // 2. RELATIONAL SCHEMAS & REALISTIC SEED DATA
+  // 2. ENTERPRISE RELATIONAL SCHEMAS & PRE-SEEDED DATA
   // ============================================================================
   const DATABASES = {
     saas_analytics: {
-      name: 'SaaS Multi-Tenant Analytics',
-      dialect: 'PostgreSQL 16',
+      name: 'saas_analytics',
+      dialect: 'PostgreSQL 16.2',
       tables: {
         organizations: {
           columns: [
-            { name: 'org_id', type: 'INT', isPk: true, isFk: false },
-            { name: 'name', type: 'VARCHAR(100)', isPk: false, isFk: false },
-            { name: 'tier', type: 'VARCHAR(50)', isPk: false, isFk: false },
-            { name: 'created_at', type: 'DATE', isPk: false, isFk: false },
-            { name: 'mrr', type: 'DECIMAL(10,2)', isPk: false, isFk: false },
-            { name: 'status', type: 'VARCHAR(20)', isPk: false, isFk: false }
+            { name: 'org_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'name', type: 'varchar(80)', isPk: false, isFk: false },
+            { name: 'tier', type: 'varchar(40)', isPk: false, isFk: false },
+            { name: 'created_at', type: 'date', isPk: false, isFk: false },
+            { name: 'mrr', type: 'numeric(10,2)', isPk: false, isFk: false },
+            { name: 'status', type: 'varchar(20)', isPk: false, isFk: false }
           ],
           rows: [
             { org_id: 1, name: 'Vortex Dynamics', tier: 'Enterprise', created_at: '2025-02-14', mrr: 4500.00, status: 'active' },
@@ -158,35 +157,35 @@
         },
         users: {
           columns: [
-            { name: 'user_id', type: 'INT', isPk: true, isFk: false },
-            { name: 'org_id', type: 'INT', isPk: false, isFk: true, fkRef: { table: 'organizations', col: 'org_id' } },
-            { name: 'email', type: 'VARCHAR(120)', isPk: false, isFk: false },
-            { name: 'role', type: 'VARCHAR(40)', isPk: false, isFk: false },
-            { name: 'last_login', type: 'DATE', isPk: false, isFk: false },
-            { name: 'is_active', type: 'BOOLEAN', isPk: false, isFk: false }
+            { name: 'user_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'org_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'organizations', col: 'org_id' } },
+            { name: 'email', type: 'varchar(120)', isPk: false, isFk: false },
+            { name: 'role', type: 'varchar(40)', isPk: false, isFk: false },
+            { name: 'last_login', type: 'timestamp', isPk: false, isFk: false },
+            { name: 'is_active', type: 'boolean', isPk: false, isFk: false }
           ],
           rows: [
-            { user_id: 101, org_id: 1, email: 'alice@vortex.io', role: 'admin', last_login: '2026-11-24', is_active: true },
-            { user_id: 102, org_id: 1, email: 'bob@vortex.io', role: 'developer', last_login: '2026-11-23', is_active: true },
-            { user_id: 103, org_id: 2, email: 'carol@novalabs.tech', role: 'admin', last_login: '2026-11-25', is_active: true },
-            { user_id: 104, org_id: 3, email: 'dan@apex-ai.com', role: 'owner', last_login: '2026-11-25', is_active: true },
-            { user_id: 105, org_id: 3, email: 'elena@apex-ai.com', role: 'developer', last_login: '2026-11-22', is_active: true },
-            { user_id: 106, org_id: 4, email: 'frank@bytesync.co', role: 'owner', last_login: '2026-11-15', is_active: false },
-            { user_id: 107, org_id: 5, email: 'grace@luminary.design', role: 'admin', last_login: '2026-11-24', is_active: true },
-            { user_id: 108, org_id: 6, email: 'hank@hyperflow.net', role: 'analyst', last_login: '2026-11-21', is_active: true },
-            { user_id: 109, org_id: 7, email: 'iris@krypton.io', role: 'owner', last_login: '2026-10-18', is_active: false },
-            { user_id: 110, org_id: 8, email: 'divyansh@pulsemetrics.io', role: 'owner', last_login: '2026-11-25', is_active: true }
+            { user_id: 101, org_id: 1, email: 'alice@vortex.io', role: 'admin', last_login: '2026-11-24 14:22:00', is_active: true },
+            { user_id: 102, org_id: 1, email: 'bob@vortex.io', role: 'developer', last_login: '2026-11-23 09:15:30', is_active: true },
+            { user_id: 103, org_id: 2, email: 'carol@novalabs.tech', role: 'admin', last_login: '2026-11-25 18:04:12', is_active: true },
+            { user_id: 104, org_id: 3, email: 'dan@apex-ai.com', role: 'owner', last_login: '2026-11-25 11:45:00', is_active: true },
+            { user_id: 105, org_id: 3, email: 'elena@apex-ai.com', role: 'developer', last_login: '2026-11-22 16:30:10', is_active: true },
+            { user_id: 106, org_id: 4, email: 'frank@bytesync.co', role: 'owner', last_login: '2026-11-15 08:12:00', is_active: false },
+            { user_id: 107, org_id: 5, email: 'grace@luminary.design', role: 'admin', last_login: '2026-11-24 19:20:00', is_active: true },
+            { user_id: 108, org_id: 6, email: 'hank@hyperflow.net', role: 'analyst', last_login: '2026-11-21 13:10:45', is_active: true },
+            { user_id: 109, org_id: 7, email: 'iris@krypton.io', role: 'owner', last_login: '2026-10-18 10:00:00', is_active: false },
+            { user_id: 110, org_id: 8, email: 'divyansh@pulsemetrics.io', role: 'owner', last_login: '2026-11-25 20:15:00', is_active: true }
           ]
         },
         subscriptions: {
           columns: [
-            { name: 'sub_id', type: 'INT', isPk: true, isFk: false },
-            { name: 'org_id', type: 'INT', isPk: false, isFk: true, fkRef: { table: 'organizations', col: 'org_id' } },
-            { name: 'plan', type: 'VARCHAR(40)', isPk: false, isFk: false },
-            { name: 'seats', type: 'INT', isPk: false, isFk: false },
-            { name: 'monthly_amount', type: 'DECIMAL(10,2)', isPk: false, isFk: false },
-            { name: 'renews_on', type: 'DATE', isPk: false, isFk: false },
-            { name: 'status', type: 'VARCHAR(20)', isPk: false, isFk: false }
+            { name: 'sub_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'org_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'organizations', col: 'org_id' } },
+            { name: 'plan', type: 'varchar(60)', isPk: false, isFk: false },
+            { name: 'seats', type: 'int4', isPk: false, isFk: false },
+            { name: 'monthly_amount', type: 'numeric(10,2)', isPk: false, isFk: false },
+            { name: 'renews_on', type: 'date', isPk: false, isFk: false },
+            { name: 'status', type: 'varchar(20)', isPk: false, isFk: false }
           ],
           rows: [
             { sub_id: 501, org_id: 1, plan: 'Enterprise Unlimited', seats: 120, monthly_amount: 4500.00, renews_on: '2026-12-14', status: 'active' },
@@ -201,12 +200,12 @@
         },
         invoices: {
           columns: [
-            { name: 'invoice_id', type: 'INT', isPk: true, isFk: false },
-            { name: 'org_id', type: 'INT', isPk: false, isFk: true, fkRef: { table: 'organizations', col: 'org_id' } },
-            { name: 'amount', type: 'DECIMAL(10,2)', isPk: false, isFk: false },
-            { name: 'status', type: 'VARCHAR(20)', isPk: false, isFk: false },
-            { name: 'paid_at', type: 'DATE', isPk: false, isFk: false },
-            { name: 'currency', type: 'VARCHAR(10)', isPk: false, isFk: false }
+            { name: 'invoice_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'org_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'organizations', col: 'org_id' } },
+            { name: 'amount', type: 'numeric(10,2)', isPk: false, isFk: false },
+            { name: 'status', type: 'varchar(20)', isPk: false, isFk: false },
+            { name: 'paid_at', type: 'date', isPk: false, isFk: false },
+            { name: 'currency', type: 'varchar(6)', isPk: false, isFk: false }
           ],
           rows: [
             { invoice_id: 9001, org_id: 1, amount: 4500.00, status: 'paid', paid_at: '2026-11-14', currency: 'USD' },
@@ -220,11 +219,11 @@
         },
         features_usage: {
           columns: [
-            { name: 'usage_id', type: 'INT', isPk: true, isFk: false },
-            { name: 'org_id', type: 'INT', isPk: false, isFk: true, fkRef: { table: 'organizations', col: 'org_id' } },
-            { name: 'feature_key', type: 'VARCHAR(60)', isPk: false, isFk: false },
-            { name: 'calls_count', type: 'INT', isPk: false, isFk: false },
-            { name: 'latency_p95_ms', type: 'DECIMAL(6,2)', isPk: false, isFk: false }
+            { name: 'usage_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'org_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'organizations', col: 'org_id' } },
+            { name: 'feature_key', type: 'varchar(60)', isPk: false, isFk: false },
+            { name: 'calls_count', type: 'int4', isPk: false, isFk: false },
+            { name: 'latency_p95_ms', type: 'numeric(6,2)', isPk: false, isFk: false }
           ],
           rows: [
             { usage_id: 1, org_id: 1, feature_key: 'ai_copilot_inference', calls_count: 84000, latency_p95_ms: 124.5 },
@@ -239,26 +238,26 @@
         }
       },
       prompts: [
-        { label: 'Top Organizations by MRR', query: 'Show me top 5 organizations ordered by MRR descending' },
-        { label: 'Enterprise Subscriptions', query: 'List all active Enterprise subscriptions with their seats and monthly amount' },
-        { label: 'Active Admins', query: 'Find all active users with role admin and their last login date' },
-        { label: 'Unpaid Invoices', query: 'Show all unpaid invoices with organization ID and amount' },
-        { label: 'AI Feature Usage', query: 'Find all features usage for ai_copilot_inference sorted by calls count' }
+        { label: 'Top Organizations by MRR', query: 'SELECT org_id, name, tier, mrr, status FROM organizations ORDER BY mrr DESC LIMIT 5;' },
+        { label: 'Enterprise Subscriptions', query: 'SELECT sub_id, org_id, plan, seats, monthly_amount, status FROM subscriptions WHERE status = \'active\' ORDER BY monthly_amount DESC;' },
+        { label: 'Active Admins', query: 'SELECT user_id, email, role, last_login FROM users WHERE role = \'admin\' AND is_active = true;' },
+        { label: 'Unpaid Invoices', query: 'SELECT invoice_id, org_id, amount, status, currency FROM invoices WHERE status = \'unpaid\';' },
+        { label: 'High-Volume AI Features', query: 'SELECT usage_id, org_id, feature_key, calls_count, latency_p95_ms FROM features_usage WHERE feature_key = \'ai_copilot_inference\' ORDER BY calls_count DESC;' }
       ]
     },
 
     fintech_ledger: {
-      name: 'FinTech Transaction Ledger',
-      dialect: 'PostgreSQL 16',
+      name: 'fintech_ledger',
+      dialect: 'PostgreSQL 16.2',
       tables: {
         accounts: {
           columns: [
-            { name: 'account_id', type: 'INT', isPk: true, isFk: false },
-            { name: 'account_number', type: 'VARCHAR(30)', isPk: false, isFk: false },
-            { name: 'holder_name', type: 'VARCHAR(80)', isPk: false, isFk: false },
-            { name: 'tier', type: 'VARCHAR(30)', isPk: false, isFk: false },
-            { name: 'balance', type: 'DECIMAL(12,2)', isPk: false, isFk: false },
-            { name: 'currency', type: 'VARCHAR(5)', isPk: false, isFk: false }
+            { name: 'account_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'account_number', type: 'varchar(30)', isPk: false, isFk: false },
+            { name: 'holder_name', type: 'varchar(80)', isPk: false, isFk: false },
+            { name: 'tier', type: 'varchar(30)', isPk: false, isFk: false },
+            { name: 'balance', type: 'numeric(12,2)', isPk: false, isFk: false },
+            { name: 'currency', type: 'varchar(5)', isPk: false, isFk: false }
           ],
           rows: [
             { account_id: 1001, account_number: 'ACC-883192', holder_name: 'Aarav Patel', tier: 'Platinum', balance: 48500.50, currency: 'INR' },
@@ -271,11 +270,11 @@
         },
         merchants: {
           columns: [
-            { name: 'merchant_id', type: 'INT', isPk: true, isFk: false },
-            { name: 'merchant_name', type: 'VARCHAR(80)', isPk: false, isFk: false },
-            { name: 'category', type: 'VARCHAR(50)', isPk: false, isFk: false },
-            { name: 'risk_score', type: 'DECIMAL(4,2)', isPk: false, isFk: false },
-            { name: 'commission_rate', type: 'DECIMAL(4,3)', isPk: false, isFk: false }
+            { name: 'merchant_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'merchant_name', type: 'varchar(80)', isPk: false, isFk: false },
+            { name: 'category', type: 'varchar(50)', isPk: false, isFk: false },
+            { name: 'risk_score', type: 'numeric(4,2)', isPk: false, isFk: false },
+            { name: 'commission_rate', type: 'numeric(4,3)', isPk: false, isFk: false }
           ],
           rows: [
             { merchant_id: 201, merchant_name: 'Swiggy Food Logistics', category: 'Food & Dining', risk_score: 0.12, commission_rate: 0.018 },
@@ -287,13 +286,13 @@
         },
         transactions: {
           columns: [
-            { name: 'txn_id', type: 'INT', isPk: true, isFk: false },
-            { name: 'account_id', type: 'INT', isPk: false, isFk: true, fkRef: { table: 'accounts', col: 'account_id' } },
-            { name: 'merchant_id', type: 'INT', isPk: false, isFk: true, fkRef: { table: 'merchants', col: 'merchant_id' } },
-            { name: 'amount', type: 'DECIMAL(10,2)', isPk: false, isFk: false },
-            { name: 'txn_type', type: 'VARCHAR(20)', isPk: false, isFk: false },
-            { name: 'status', type: 'VARCHAR(20)', isPk: false, isFk: false },
-            { name: 'created_at', type: 'DATE', isPk: false, isFk: false }
+            { name: 'txn_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'account_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'accounts', col: 'account_id' } },
+            { name: 'merchant_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'merchants', col: 'merchant_id' } },
+            { name: 'amount', type: 'numeric(10,2)', isPk: false, isFk: false },
+            { name: 'txn_type', type: 'varchar(20)', isPk: false, isFk: false },
+            { name: 'status', type: 'varchar(20)', isPk: false, isFk: false },
+            { name: 'created_at', type: 'date', isPk: false, isFk: false }
           ],
           rows: [
             { txn_id: 8801, account_id: 1001, merchant_id: 201, amount: 650.00, txn_type: 'UPI', status: 'COMPLETED', created_at: '2026-11-25' },
@@ -307,11 +306,11 @@
         },
         settlements: {
           columns: [
-            { name: 'settlement_id', type: 'INT', isPk: true, isFk: false },
-            { name: 'merchant_id', type: 'INT', isPk: false, isFk: true, fkRef: { table: 'merchants', col: 'merchant_id' } },
-            { name: 'net_amount', type: 'DECIMAL(12,2)', isPk: false, isFk: false },
-            { name: 'fee_deducted', type: 'DECIMAL(10,2)', isPk: false, isFk: false },
-            { name: 'settled_at', type: 'DATE', isPk: false, isFk: false }
+            { name: 'settlement_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'merchant_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'merchants', col: 'merchant_id' } },
+            { name: 'net_amount', type: 'numeric(12,2)', isPk: false, isFk: false },
+            { name: 'fee_deducted', type: 'numeric(10,2)', isPk: false, isFk: false },
+            { name: 'settled_at', type: 'date', isPk: false, isFk: false }
           ],
           rows: [
             { settlement_id: 401, merchant_id: 201, net_amount: 1450000.00, fee_deducted: 26100.00, settled_at: '2026-11-24' },
@@ -322,11 +321,11 @@
         },
         fraud_alerts: {
           columns: [
-            { name: 'alert_id', type: 'INT', isPk: true, isFk: false },
-            { name: 'txn_id', type: 'INT', isPk: false, isFk: true, fkRef: { table: 'transactions', col: 'txn_id' } },
-            { name: 'severity', type: 'VARCHAR(20)', isPk: false, isFk: false },
-            { name: 'rule_triggered', type: 'VARCHAR(80)', isPk: false, isFk: false },
-            { name: 'review_status', type: 'VARCHAR(30)', isPk: false, isFk: false }
+            { name: 'alert_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'txn_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'transactions', col: 'txn_id' } },
+            { name: 'severity', type: 'varchar(20)', isPk: false, isFk: false },
+            { name: 'rule_triggered', type: 'varchar(80)', isPk: false, isFk: false },
+            { name: 'review_status', type: 'varchar(30)', isPk: false, isFk: false }
           ],
           rows: [
             { alert_id: 701, txn_id: 8804, severity: 'HIGH', rule_triggered: 'VELOCITY_LIMIT_EXCEEDED', review_status: 'PENDING_MANUAL' }
@@ -334,25 +333,24 @@
         }
       },
       prompts: [
-        { label: 'High Balance Accounts', query: 'Show all accounts with balance greater than 50000 ordered by balance descending' },
-        { label: 'Flagged Transactions', query: 'Find all transactions with status FLAGGED and their amounts' },
-        { label: 'Merchants by Risk Score', query: 'List merchants ordered by risk_score descending' },
-        { label: 'UPI Transactions', query: 'Show all transactions where txn_type is UPI' },
-        { label: 'Fraud Alerts', query: 'List all fraud alerts with high severity' }
+        { label: 'High Balance Accounts', query: 'SELECT account_id, holder_name, tier, balance, currency FROM accounts WHERE balance > 50000 ORDER BY balance DESC;' },
+        { label: 'Flagged Transactions', query: 'SELECT txn_id, account_id, amount, txn_type, status FROM transactions WHERE status = \'FLAGGED\';' },
+        { label: 'Risk Ranking Merchants', query: 'SELECT merchant_id, merchant_name, category, risk_score FROM merchants ORDER BY risk_score DESC;' },
+        { label: 'UPI Volume', query: 'SELECT txn_id, account_id, amount, status FROM transactions WHERE txn_type = \'UPI\';' }
       ]
     },
 
     ecommerce_global: {
-      name: 'E-Commerce Global Logistics',
-      dialect: 'PostgreSQL 16',
+      name: 'ecommerce_global',
+      dialect: 'PostgreSQL 16.2',
       tables: {
         customers: {
           columns: [
-            { name: 'customer_id', type: 'INT', isPk: true, isFk: false },
-            { name: 'full_name', type: 'VARCHAR(80)', isPk: false, isFk: false },
-            { name: 'country', type: 'VARCHAR(40)', isPk: false, isFk: false },
-            { name: 'tier', type: 'VARCHAR(30)', isPk: false, isFk: false },
-            { name: 'total_spend', type: 'DECIMAL(10,2)', isPk: false, isFk: false }
+            { name: 'customer_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'full_name', type: 'varchar(80)', isPk: false, isFk: false },
+            { name: 'country', type: 'varchar(40)', isPk: false, isFk: false },
+            { name: 'tier', type: 'varchar(30)', isPk: false, isFk: false },
+            { name: 'total_spend', type: 'numeric(10,2)', isPk: false, isFk: false }
           ],
           rows: [
             { customer_id: 1, full_name: 'Liam Chen', country: 'Singapore', tier: 'VIP Gold', total_spend: 3450.00 },
@@ -364,12 +362,12 @@
         },
         products: {
           columns: [
-            { name: 'product_id', type: 'INT', isPk: true, isFk: false },
-            { name: 'title', type: 'VARCHAR(100)', isPk: false, isFk: false },
-            { name: 'category', type: 'VARCHAR(50)', isPk: false, isFk: false },
-            { name: 'price', type: 'DECIMAL(10,2)', isPk: false, isFk: false },
-            { name: 'stock_qty', type: 'INT', isPk: false, isFk: false },
-            { name: 'rating', type: 'DECIMAL(3,2)', isPk: false, isFk: false }
+            { name: 'product_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'title', type: 'varchar(100)', isPk: false, isFk: false },
+            { name: 'category', type: 'varchar(50)', isPk: false, isFk: false },
+            { name: 'price', type: 'numeric(10,2)', isPk: false, isFk: false },
+            { name: 'stock_qty', type: 'int4', isPk: false, isFk: false },
+            { name: 'rating', type: 'numeric(3,2)', isPk: false, isFk: false }
           ],
           rows: [
             { product_id: 101, title: 'Spatial ANC Headphones', category: 'Audio', price: 299.99, stock_qty: 450, rating: 4.8 },
@@ -381,10 +379,10 @@
         },
         warehouses: {
           columns: [
-            { name: 'warehouse_id', type: 'INT', isPk: true, isFk: false },
-            { name: 'region', type: 'VARCHAR(50)', isPk: false, isFk: false },
-            { name: 'capacity_sqft', type: 'INT', isPk: false, isFk: false },
-            { name: 'utilization_pct', type: 'DECIMAL(5,2)', isPk: false, isFk: false }
+            { name: 'warehouse_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'region', type: 'varchar(50)', isPk: false, isFk: false },
+            { name: 'capacity_sqft', type: 'int4', isPk: false, isFk: false },
+            { name: 'utilization_pct', type: 'numeric(5,2)', isPk: false, isFk: false }
           ],
           rows: [
             { warehouse_id: 1, region: 'Asia-Pacific (Singapore)', capacity_sqft: 250000, utilization_pct: 82.5 },
@@ -394,11 +392,11 @@
         },
         orders: {
           columns: [
-            { name: 'order_id', type: 'INT', isPk: true, isFk: false },
-            { name: 'customer_id', type: 'INT', isPk: false, isFk: true, fkRef: { table: 'customers', col: 'customer_id' } },
-            { name: 'total_amount', type: 'DECIMAL(10,2)', isPk: false, isFk: false },
-            { name: 'order_status', type: 'VARCHAR(30)', isPk: false, isFk: false },
-            { name: 'placed_at', type: 'DATE', isPk: false, isFk: false }
+            { name: 'order_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'customer_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'customers', col: 'customer_id' } },
+            { name: 'total_amount', type: 'numeric(10,2)', isPk: false, isFk: false },
+            { name: 'order_status', type: 'varchar(30)', isPk: false, isFk: false },
+            { name: 'placed_at', type: 'date', isPk: false, isFk: false }
           ],
           rows: [
             { order_id: 5001, customer_id: 1, total_amount: 599.98, order_status: 'DELIVERED', placed_at: '2026-11-20' },
@@ -409,11 +407,11 @@
         },
         order_items: {
           columns: [
-            { name: 'item_id', type: 'INT', isPk: true, isFk: false },
-            { name: 'order_id', type: 'INT', isPk: false, isFk: true, fkRef: { table: 'orders', col: 'order_id' } },
-            { name: 'product_id', type: 'INT', isPk: false, isFk: true, fkRef: { table: 'products', col: 'product_id' } },
-            { name: 'quantity', type: 'INT', isPk: false, isFk: false },
-            { name: 'unit_price', type: 'DECIMAL(10,2)', isPk: false, isFk: false }
+            { name: 'item_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'order_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'orders', col: 'order_id' } },
+            { name: 'product_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'products', col: 'product_id' } },
+            { name: 'quantity', type: 'int4', isPk: false, isFk: false },
+            { name: 'unit_price', type: 'numeric(10,2)', isPk: false, isFk: false }
           ],
           rows: [
             { item_id: 1, order_id: 5001, product_id: 101, quantity: 2, unit_price: 299.99 },
@@ -425,12 +423,12 @@
         },
         shipments: {
           columns: [
-            { name: 'shipment_id', type: 'INT', isPk: true, isFk: false },
-            { name: 'order_id', type: 'INT', isPk: false, isFk: true, fkRef: { table: 'orders', col: 'order_id' } },
-            { name: 'warehouse_id', type: 'INT', isPk: false, isFk: true, fkRef: { table: 'warehouses', col: 'warehouse_id' } },
-            { name: 'carrier', type: 'VARCHAR(40)', isPk: false, isFk: false },
-            { name: 'tracking_status', type: 'VARCHAR(30)', isPk: false, isFk: false },
-            { name: 'delivery_days', type: 'INT', isPk: false, isFk: false }
+            { name: 'shipment_id', type: 'int4', isPk: true, isFk: false },
+            { name: 'order_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'orders', col: 'order_id' } },
+            { name: 'warehouse_id', type: 'int4', isPk: false, isFk: true, fkRef: { table: 'warehouses', col: 'warehouse_id' } },
+            { name: 'carrier', type: 'varchar(40)', isPk: false, isFk: false },
+            { name: 'tracking_status', type: 'varchar(30)', isPk: false, isFk: false },
+            { name: 'delivery_days', type: 'int4', isPk: false, isFk: false }
           ],
           rows: [
             { shipment_id: 801, order_id: 5001, warehouse_id: 1, carrier: 'DHL Express', tracking_status: 'DELIVERED', delivery_days: 2 },
@@ -441,11 +439,9 @@
         }
       },
       prompts: [
-        { label: 'Top Products by Rating', query: 'Show products with rating greater than 4.6 ordered by rating descending' },
-        { label: 'VIP Customers', query: 'List all customers where tier LIKE VIP ordered by total_spend descending' },
-        { label: 'High Stock Inventory', query: 'Find products with stock_qty greater than 200' },
-        { label: 'Recent Orders', query: 'Show orders with total_amount greater than 500' },
-        { label: 'Fast Shipments', query: 'Show shipments where delivery_days less than or equal to 3' }
+        { label: 'Highest Rated Catalog', query: 'SELECT product_id, title, category, price, rating FROM products WHERE rating > 4.6 ORDER BY rating DESC;' },
+        { label: 'VIP Customer Lifetime Spend', query: 'SELECT customer_id, full_name, country, tier, total_spend FROM customers WHERE tier LIKE \'%VIP%\' ORDER BY total_spend DESC;' },
+        { label: 'Fastest Carrier Shipments', query: 'SELECT shipment_id, order_id, carrier, tracking_status, delivery_days FROM shipments WHERE delivery_days <= 3;' }
       ]
     }
   };
@@ -455,10 +451,33 @@
   let activeDb = JSON.parse(JSON.stringify(DATABASES[currentDbKey]));
   let currentQueryResult = null;
   let currentSort = { column: null, direction: 'asc' };
-  let currentActiveTab = 'tab-sql-grid';
+  let currentResultView = 'view-grid';
+
+  // Multi-tab query state
+  const queryTabs = [
+    {
+      id: 'tab-1',
+      title: 'query_main.sql',
+      content: 'SELECT \n  org_id, \n  name, \n  tier, \n  mrr, \n  status \nFROM organizations \nORDER BY mrr DESC \nLIMIT 15;'
+    },
+    {
+      id: 'tab-2',
+      title: 'revenue_by_tier.sql',
+      content: 'SELECT \n  sub_id, \n  org_id, \n  plan, \n  seats, \n  monthly_amount, \n  status \nFROM subscriptions \nWHERE status = \'active\' \nORDER BY monthly_amount DESC;'
+    },
+    {
+      id: 'tab-3',
+      title: 'active_admins.sql',
+      content: 'SELECT \n  user_id, \n  email, \n  role, \n  last_login \nFROM users \nWHERE role = \'admin\' AND is_active = true \nORDER BY last_login DESC;'
+    }
+  ];
+  let activeTabId = 'tab-1';
+
+  // Execution History log
+  const queryHistory = [];
 
   // ============================================================================
-  // 3. RELATIONAL SQL PARSER & EXECUTION ENGINE
+  // 3. RELATIONAL SQL ENGINE
   // ============================================================================
   class RelationalEngine {
     constructor(db) {
@@ -469,29 +488,25 @@
       this.db = db;
     }
 
-    /**
-     * Executes SQL string and returns { columns, rows, executionTimeMs, scannedRows, queryPlan }
-     */
     execute(sqlStr) {
       const startTime = performance.now();
       const cleanSql = sqlStr.trim().replace(/;+$/, '');
 
       if (!cleanSql) {
-        throw new Error('Empty SQL query string provided.');
+        throw new Error('Empty query string provided.');
       }
 
-      // Basic regex parser for SELECT queries
       const selectMatch = cleanSql.match(/^SELECT\s+([\s\S]+?)\s+FROM\s+([a-zA-Z0-9_]+)([\s\S]*)$/i);
       if (!selectMatch) {
         throw new Error('Syntax Error: Only SELECT queries are supported in client-side preview engine.');
       }
 
-      const rawColumns = selectMatch[1].trim();
+      const rawCols = selectMatch[1].trim();
       const primaryTable = selectMatch[2].trim().toLowerCase();
       const remainingClauses = selectMatch[3] || '';
 
       if (!this.db.tables[primaryTable]) {
-        throw new Error(`Table not found: "${primaryTable}" in active database.`);
+        throw new Error(`Table not found: "${primaryTable}" in current database.`);
       }
 
       let sourceRows = JSON.parse(JSON.stringify(this.db.tables[primaryTable].rows));
@@ -505,7 +520,7 @@
         cost: (sourceRows.length * 0.1).toFixed(1)
       });
 
-      // 1. Check for JOIN
+      // 1. JOIN
       const joinMatch = remainingClauses.match(/JOIN\s+([a-zA-Z0-9_]+)\s+ON\s+([a-zA-Z0-9_.]+)\s*=\s*([a-zA-Z0-9_.]+)/i);
       if (joinMatch) {
         const joinTable = joinMatch[1].trim().toLowerCase();
@@ -519,7 +534,6 @@
         const joinTargetRows = this.db.tables[joinTable].rows;
         scannedCount += joinTargetRows.length;
 
-        // Perform inner hash join
         const joined = [];
         const leftColName = leftKey.includes('.') ? leftKey.split('.')[1] : leftKey;
         const rightColName = rightKey.includes('.') ? rightKey.split('.')[1] : rightKey;
@@ -541,20 +555,20 @@
         });
       }
 
-      // 2. Check for WHERE clause
+      // 2. WHERE
       const whereMatch = remainingClauses.match(/WHERE\s+([\s\S]+?)(?=(ORDER\s+BY|GROUP\s+BY|LIMIT|$))/i);
       if (whereMatch) {
         const whereCond = whereMatch[1].trim();
         sourceRows = sourceRows.filter(row => this.evaluateCondition(row, whereCond));
         planSteps.push({
           op: 'Filter',
-          detail: `Condition: (${whereCond})`,
+          detail: `Filter: (${whereCond})`,
           rows: sourceRows.length,
           cost: (sourceRows.length * 0.15).toFixed(1)
         });
       }
 
-      // 3. Check for ORDER BY clause
+      // 3. ORDER BY
       const orderMatch = remainingClauses.match(/ORDER\s+BY\s+([a-zA-Z0-9_]+)(?:\s+(ASC|DESC))?/i);
       if (orderMatch) {
         const orderCol = orderMatch[1].trim();
@@ -575,95 +589,69 @@
 
         planSteps.push({
           op: 'Sort',
-          detail: `Order by ${orderCol} ${orderDir}`,
+          detail: `Sort: ${orderCol} ${orderDir}`,
           rows: sourceRows.length,
           cost: (sourceRows.length * 0.08).toFixed(1)
         });
       }
 
-      // 4. Check for LIMIT clause
+      // 4. LIMIT
       const limitMatch = remainingClauses.match(/LIMIT\s+(\d+)/i);
       if (limitMatch) {
         const limitVal = parseInt(limitMatch[1], 10);
         sourceRows = sourceRows.slice(0, limitVal);
         planSteps.push({
           op: 'Limit',
-          detail: `Row count: ${limitVal}`,
+          detail: `Limit: ${limitVal} rows`,
           rows: sourceRows.length,
           cost: '0.1'
         });
       }
 
-      // 5. Column Projection & Aggregation
+      // 5. Projection & Column Types
       let outputColumns = [];
+      let columnTypes = {};
       let outputRows = [];
 
-      if (rawColumns === '*') {
+      const tblCols = this.db.tables[primaryTable].columns;
+
+      if (rawCols === '*') {
         if (sourceRows.length > 0) {
           outputColumns = Object.keys(sourceRows[0]);
         } else {
-          outputColumns = this.db.tables[primaryTable].columns.map(c => c.name);
+          outputColumns = tblCols.map(c => c.name);
         }
         outputRows = sourceRows;
+        outputColumns.forEach(cName => {
+          const matched = tblCols.find(tc => tc.name === cName);
+          columnTypes[cName] = matched ? matched.type : 'varchar';
+        });
       } else {
-        const requestedCols = rawColumns.split(',').map(c => c.trim());
+        const reqCols = rawCols.split(',').map(c => c.trim());
+        outputColumns = reqCols.map(c => {
+          const m = c.match(/(?:AS\s+)?([a-zA-Z0-9_]+)$/i);
+          return m ? m[1] : c;
+        });
 
-        // Check if there are aggregates like COUNT, SUM, AVG
-        const hasAggregate = requestedCols.some(col => /^(COUNT|SUM|AVG|MIN|MAX)\(/i.test(col));
+        outputRows = sourceRows.map(row => {
+          const r = {};
+          reqCols.forEach((colExpr, idx) => {
+            const key = colExpr.split(/\s+AS\s+/i)[0].trim();
+            const targetKey = outputColumns[idx];
+            r[targetKey] = row[key] !== undefined ? row[key] : null;
 
-        if (hasAggregate) {
-          const aggRow = {};
-          requestedCols.forEach(colExpr => {
-            const m = colExpr.match(/^(COUNT|SUM|AVG|MIN|MAX)\((.*?)\)(?:\s+AS\s+([a-zA-Z0-9_]+))?/i);
-            if (m) {
-              const func = m[1].toUpperCase();
-              const targetCol = m[2].trim();
-              const alias = m[3] ? m[3].trim() : `${func.toLowerCase()}_${targetCol.replace('*', 'total')}`;
-
-              if (func === 'COUNT') {
-                aggRow[alias] = sourceRows.length;
-              } else if (func === 'SUM') {
-                aggRow[alias] = sourceRows.reduce((acc, r) => acc + (Number(r[targetCol]) || 0), 0);
-              } else if (func === 'AVG') {
-                const total = sourceRows.reduce((acc, r) => acc + (Number(r[targetCol]) || 0), 0);
-                aggRow[alias] = sourceRows.length ? Number((total / sourceRows.length).toFixed(2)) : 0;
-              } else if (func === 'MIN') {
-                aggRow[alias] = Math.min(...sourceRows.map(r => Number(r[targetCol]) || 0));
-              } else if (func === 'MAX') {
-                aggRow[alias] = Math.max(...sourceRows.map(r => Number(r[targetCol]) || 0));
-              }
-              outputColumns.push(alias);
-            }
+            const matched = tblCols.find(tc => tc.name === key);
+            columnTypes[targetKey] = matched ? matched.type : 'varchar';
           });
-          outputRows = [aggRow];
-          planSteps.push({
-            op: 'HashAggregate',
-            detail: `Compute aggregates: ${requestedCols.join(', ')}`,
-            rows: 1,
-            cost: (sourceRows.length * 0.12).toFixed(1)
-          });
-        } else {
-          outputColumns = requestedCols.map(c => {
-            const aliasMatch = c.match(/(?:AS\s+)?([a-zA-Z0-9_]+)$/i);
-            return aliasMatch ? aliasMatch[1] : c;
-          });
-
-          outputRows = sourceRows.map(row => {
-            const newRow = {};
-            requestedCols.forEach((colExpr, idx) => {
-              const key = colExpr.split(/\s+AS\s+/i)[0].trim();
-              const targetKey = outputColumns[idx];
-              newRow[targetKey] = row[key] !== undefined ? row[key] : null;
-            });
-            return newRow;
-          });
-        }
+          return r;
+        });
       }
 
       const durationMs = Number((performance.now() - startTime).toFixed(2));
 
       return {
         columns: outputColumns,
+        columnTypes: columnTypes,
         rows: outputRows,
         executionTimeMs: durationMs,
         scannedRows: scannedCount,
@@ -672,10 +660,8 @@
     }
 
     evaluateCondition(row, cond) {
-      // Handles: col = val, col > val, col < val, col >= val, col <= val, col LIKE val, col IS NULL
       cond = cond.trim();
 
-      // Check IS NULL / IS NOT NULL
       if (/IS\s+NOT\s+NULL/i.test(cond)) {
         const col = cond.split(/IS\s+NOT\s+NULL/i)[0].trim();
         return row[col] !== null && row[col] !== undefined;
@@ -685,7 +671,6 @@
         return row[col] === null || row[col] === undefined;
       }
 
-      // Check LIKE
       const likeMatch = cond.match(/([a-zA-Z0-9_]+)\s+LIKE\s+['"]?([^'"]+)['"]?/i);
       if (likeMatch) {
         const col = likeMatch[1].trim();
@@ -693,7 +678,6 @@
         return new RegExp(pattern, 'i').test(String(row[col] || ''));
       }
 
-      // Comparison operators
       const compMatch = cond.match(/([a-zA-Z0-9_]+)\s*(=|!=|>=|<=|>|<)\s*['"]?([^'"]+?)['"]?$/i);
       if (compMatch) {
         const col = compMatch[1].trim();
@@ -723,7 +707,7 @@
   const engine = new RelationalEngine(activeDb);
 
   // ============================================================================
-  // 4. NATURAL LANGUAGE TO SQL SYNTHESIZER
+  // 4. NATURAL LANGUAGE AI COPILOT SYNTHESIZER
   // ============================================================================
   class NLSynthesizer {
     constructor(db) {
@@ -737,137 +721,48 @@
     synthesize(prompt) {
       const p = prompt.toLowerCase().trim();
 
-      // Check if prompt matches pre-mapped templates
-      for (const t of this.db.prompts || []) {
-        if (p.includes(t.label.toLowerCase()) || p.includes(t.query.toLowerCase())) {
-          return this.synthesizeFromTemplate(t.query);
+      // Check pre-seeded prompt matches
+      for (const item of this.db.prompts || []) {
+        if (p.includes(item.label.toLowerCase())) {
+          return item.query;
         }
       }
 
-      // Dynamic rule matching
-      // 1. "top N [entity] by [metric]"
-      const topMatch = p.match(/top\s+(\d+)\s+([a-zA-Z0-9_]+)\s+by\s+([a-zA-Z0-9_]+)/i);
-      if (topMatch) {
-        const limit = topMatch[1];
-        const rawEntity = topMatch[2];
-        const rawMetric = topMatch[3];
-        const tableName = this.resolveTableName(rawEntity);
-        const colName = this.resolveColumnName(tableName, rawMetric);
-        return `SELECT * FROM ${tableName} ORDER BY ${colName} DESC LIMIT ${limit};`;
+      // Entity matching rules
+      if (p.includes('top') && p.includes('org')) {
+        return `SELECT org_id, name, tier, mrr, status FROM organizations ORDER BY mrr DESC LIMIT 5;`;
       }
-
-      // 2. "find/list all [entity] where/with [condition]"
-      if (p.includes('active') && p.includes('user')) {
-        return `SELECT user_id, email, role, last_login FROM users WHERE is_active = true ORDER BY last_login DESC;`;
-      }
-
-      if (p.includes('unpaid') && (p.includes('invoice') || p.includes('bill'))) {
-        return `SELECT invoice_id, org_id, amount, status, currency FROM invoices WHERE status = 'unpaid';`;
-      }
-
       if (p.includes('enterprise') && p.includes('sub')) {
         return `SELECT sub_id, org_id, plan, seats, monthly_amount, status FROM subscriptions WHERE plan LIKE '%Enterprise%' ORDER BY monthly_amount DESC;`;
       }
-
-      if (p.includes('flagged') && p.includes('txn')) {
-        return `SELECT txn_id, account_id, amount, txn_type, status FROM transactions WHERE status = 'FLAGGED';`;
+      if (p.includes('admin') || p.includes('owner')) {
+        return `SELECT user_id, email, role, last_login, is_active FROM users WHERE role IN ('admin', 'owner') ORDER BY last_login DESC;`;
       }
-
-      if (p.includes('balance') && p.includes('account')) {
-        return `SELECT account_id, holder_name, tier, balance FROM accounts WHERE balance > 50000 ORDER BY balance DESC;`;
+      if (p.includes('unpaid') || p.includes('invoice')) {
+        return `SELECT invoice_id, org_id, amount, status, currency FROM invoices WHERE status = 'unpaid';`;
       }
-
-      if (p.includes('product') && p.includes('rating')) {
-        return `SELECT product_id, title, category, price, rating FROM products WHERE rating >= 4.7 ORDER BY rating DESC;`;
-      }
-
-      if (p.includes('vip') && p.includes('customer')) {
-        return `SELECT customer_id, full_name, country, tier, total_spend FROM customers WHERE tier LIKE '%VIP%' ORDER BY total_spend DESC;`;
-      }
-
-      // Fallback: Default SELECT * FROM first table LIMIT 15
-      const firstTable = Object.keys(this.db.tables)[0];
-      return `SELECT * FROM ${firstTable} LIMIT 15;`;
-    }
-
-    resolveTableName(word) {
-      const tables = Object.keys(this.db.tables);
-      for (const t of tables) {
-        if (t.includes(word) || word.includes(t) || t.startsWith(word.slice(0, 4))) {
-          return t;
-        }
-      }
-      return tables[0];
-    }
-
-    resolveColumnName(table, word) {
-      const cols = this.db.tables[table].columns;
-      for (const c of cols) {
-        if (c.name.toLowerCase().includes(word) || word.includes(c.name.toLowerCase())) {
-          return c.name;
-        }
-      }
-      return cols[0].name;
-    }
-
-    synthesizeFromTemplate(queryDesc) {
-      const q = queryDesc.toLowerCase();
-      const tables = Object.keys(this.db.tables);
-
-      if (q.includes('organizations') && q.includes('mrr')) {
-        return `SELECT org_id, name, tier, mrr, status FROM organizations ORDER BY mrr DESC LIMIT 5;`;
-      }
-      if (q.includes('enterprise') && q.includes('subscription')) {
-        return `SELECT sub_id, org_id, plan, seats, monthly_amount, status FROM subscriptions WHERE status = 'active' ORDER BY monthly_amount DESC;`;
-      }
-      if (q.includes('admin')) {
-        return `SELECT user_id, email, role, last_login FROM users WHERE role = 'admin' AND is_active = true;`;
-      }
-      if (q.includes('unpaid')) {
-        return `SELECT invoice_id, org_id, amount, status FROM invoices WHERE status = 'unpaid';`;
-      }
-      if (q.includes('ai_copilot_inference')) {
-        return `SELECT usage_id, org_id, feature_key, calls_count, latency_p95_ms FROM features_usage WHERE feature_key = 'ai_copilot_inference' ORDER BY calls_count DESC;`;
-      }
-      if (q.includes('accounts') && q.includes('balance')) {
+      if (p.includes('high balance') || p.includes('account')) {
         return `SELECT account_id, holder_name, tier, balance, currency FROM accounts WHERE balance > 50000 ORDER BY balance DESC;`;
       }
-      if (q.includes('flagged')) {
+      if (p.includes('flagged') || p.includes('fraud')) {
         return `SELECT txn_id, account_id, amount, txn_type, status FROM transactions WHERE status = 'FLAGGED';`;
       }
-      if (q.includes('merchants') && q.includes('risk')) {
-        return `SELECT merchant_id, merchant_name, category, risk_score FROM merchants ORDER BY risk_score DESC;`;
-      }
-      if (q.includes('upi')) {
-        return `SELECT txn_id, account_id, amount, status FROM transactions WHERE txn_type = 'UPI';`;
-      }
-      if (q.includes('fraud alerts')) {
-        return `SELECT alert_id, txn_id, severity, rule_triggered, review_status FROM fraud_alerts WHERE severity = 'HIGH';`;
-      }
-      if (q.includes('rating')) {
+      if (p.includes('rating') || p.includes('product')) {
         return `SELECT product_id, title, category, price, rating FROM products WHERE rating > 4.6 ORDER BY rating DESC;`;
       }
-      if (q.includes('vip')) {
+      if (p.includes('vip') || p.includes('spend')) {
         return `SELECT customer_id, full_name, country, tier, total_spend FROM customers WHERE tier LIKE '%VIP%' ORDER BY total_spend DESC;`;
       }
-      if (q.includes('stock')) {
-        return `SELECT product_id, title, category, stock_qty FROM products WHERE stock_qty > 200 ORDER BY stock_qty DESC;`;
-      }
-      if (q.includes('orders') && q.includes('500')) {
-        return `SELECT order_id, customer_id, total_amount, order_status FROM orders WHERE total_amount > 500 ORDER BY total_amount DESC;`;
-      }
-      if (q.includes('shipments')) {
-        return `SELECT shipment_id, order_id, carrier, tracking_status, delivery_days FROM shipments WHERE delivery_days <= 3;`;
-      }
 
-      return `SELECT * FROM ${tables[0]} LIMIT 15;`;
+      const firstTbl = Object.keys(this.db.tables)[0];
+      return `SELECT * FROM ${firstTbl} LIMIT 15;`;
     }
   }
 
   const synthesizer = new NLSynthesizer(activeDb);
 
   // ============================================================================
-  // 5. INTERACTIVE DYNAMIC ERD CANVAS VISUALIZER
+  // 5. INTERACTIVE ERD SCHEMA ARCHITECT
   // ============================================================================
   class ErdVisualizer {
     constructor(canvas, db) {
@@ -877,13 +772,12 @@
       this.nodes = [];
       this.links = [];
       this.scale = 1.0;
-      this.panX = 40;
-      this.panY = 40;
+      this.panX = 50;
+      this.panY = 50;
       this.draggingNode = null;
       this.dragOffset = { x: 0, y: 0 };
       this.isPanning = false;
       this.lastMouse = { x: 0, y: 0 };
-      this.hoveredCol = null;
 
       this.initNodes();
       this.setupEventListeners();
@@ -900,16 +794,13 @@
       this.links = [];
       const tables = Object.keys(this.db.tables);
 
-      // Auto-layout in a responsive grid
-      const colWidth = 240;
-      const rowGap = 30;
+      const colWidth = 230;
       let curX = 50;
       let curY = 50;
-      let maxHeightInCol = 0;
 
       tables.forEach((tblKey, idx) => {
         const tbl = this.db.tables[tblKey];
-        const nodeHeight = 40 + tbl.columns.length * 22;
+        const nodeHeight = 36 + tbl.columns.length * 20 + 8;
 
         this.nodes.push({
           id: tblKey,
@@ -922,14 +813,13 @@
           rowCount: tbl.rows.length
         });
 
-        curX += colWidth + 80;
-        if (curX > 850) {
+        curX += colWidth + 60;
+        if (curX > 800) {
           curX = 50;
-          curY += 260;
+          curY += 240;
         }
       });
 
-      // Extract Foreign Key Links
       tables.forEach(tblKey => {
         const tbl = this.db.tables[tblKey];
         tbl.columns.forEach(col => {
@@ -950,28 +840,21 @@
 
       c.addEventListener('mousedown', (e) => {
         const rect = c.getBoundingClientRect();
-        const mouseX = (e.clientX - rect.left - this.panX) / this.scale;
-        const mouseY = (e.clientY - rect.top - this.panY) / this.scale;
+        const mx = (e.clientX - rect.left - this.panX) / this.scale;
+        const my = (e.clientY - rect.top - this.panY) / this.scale;
 
-        // Check if clicked inside a node
         for (let i = this.nodes.length - 1; i >= 0; i--) {
-          const node = this.nodes[i];
-          if (
-            mouseX >= node.x &&
-            mouseX <= node.x + node.width &&
-            mouseY >= node.y &&
-            mouseY <= node.y + node.height
-          ) {
-            this.draggingNode = node;
-            this.dragOffset.x = mouseX - node.x;
-            this.dragOffset.y = mouseY - node.y;
+          const n = this.nodes[i];
+          if (mx >= n.x && mx <= n.x + n.width && my >= n.y && my <= n.y + n.height) {
+            this.draggingNode = n;
+            this.dragOffset.x = mx - n.x;
+            this.dragOffset.y = my - n.y;
             audio.playClick();
-            this.showTableDetailDrawer(node);
+            this.showTableDetailDrawer(n);
             return;
           }
         }
 
-        // Otherwise panning
         this.isPanning = true;
         this.lastMouse.x = e.clientX;
         this.lastMouse.y = e.clientY;
@@ -980,11 +863,10 @@
       window.addEventListener('mousemove', (e) => {
         if (this.draggingNode) {
           const rect = c.getBoundingClientRect();
-          const mouseX = (e.clientX - rect.left - this.panX) / this.scale;
-          const mouseY = (e.clientY - rect.top - this.panY) / this.scale;
-
-          this.draggingNode.x = mouseX - this.dragOffset.x;
-          this.draggingNode.y = mouseY - this.dragOffset.y;
+          const mx = (e.clientX - rect.left - this.panX) / this.scale;
+          const my = (e.clientY - rect.top - this.panY) / this.scale;
+          this.draggingNode.x = mx - this.dragOffset.x;
+          this.draggingNode.y = my - this.dragOffset.y;
           this.render();
         } else if (this.isPanning) {
           const dx = e.clientX - this.lastMouse.x;
@@ -1004,8 +886,8 @@
 
       c.addEventListener('wheel', (e) => {
         e.preventDefault();
-        const zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
-        this.scale = Math.min(Math.max(this.scale * zoomFactor, 0.4), 2.2);
+        const factor = e.deltaY < 0 ? 1.06 : 0.94;
+        this.scale = Math.min(Math.max(this.scale * factor, 0.4), 2.2);
         this.render();
       }, { passive: false });
     }
@@ -1017,7 +899,6 @@
 
       ctx.clearRect(0, 0, w, h);
 
-      // Background subtle grid
       ctx.save();
       ctx.fillStyle = '#07090e';
       ctx.fillRect(0, 0, w, h);
@@ -1025,124 +906,109 @@
       ctx.translate(this.panX, this.panY);
       ctx.scale(this.scale, this.scale);
 
-      // Draw Grid Dots
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-      const gridSize = 30;
-      for (let x = -1000; x < 2500; x += gridSize) {
-        for (let y = -1000; y < 2500; y += gridSize) {
-          ctx.fillRect(x, y, 1.5, 1.5);
+      // Dot Matrix Background
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.035)';
+      const step = 24;
+      for (let x = -800; x < 2400; x += step) {
+        for (let y = -800; y < 2400; y += step) {
+          ctx.fillRect(x, y, 1.2, 1.2);
         }
       }
 
-      // Draw Relation Bezier Connectors
-      this.links.forEach(link => {
-        const srcNode = this.nodes.find(n => n.id === link.sourceTable);
-        const tgtNode = this.nodes.find(n => n.id === link.targetTable);
+      // Draw Relationship Connectors
+      this.links.forEach(l => {
+        const src = this.nodes.find(n => n.id === l.sourceTable);
+        const tgt = this.nodes.find(n => n.id === l.targetTable);
 
-        if (srcNode && tgtNode) {
-          const srcIdx = srcNode.columns.findIndex(c => c.name === link.sourceCol);
-          const tgtIdx = tgtNode.columns.findIndex(c => c.name === link.targetCol);
+        if (src && tgt) {
+          const sIdx = src.columns.findIndex(c => c.name === l.sourceCol);
+          const tIdx = tgt.columns.findIndex(c => c.name === l.targetCol);
 
-          const startX = srcNode.x + srcNode.width;
-          const startY = srcNode.y + 40 + (srcIdx >= 0 ? srcIdx : 0) * 22 + 11;
+          const startX = src.x + src.width;
+          const startY = src.y + 36 + (sIdx >= 0 ? sIdx : 0) * 20 + 10;
+          const endX = tgt.x;
+          const endY = tgt.y + 36 + (tIdx >= 0 ? tIdx : 0) * 20 + 10;
 
-          const endX = tgtNode.x;
-          const endY = tgtNode.y + 40 + (tgtIdx >= 0 ? tgtIdx : 0) * 22 + 11;
-
-          const cp1x = startX + 50;
+          const cp1x = startX + 40;
           const cp1y = startY;
-          const cp2x = endX - 50;
+          const cp2x = endX - 40;
           const cp2y = endY;
 
-          // Animated glow line
           ctx.beginPath();
           ctx.moveTo(startX, startY);
           ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, endX, endY);
-          ctx.strokeStyle = '#00e5ff';
-          ctx.lineWidth = 2;
+          ctx.strokeStyle = '#38bdf8';
+          ctx.lineWidth = 1.8;
           ctx.stroke();
 
-          // Endpoint dots
           ctx.fillStyle = '#a855f7';
           ctx.beginPath();
-          ctx.arc(startX, startY, 4, 0, Math.PI * 2);
+          ctx.arc(startX, startY, 3.5, 0, Math.PI * 2);
           ctx.fill();
 
           ctx.fillStyle = '#f59e0b';
           ctx.beginPath();
-          ctx.arc(endX, endY, 4, 0, Math.PI * 2);
+          ctx.arc(endX, endY, 3.5, 0, Math.PI * 2);
           ctx.fill();
         }
       });
 
-      // Draw Table Entity Cards
-      this.nodes.forEach(node => {
-        // Node Card Outer Glow & Shadow
-        ctx.fillStyle = '#161b24';
-        ctx.strokeStyle = '#323d52';
-        ctx.lineWidth = 1.5;
+      // Draw Tables
+      this.nodes.forEach(n => {
+        // Card Body
+        ctx.fillStyle = '#10141d';
+        ctx.strokeStyle = '#263145';
+        ctx.lineWidth = 1.2;
+        this.roundRect(ctx, n.x, n.y, n.width, n.height, 6, true, true);
 
-        // Rounded Card
-        this.roundRect(ctx, node.x, node.y, node.width, node.height, 8, true, true);
+        // Card Header
+        ctx.fillStyle = '#171e2c';
+        this.roundRect(ctx, n.x, n.y, n.width, 32, { tl: 6, tr: 6, bl: 0, br: 0 }, true, false);
 
-        // Header Background
-        ctx.fillStyle = '#1f2937';
-        this.roundRect(ctx, node.x, node.y, node.width, 36, { tl: 8, tr: 8, bl: 0, br: 0 }, true, false);
-
-        // Header Border
         ctx.beginPath();
-        ctx.moveTo(node.x, node.y + 36);
-        ctx.lineTo(node.x + node.width, node.y + 36);
-        ctx.strokeStyle = '#242c3d';
+        ctx.moveTo(n.x, n.y + 32);
+        ctx.lineTo(n.x + n.width, n.y + 32);
+        ctx.strokeStyle = '#1c2331';
         ctx.stroke();
 
-        // Header Title
-        ctx.fillStyle = '#00e5ff';
-        ctx.font = 'bold 13px "Fira Code", monospace';
-        ctx.fillText(node.name, node.x + 12, node.y + 23);
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = 'bold 11px "Fira Code", monospace';
+        ctx.fillText(n.name, n.x + 10, n.y + 20);
 
-        // Row count badge
         ctx.fillStyle = '#64748b';
-        ctx.font = '10px "Plus Jakarta Sans", sans-serif';
-        ctx.fillText(`${node.rowCount} rows`, node.x + node.width - 50, node.y + 22);
+        ctx.font = '10px "Inter", sans-serif';
+        ctx.fillText(`${n.rowCount} rows`, n.x + n.width - 48, n.y + 20);
 
         // Columns
-        node.columns.forEach((col, idx) => {
-          const colY = node.y + 40 + idx * 22;
+        n.columns.forEach((col, idx) => {
+          const colY = n.y + 36 + idx * 20;
 
-          // Column divider
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
-          ctx.fillRect(node.x + 2, colY, node.width - 4, 20);
-
-          // PK or FK badges
           if (col.isPk) {
             ctx.fillStyle = '#f59e0b';
-            ctx.fillRect(node.x + 10, colY + 5, 18, 12);
+            ctx.fillRect(n.x + 8, colY + 4, 16, 11);
             ctx.fillStyle = '#000';
             ctx.font = 'bold 8px monospace';
-            ctx.fillText('PK', node.x + 13, colY + 14);
+            ctx.fillText('PK', n.x + 10, colY + 12);
           } else if (col.isFk) {
             ctx.fillStyle = '#a855f7';
-            ctx.fillRect(node.x + 10, colY + 5, 18, 12);
-            ctx.fillStyle = '#000';
+            ctx.fillRect(n.x + 8, colY + 4, 16, 11);
+            ctx.fillStyle = '#fff';
             ctx.font = 'bold 8px monospace';
-            ctx.fillText('FK', node.x + 13, colY + 14);
+            ctx.fillText('FK', n.x + 10, colY + 12);
           } else {
-            ctx.fillStyle = '#475569';
+            ctx.fillStyle = '#334155';
             ctx.beginPath();
-            ctx.arc(node.x + 18, colY + 11, 2.5, 0, Math.PI * 2);
+            ctx.arc(n.x + 16, colY + 9, 2, 0, Math.PI * 2);
             ctx.fill();
           }
 
-          // Column name
-          ctx.fillStyle = '#e2e8f0';
-          ctx.font = '11px "Fira Code", monospace';
-          ctx.fillText(col.name, node.x + 36, colY + 15);
-
-          // Column type
-          ctx.fillStyle = '#64748b';
+          ctx.fillStyle = '#cbd5e1';
           ctx.font = '10px "Fira Code", monospace';
-          ctx.fillText(col.type, node.x + node.width - 85, colY + 15);
+          ctx.fillText(col.name, n.x + 30, colY + 13);
+
+          ctx.fillStyle = '#64748b';
+          ctx.font = '9px "Fira Code", monospace';
+          ctx.fillText(col.type, n.x + n.width - 70, colY + 13);
         });
       });
 
@@ -1152,8 +1018,6 @@
     roundRect(ctx, x, y, width, height, radius, fill, stroke) {
       if (typeof radius === 'number') {
         radius = { tl: radius, tr: radius, br: radius, bl: radius };
-      } else {
-        radius = Object.assign({ tl: 0, tr: 0, br: 0, bl: 0 }, radius);
       }
       ctx.beginPath();
       ctx.moveTo(x + radius.tl, y);
@@ -1171,28 +1035,35 @@
     }
 
     showTableDetailDrawer(node) {
-      const drawer = document.getElementById('erd-detail-drawer');
-      const title = document.getElementById('drawer-table-name');
-      const body = document.getElementById('drawer-table-details');
-
-      if (!drawer || !title || !body) return;
+      const drawer = document.getElementById('erd-entity-drawer');
+      const title = document.getElementById('drawer-entity-name');
+      const content = document.getElementById('drawer-entity-content');
+      if (!drawer || !title || !content) return;
 
       title.textContent = `Table: ${node.name}`;
-      let html = `<p><strong>Total Records:</strong> ${node.rowCount}</p>`;
-      html += `<div style="margin-top: 8px;"><strong>Schema Fields:</strong></div><ul style="padding-left: 18px; margin-top: 4px;">`;
+      let html = `<p style="margin-bottom: 6px;">Total Records: <strong>${node.rowCount}</strong></p>`;
+      html += `<div style="font-weight: 600; margin-bottom: 4px; color: var(--text-muted);">Columns:</div>`;
+      html += `<div style="display:flex; flex-direction:column; gap:4px;">`;
       node.columns.forEach(c => {
-        html += `<li><code>${c.name}</code> (${c.type}) ${c.isPk ? '<strong>[PK]</strong>' : ''} ${c.isFk ? '<em>[FK]</em>' : ''}</li>`;
+        html += `<div style="display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:10px;">
+          <span>${c.name} ${c.isPk ? '<span class="col-tag pk">PK</span>' : ''} ${c.isFk ? '<span class="col-tag fk">FK</span>' : ''}</span>
+          <span style="color:var(--text-dim);">${c.type}</span>
+        </div>`;
       });
-      html += `</ul>`;
+      html += `</div>`;
 
-      body.innerHTML = html;
+      content.innerHTML = html;
       drawer.classList.remove('hidden');
 
-      document.getElementById('drawer-btn-select-all').onclick = () => {
-        const sqlInput = document.getElementById('sql-input');
-        sqlInput.value = `SELECT * FROM ${node.name} LIMIT 20;`;
-        switchTab('tab-sql-grid');
-        runQuery();
+      document.getElementById('btn-drawer-query-table').onclick = () => {
+        setEditorContent(`SELECT * FROM ${node.name} LIMIT 20;`);
+        switchResultView('view-grid');
+        executeActiveQuery();
+      };
+
+      document.getElementById('btn-drawer-copy-name').onclick = () => {
+        navigator.clipboard.writeText(node.name);
+        audio.playClick();
       };
     }
   }
@@ -1207,47 +1078,46 @@
       this.chartType = 'bar';
       this.xAxisCol = '';
       this.yAxisCol = '';
-      this.agg = 'raw';
       this.data = [];
-      this.colorPalette = ['#00e5ff', '#a855f7', '#10b981', '#f59e0b', '#3b82f6', '#ec4899'];
+      this.columns = [];
+      this.palette = ['#38bdf8', '#a855f7', '#10b981', '#f59e0b', '#ec4899', '#06b6d4'];
     }
 
     setData(rows, columns) {
       this.data = rows;
       this.columns = columns;
-      this.populateAxisSelectors();
+      this.populateSelectors();
       this.render();
     }
 
-    populateAxisSelectors() {
-      const xSelect = document.getElementById('chart-x-axis');
-      const ySelect = document.getElementById('chart-y-axis');
-      if (!xSelect || !ySelect) return;
+    populateSelectors() {
+      const selX = document.getElementById('chart-axis-x');
+      const selY = document.getElementById('chart-axis-y');
+      if (!selX || !selY) return;
 
-      xSelect.innerHTML = '';
-      ySelect.innerHTML = '';
+      selX.innerHTML = '';
+      selY.innerHTML = '';
 
       this.columns.forEach(col => {
-        const optX = document.createElement('option');
-        optX.value = col;
-        optX.textContent = col;
-        xSelect.appendChild(optX);
+        const ox = document.createElement('option');
+        ox.value = col;
+        ox.textContent = col;
+        selX.appendChild(ox);
 
-        const optY = document.createElement('option');
-        optY.value = col;
-        optY.textContent = col;
-        ySelect.appendChild(optY);
+        const oy = document.createElement('option');
+        oy.value = col;
+        oy.textContent = col;
+        selY.appendChild(oy);
       });
 
-      // Default smart picks
       this.xAxisCol = this.columns[0];
       const numericCol = this.columns.find(c => {
         return this.data.length && !isNaN(Number(this.data[0][c])) && typeof this.data[0][c] !== 'boolean';
       });
       this.yAxisCol = numericCol || (this.columns[1] || this.columns[0]);
 
-      xSelect.value = this.xAxisCol;
-      ySelect.value = this.yAxisCol;
+      selX.value = this.xAxisCol;
+      selY.value = this.yAxisCol;
     }
 
     setChartType(type) {
@@ -1264,205 +1134,195 @@
 
       if (!this.data || this.data.length === 0) {
         ctx.fillStyle = '#64748b';
-        ctx.font = '14px "Plus Jakarta Sans", sans-serif';
+        ctx.font = '13px "Inter", sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('No data available to plot chart. Execute a query with records.', w / 2, h / 2);
+        ctx.fillText('No query rows available for plotting.', w / 2, h / 2);
         return;
       }
 
-      // Prepare data series
       const xLabels = this.data.map(r => String(r[this.xAxisCol] ?? ''));
       const yValues = this.data.map(r => Number(r[this.yAxisCol]) || 0);
 
       const maxVal = Math.max(...yValues, 1);
       const minVal = Math.min(...yValues, 0);
 
-      // Update summary KPI pills
-      const countEl = document.querySelector('#insight-count span');
-      const maxEl = document.querySelector('#insight-max span');
-      const minEl = document.querySelector('#insight-min span');
-      const avgEl = document.querySelector('#insight-avg span');
+      // Update KPI strip
+      const kpPoints = document.getElementById('kpi-total-points');
+      const kpMax = document.getElementById('kpi-max-value');
+      const kpMin = document.getElementById('kpi-min-value');
+      const kpAvg = document.getElementById('kpi-avg-value');
 
-      if (countEl) countEl.textContent = this.data.length;
-      if (maxEl) maxEl.textContent = maxVal.toLocaleString();
-      if (minEl) minEl.textContent = minVal.toLocaleString();
-      if (avgEl) {
+      if (kpPoints) kpPoints.textContent = this.data.length;
+      if (kpMax) kpMax.textContent = maxVal.toLocaleString();
+      if (kpMin) kpMin.textContent = minVal.toLocaleString();
+      if (kpAvg) {
         const sum = yValues.reduce((a, b) => a + b, 0);
-        avgEl.textContent = (sum / yValues.length).toFixed(1);
+        kpAvg.textContent = (sum / yValues.length).toFixed(1);
       }
 
-      const padding = { top: 40, right: 40, bottom: 60, left: 70 };
-      const chartW = w - padding.left - padding.right;
-      const chartH = h - padding.top - padding.bottom;
+      const pad = { top: 30, right: 30, bottom: 50, left: 60 };
+      const cw = w - pad.left - pad.right;
+      const ch = h - pad.top - pad.bottom;
 
       switch (this.chartType) {
         case 'bar':
-          this.renderBarChart(ctx, xLabels, yValues, padding, chartW, chartH, maxVal);
+          this.drawBar(ctx, xLabels, yValues, pad, cw, ch, maxVal);
           break;
         case 'line':
-          this.renderLineChart(ctx, xLabels, yValues, padding, chartW, chartH, maxVal, false);
+          this.drawLine(ctx, xLabels, yValues, pad, cw, ch, maxVal, false);
           break;
         case 'area':
-          this.renderLineChart(ctx, xLabels, yValues, padding, chartW, chartH, maxVal, true);
+          this.drawLine(ctx, xLabels, yValues, pad, cw, ch, maxVal, true);
           break;
         case 'donut':
-          this.renderDonutChart(ctx, xLabels, yValues, w, h);
+          this.drawDonut(ctx, xLabels, yValues, w, h);
           break;
         case 'scatter':
-          this.renderScatterChart(ctx, xLabels, yValues, padding, chartW, chartH, maxVal);
+          this.drawScatter(ctx, xLabels, yValues, pad, cw, ch, maxVal);
           break;
       }
     }
 
-    renderBarChart(ctx, labels, values, pad, cw, ch, maxVal) {
-      const barWidth = Math.min((cw / values.length) * 0.6, 50);
+    drawBar(ctx, labels, values, pad, cw, ch, maxVal) {
+      this.drawAxes(ctx, pad, cw, ch, maxVal);
+
       const gap = cw / values.length;
+      const barW = Math.min(gap * 0.55, 48);
 
-      // Draw Grid Lines
-      this.drawAxesAndGrid(ctx, pad, cw, ch, maxVal);
+      values.forEach((v, idx) => {
+        const barH = (v / maxVal) * ch;
+        const x = pad.left + idx * gap + (gap - barW) / 2;
+        const y = pad.top + ch - barH;
 
-      values.forEach((val, idx) => {
-        const barHeight = (val / maxVal) * ch;
-        const x = pad.left + idx * gap + (gap - barWidth) / 2;
-        const y = pad.top + ch - barHeight;
-
-        // Gradient Bar
-        const grad = ctx.createLinearGradient(0, y, 0, y + barHeight);
-        grad.addColorStop(0, '#00e5ff');
-        grad.addColorStop(1, 'rgba(0, 229, 255, 0.2)');
+        const grad = ctx.createLinearGradient(0, y, 0, y + barH);
+        grad.addColorStop(0, '#38bdf8');
+        grad.addColorStop(1, 'rgba(56, 189, 248, 0.2)');
 
         ctx.fillStyle = grad;
-        ctx.fillRect(x, y, barWidth, barHeight);
+        ctx.fillRect(x, y, barW, barH);
 
-        // Top cap glow
-        ctx.fillStyle = '#00e5ff';
-        ctx.fillRect(x, y, barWidth, 3);
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillRect(x, y, barW, 2);
 
-        // X Label
         ctx.fillStyle = '#94a3b8';
-        ctx.font = '11px "Plus Jakarta Sans", sans-serif';
+        ctx.font = '10px "Inter", sans-serif';
         ctx.textAlign = 'center';
-        const labelText = labels[idx].length > 10 ? labels[idx].slice(0, 8) + '...' : labels[idx];
-        ctx.fillText(labelText, x + barWidth / 2, pad.top + ch + 20);
+        const lbl = labels[idx].length > 9 ? labels[idx].slice(0, 7) + '..' : labels[idx];
+        ctx.fillText(lbl, x + barW / 2, pad.top + ch + 18);
 
-        // Value on bar top
-        ctx.fillStyle = '#00e5ff';
-        ctx.font = '10px "Fira Code", monospace';
-        ctx.fillText(val.toLocaleString(), x + barWidth / 2, y - 6);
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = '9px "Fira Code", monospace';
+        ctx.fillText(v.toLocaleString(), x + barW / 2, y - 5);
       });
     }
 
-    renderLineChart(ctx, labels, values, pad, cw, ch, maxVal, isArea) {
-      this.drawAxesAndGrid(ctx, pad, cw, ch, maxVal);
+    drawLine(ctx, labels, values, pad, cw, ch, maxVal, isArea) {
+      this.drawAxes(ctx, pad, cw, ch, maxVal);
 
       const step = cw / (values.length - 1 || 1);
-      const points = values.map((val, idx) => ({
-        x: pad.left + idx * step,
-        y: pad.top + ch - (val / maxVal) * ch
+      const pts = values.map((v, i) => ({
+        x: pad.left + i * step,
+        y: pad.top + ch - (v / maxVal) * ch
       }));
 
       if (isArea) {
         ctx.beginPath();
-        ctx.moveTo(points[0].x, pad.top + ch);
-        points.forEach(p => ctx.lineTo(p.x, p.y));
-        ctx.lineTo(points[points.length - 1].x, pad.top + ch);
+        ctx.moveTo(pts[0].x, pad.top + ch);
+        pts.forEach(p => ctx.lineTo(p.x, p.y));
+        ctx.lineTo(pts[pts.length - 1].x, pad.top + ch);
         ctx.closePath();
 
         const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + ch);
-        grad.addColorStop(0, 'rgba(168, 85, 247, 0.4)');
+        grad.addColorStop(0, 'rgba(168, 85, 247, 0.35)');
         grad.addColorStop(1, 'rgba(168, 85, 247, 0.0)');
         ctx.fillStyle = grad;
         ctx.fill();
       }
 
-      // Draw Main Line
       ctx.beginPath();
-      ctx.moveTo(points[0].x, points[0].y);
-      points.forEach(p => ctx.lineTo(p.x, p.y));
+      ctx.moveTo(pts[0].x, pts[0].y);
+      pts.forEach(p => ctx.lineTo(p.x, p.y));
       ctx.strokeStyle = '#a855f7';
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 2.5;
       ctx.stroke();
 
-      // Draw Nodes
-      points.forEach((p, idx) => {
-        ctx.fillStyle = '#161b24';
-        ctx.strokeStyle = '#00e5ff';
+      pts.forEach((p, idx) => {
+        ctx.fillStyle = '#0f131a';
+        ctx.strokeStyle = '#38bdf8';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
 
         ctx.fillStyle = '#94a3b8';
-        ctx.font = '11px "Plus Jakarta Sans", sans-serif';
+        ctx.font = '10px "Inter", sans-serif';
         ctx.textAlign = 'center';
-        const labelText = labels[idx].length > 8 ? labels[idx].slice(0, 6) + '..' : labels[idx];
-        ctx.fillText(labelText, p.x, pad.top + ch + 20);
+        const lbl = labels[idx].length > 8 ? labels[idx].slice(0, 6) + '..' : labels[idx];
+        ctx.fillText(lbl, p.x, pad.top + ch + 18);
       });
     }
 
-    renderDonutChart(ctx, labels, values, w, h) {
-      const centerX = w / 2;
-      const centerY = h / 2;
-      const radius = Math.min(w, h) * 0.32;
-      const innerRadius = radius * 0.6;
+    drawDonut(ctx, labels, values, w, h) {
+      const cx = w / 2;
+      const cy = h / 2;
+      const rad = Math.min(w, h) * 0.32;
+      const inRad = rad * 0.6;
       const total = values.reduce((a, b) => a + b, 0) || 1;
 
-      let curAngle = -Math.PI / 2;
+      let cur = -Math.PI / 2;
 
-      values.forEach((val, idx) => {
-        const sliceAngle = (val / total) * Math.PI * 2;
-        const color = this.colorPalette[idx % this.colorPalette.length];
+      values.forEach((v, idx) => {
+        const slice = (v / total) * Math.PI * 2;
+        const color = this.palette[idx % this.palette.length];
 
         ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, curAngle, curAngle + sliceAngle);
-        ctx.arc(centerX, centerY, innerRadius, curAngle + sliceAngle, curAngle, true);
+        ctx.arc(cx, cy, rad, cur, cur + slice);
+        ctx.arc(cx, cy, inRad, cur + slice, cur, true);
         ctx.closePath();
 
         ctx.fillStyle = color;
         ctx.fill();
-        ctx.strokeStyle = '#0f1319';
-        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#07090e';
+        ctx.lineWidth = 2;
         ctx.stroke();
 
-        curAngle += sliceAngle;
+        cur += slice;
       });
 
-      // Center summary
-      ctx.fillStyle = '#f1f5f9';
-      ctx.font = 'bold 16px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = 'bold 15px "Inter", sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('Distribution', centerX, centerY - 6);
+      ctx.fillText('Distribution', cx, cy - 4);
 
       ctx.fillStyle = '#94a3b8';
-      ctx.font = '12px "Fira Code", monospace';
-      ctx.fillText(`${values.length} slices`, centerX, centerY + 14);
+      ctx.font = '11px "Fira Code", monospace';
+      ctx.fillText(`${values.length} records`, cx, cy + 14);
     }
 
-    renderScatterChart(ctx, labels, values, pad, cw, ch, maxVal) {
-      this.drawAxesAndGrid(ctx, pad, cw, ch, maxVal);
+    drawScatter(ctx, labels, values, pad, cw, ch, maxVal) {
+      this.drawAxes(ctx, pad, cw, ch, maxVal);
 
-      values.forEach((val, idx) => {
+      values.forEach((v, idx) => {
         const x = pad.left + Math.random() * cw;
-        const y = pad.top + ch - (val / maxVal) * ch;
+        const y = pad.top + ch - (v / maxVal) * ch;
 
-        ctx.fillStyle = 'rgba(0, 229, 255, 0.7)';
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.6)';
         ctx.beginPath();
-        ctx.arc(x, y, 7, 0, Math.PI * 2);
+        ctx.arc(x, y, 6, 0, Math.PI * 2);
         ctx.fill();
 
-        ctx.strokeStyle = '#00e5ff';
-        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 1;
         ctx.stroke();
       });
     }
 
-    drawAxesAndGrid(ctx, pad, cw, ch, maxVal) {
-      ctx.strokeStyle = '#242c3d';
+    drawAxes(ctx, pad, cw, ch, maxVal) {
+      ctx.strokeStyle = '#1c2331';
       ctx.lineWidth = 1;
 
-      // Y-axis grid lines (5 steps)
-      const steps = 5;
+      const steps = 4;
       for (let i = 0; i <= steps; i++) {
         const y = pad.top + (ch / steps) * i;
         ctx.beginPath();
@@ -1470,32 +1330,32 @@
         ctx.lineTo(pad.left + cw, y);
         ctx.stroke();
 
-        const valLabel = Math.round(maxVal - (maxVal / steps) * i);
+        const val = Math.round(maxVal - (maxVal / steps) * i);
         ctx.fillStyle = '#64748b';
-        ctx.font = '10px "Fira Code", monospace';
+        ctx.font = '9px "Fira Code", monospace';
         ctx.textAlign = 'right';
-        ctx.fillText(valLabel.toLocaleString(), pad.left - 10, y + 4);
+        ctx.fillText(val.toLocaleString(), pad.left - 8, y + 3);
       }
 
-      // X-axis line
       ctx.beginPath();
       ctx.moveTo(pad.left, pad.top + ch);
       ctx.lineTo(pad.left + cw, pad.top + ch);
-      ctx.strokeStyle = '#323d52';
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#263145';
+      ctx.lineWidth = 1.5;
       ctx.stroke();
     }
   }
 
   // ============================================================================
-  // 7. APPLICATION CONTROLLER & UI WIRING
+  // 7. STUDIO CONTROLLER & UI SETUP
   // ============================================================================
   let erdVisualizer = null;
   let chartEngine = null;
 
   function initApp() {
-    renderSidebarSchema();
+    renderSidebarTree();
     renderPromptChips();
+    updateLineNumbers();
 
     const erdCanvas = document.getElementById('erd-canvas');
     if (erdCanvas) {
@@ -1509,13 +1369,14 @@
     }
 
     setupEventListeners();
+    setupSplitResizer();
 
-    // Initial default query execution
-    runQuery();
+    // Execute Initial Query
+    executeActiveQuery();
   }
 
   function setupEventListeners() {
-    // Database Selector Change
+    // Database Select
     const dbSelect = document.getElementById('db-select');
     if (dbSelect) {
       dbSelect.addEventListener('change', (e) => {
@@ -1525,153 +1386,163 @@
         synthesizer.setDatabase(activeDb);
         if (erdVisualizer) erdVisualizer.setDatabase(activeDb);
 
-        renderSidebarSchema();
+        renderSidebarTree();
         renderPromptChips();
 
-        // Update header & footer indicators
-        document.getElementById('active-db-indicator').textContent = `DB: ${currentDbKey}`;
-        const firstTable = Object.keys(activeDb.tables)[0];
-        document.getElementById('sql-input').value = `SELECT * FROM ${firstTable} LIMIT 15;`;
+        const firstTbl = Object.keys(activeDb.tables)[0];
+        document.getElementById('header-active-table').textContent = firstTbl;
+        setEditorContent(`SELECT * FROM ${firstTbl} LIMIT 15;`);
 
-        audio.playWhoosh();
-        runQuery();
+        audio.playExecute();
+        executeActiveQuery();
       });
     }
 
-    // Natural Language Query Bar
-    const btnGenSql = document.getElementById('btn-generate-sql');
-    const nlInput = document.getElementById('nl-query-input');
-    if (btnGenSql && nlInput) {
-      const handleNLSubmit = () => {
-        const val = nlInput.value.trim();
-        if (!val) return;
+    // Run Query Button
+    const btnRun = document.getElementById('btn-run-query');
+    if (btnRun) btnRun.addEventListener('click', () => executeActiveQuery());
 
-        audio.playWhoosh();
-        const synthesized = synthesizer.synthesize(val);
-        const sqlInput = document.getElementById('sql-input');
-        sqlInput.value = synthesized;
-
-        const confPill = document.getElementById('nl-trans-confidence');
-        if (confPill) {
-          confPill.classList.remove('hidden');
-          setTimeout(() => confPill.classList.add('hidden'), 5000);
-        }
-
-        switchTab('tab-sql-grid');
-        runQuery();
-      };
-
-      btnGenSql.addEventListener('click', handleNLSubmit);
-      nlInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          handleNLSubmit();
-        }
-      });
-    }
-
-    // SQL Editor Controls
-    const btnRun = document.getElementById('btn-run-sql');
-    if (btnRun) btnRun.addEventListener('click', () => runQuery());
-
-    const btnClear = document.getElementById('btn-clear-sql');
-    if (btnClear) {
-      btnClear.addEventListener('click', () => {
-        document.getElementById('sql-input').value = '';
-        audio.playClick();
-      });
-    }
-
+    // Format SQL Button
     const btnFormat = document.getElementById('btn-format-sql');
     if (btnFormat) {
       btnFormat.addEventListener('click', () => {
-        const sql = document.getElementById('sql-input');
-        sql.value = formatSql(sql.value);
+        const textarea = document.getElementById('sql-textarea');
+        textarea.value = formatSql(textarea.value);
+        updateLineNumbers();
         audio.playClick();
       });
     }
 
-    // Workstation Tabs Navigation
-    document.querySelectorAll('.nav-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        const targetId = tab.getAttribute('data-tab');
-        switchTab(targetId);
+    // Clear SQL Button
+    const btnClear = document.getElementById('btn-clear-sql');
+    if (btnClear) {
+      btnClear.addEventListener('click', () => {
+        setEditorContent('');
+        audio.playClick();
+      });
+    }
+
+    // AI Copilot Toggle & Synthesis
+    const btnAi = document.getElementById('btn-toggle-ai-copilot');
+    const btnAiInline = document.getElementById('btn-open-copilot-inline');
+    const copilotDrawer = document.getElementById('ai-copilot-drawer');
+    const btnCloseCopilot = document.getElementById('btn-close-copilot');
+    const btnCopilotGen = document.getElementById('btn-copilot-synthesize');
+    const copilotInput = document.getElementById('copilot-nl-input');
+
+    const toggleCopilot = () => {
+      copilotDrawer.classList.toggle('hidden');
+      if (!copilotDrawer.classList.contains('hidden')) {
+        copilotInput.focus();
+        audio.playClick();
+      }
+    };
+
+    if (btnAi) btnAi.addEventListener('click', toggleCopilot);
+    if (btnAiInline) btnAiInline.addEventListener('click', toggleCopilot);
+    if (btnCloseCopilot) btnCloseCopilot.addEventListener('click', () => copilotDrawer.classList.add('hidden'));
+
+    if (btnCopilotGen && copilotInput) {
+      const handleGen = () => {
+        const prompt = copilotInput.value.trim();
+        if (!prompt) return;
+
+        audio.playExecute();
+        const synthesizedSql = synthesizer.synthesize(prompt);
+        setEditorContent(synthesizedSql);
+        copilotDrawer.classList.add('hidden');
+        switchResultView('view-grid');
+        executeActiveQuery();
+      };
+
+      btnCopilotGen.addEventListener('click', handleGen);
+      copilotInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleGen();
+        }
+      });
+    }
+
+    // Editor Textarea Events
+    const textarea = document.getElementById('sql-textarea');
+    if (textarea) {
+      textarea.addEventListener('input', () => {
+        updateLineNumbers();
+        saveActiveTabContent();
+      });
+
+      textarea.addEventListener('keyup', updateCursorPosition);
+      textarea.addEventListener('click', updateCursorPosition);
+
+      textarea.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          const start = textarea.selectionStart;
+          const end = textarea.selectionEnd;
+          textarea.value = textarea.value.substring(0, start) + '  ' + textarea.value.substring(end);
+          textarea.selectionStart = textarea.selectionEnd = start + 2;
+          updateLineNumbers();
+        }
+      });
+    }
+
+    // Results Tabs Navigation
+    document.querySelectorAll('.res-tab').forEach(t => {
+      t.addEventListener('click', () => {
+        const viewId = t.getAttribute('data-res-view');
+        switchResultView(viewId);
         audio.playClick();
       });
     });
 
-    // Audio Toggle
-    const btnAudio = document.getElementById('btn-audio-toggle');
-    if (btnAudio) {
-      btnAudio.addEventListener('click', () => {
-        audio.muted = !audio.muted;
-        document.getElementById('audio-icon').textContent = audio.muted ? '🔇' : '🔊';
-        document.getElementById('audio-text').textContent = audio.muted ? 'Audio OFF' : 'Audio ON';
-      });
-    }
+    // Activity Dock Left Navigation
+    document.querySelectorAll('.dock-btn[data-dock]').forEach(b => {
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.dock-btn').forEach(btn => btn.classList.remove('active'));
+        b.classList.add('active');
+        const dock = b.getAttribute('data-dock');
 
-    // Modal DDL Dialog
-    const btnDdl = document.getElementById('btn-schema-ddl');
-    const ddlDialog = document.getElementById('ddl-dialog');
-    if (btnDdl && ddlDialog) {
-      btnDdl.addEventListener('click', () => {
-        document.getElementById('ddl-code-block').textContent = generateDdl(activeDb);
-        ddlDialog.showModal();
+        if (dock === 'editor' || dock === 'tables') {
+          switchResultView('view-grid');
+        } else if (dock === 'erd') {
+          switchResultView('view-erd');
+        } else if (dock === 'analytics') {
+          switchResultView('view-charts');
+        } else if (dock === 'history') {
+          switchResultView('view-history');
+        }
         audio.playClick();
       });
-      document.getElementById('btn-close-ddl').addEventListener('click', () => ddlDialog.close());
-      document.getElementById('btn-close-ddl-btn').addEventListener('click', () => ddlDialog.close());
-      document.getElementById('btn-copy-ddl').addEventListener('click', () => {
-        navigator.clipboard.writeText(generateDdl(activeDb));
-        audio.playSuccess();
-        alert('Database DDL copied to clipboard!');
-      });
-    }
+    });
 
-    // Modal Help Dialog
-    const btnHelp = document.getElementById('btn-help-modal');
-    const helpDialog = document.getElementById('help-dialog');
-    if (btnHelp && helpDialog) {
-      btnHelp.addEventListener('click', () => {
-        helpDialog.showModal();
-        audio.playClick();
-      });
-      document.getElementById('btn-close-help').addEventListener('click', () => helpDialog.close());
-      document.getElementById('btn-close-help-btn').addEventListener('click', () => helpDialog.close());
-    }
-
-    // Data Export Buttons
-    document.getElementById('btn-export-csv').addEventListener('click', exportCsv);
-    document.getElementById('btn-export-json').addEventListener('click', exportJson);
-    document.getElementById('btn-export-markdown').addEventListener('click', exportMarkdown);
-
-    // Switch to chart view button in grid toolbar
-    document.getElementById('btn-visualize-grid').addEventListener('click', () => {
-      switchTab('tab-data-charts');
+    // Quick Auto-Chart Button
+    document.getElementById('btn-quick-chart').addEventListener('click', () => {
+      switchResultView('view-charts');
       audio.playClick();
     });
 
-    // Chart Types
-    document.querySelectorAll('#chart-type-group .btn-toggle').forEach(btn => {
+    // Chart Type Selector
+    document.querySelectorAll('#chart-type-selector .pill-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('#chart-type-group .btn-toggle').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('#chart-type-selector .pill-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         if (chartEngine) {
-          chartEngine.setChartType(btn.getAttribute('data-chart'));
+          chartEngine.setChartType(btn.getAttribute('data-type'));
           audio.playClick();
         }
       });
     });
 
-    // Chart Axes Change
-    document.getElementById('chart-x-axis').addEventListener('change', (e) => {
+    // Chart Axes Selectors
+    document.getElementById('chart-axis-x').addEventListener('change', (e) => {
       if (chartEngine) {
         chartEngine.xAxisCol = e.target.value;
         chartEngine.render();
       }
     });
 
-    document.getElementById('chart-y-axis').addEventListener('change', (e) => {
+    document.getElementById('chart-axis-y').addEventListener('change', (e) => {
       if (chartEngine) {
         chartEngine.yAxisCol = e.target.value;
         chartEngine.render();
@@ -1695,152 +1566,435 @@
       }
     });
 
-    document.getElementById('btn-erd-reset-view').addEventListener('click', () => {
+    document.getElementById('btn-erd-reset-fit').addEventListener('click', () => {
       if (erdVisualizer) {
         erdVisualizer.scale = 1.0;
-        erdVisualizer.panX = 40;
-        erdVisualizer.panY = 40;
+        erdVisualizer.panX = 50;
+        erdVisualizer.panY = 50;
         erdVisualizer.render();
         audio.playClick();
       }
     });
 
-    document.getElementById('btn-erd-rearrange').addEventListener('click', () => {
+    document.getElementById('btn-erd-auto-layout').addEventListener('click', () => {
       if (erdVisualizer) {
         erdVisualizer.initNodes();
         erdVisualizer.render();
-        audio.playWhoosh();
+        audio.playExecute();
       }
     });
 
-    // Drawer Close
-    const drawerClose = document.getElementById('drawer-close');
-    if (drawerClose) {
-      drawerClose.addEventListener('click', () => {
-        document.getElementById('erd-detail-drawer').classList.add('hidden');
+    document.getElementById('btn-close-entity-drawer').addEventListener('click', () => {
+      document.getElementById('erd-entity-drawer').classList.add('hidden');
+    });
+
+    // Export Dropdown
+    const btnExpDrop = document.getElementById('btn-export-dropdown');
+    const expMenu = document.getElementById('export-menu');
+    if (btnExpDrop && expMenu) {
+      btnExpDrop.addEventListener('click', (e) => {
+        e.stopPropagation();
+        expMenu.classList.toggle('hidden');
+      });
+      window.addEventListener('click', () => expMenu.classList.add('hidden'));
+
+      document.getElementById('opt-export-csv').addEventListener('click', exportCsv);
+      document.getElementById('opt-export-json').addEventListener('click', exportJson);
+      document.getElementById('opt-export-markdown').addEventListener('click', exportMarkdown);
+      document.getElementById('opt-export-sql').addEventListener('click', exportSqlInserts);
+    }
+
+    // Modal DDL Dialog
+    const btnDdl = document.getElementById('btn-schema-ddl');
+    const ddlDialog = document.getElementById('ddl-dialog');
+    if (btnDdl && ddlDialog) {
+      btnDdl.addEventListener('click', () => {
+        document.getElementById('ddl-code-display').textContent = generateDdl(activeDb);
+        ddlDialog.showModal();
+        audio.playClick();
+      });
+      document.getElementById('btn-close-ddl-x').addEventListener('click', () => ddlDialog.close());
+      document.getElementById('btn-close-ddl-done').addEventListener('click', () => ddlDialog.close());
+      document.getElementById('btn-copy-ddl-clipboard').addEventListener('click', () => {
+        navigator.clipboard.writeText(generateDdl(activeDb));
+        audio.playSuccess();
+        alert('Database DDL copied to clipboard.');
       });
     }
 
-    // Keyboard Shortcuts
+    // Modal Shortcuts Dialog
+    const btnShortcuts = document.getElementById('btn-help-shortcuts');
+    const dockShortcuts = document.getElementById('dock-btn-shortcuts');
+    const scDialog = document.getElementById('shortcuts-dialog');
+    if (scDialog) {
+      if (btnShortcuts) btnShortcuts.addEventListener('click', () => scDialog.showModal());
+      if (dockShortcuts) dockShortcuts.addEventListener('click', () => scDialog.showModal());
+      document.getElementById('btn-close-shortcuts-x').addEventListener('click', () => scDialog.close());
+      document.getElementById('btn-close-shortcuts-done').addEventListener('click', () => scDialog.close());
+    }
+
+    // Audio Toggle
+    const btnAudio = document.getElementById('btn-toggle-audio');
+    if (btnAudio) {
+      btnAudio.addEventListener('click', () => {
+        audio.muted = !audio.muted;
+        document.getElementById('audio-icon').textContent = audio.muted ? '🔇' : '🔊';
+      });
+    }
+
+    // History Toggle & Clear
+    const btnHist = document.getElementById('btn-toggle-history');
+    if (btnHist) {
+      btnHist.addEventListener('click', () => {
+        switchResultView('view-history');
+        audio.playClick();
+      });
+    }
+
+    const btnClearHist = document.getElementById('btn-clear-history');
+    if (btnClearHist) {
+      btnClearHist.addEventListener('click', () => {
+        queryHistory.length = 0;
+        renderHistory();
+        audio.playClick();
+      });
+    }
+
+    // Client-side Grid Filter Search
+    const gridSearch = document.getElementById('grid-filter-search');
+    if (gridSearch) {
+      gridSearch.addEventListener('input', (e) => {
+        filterGridRows(e.target.value.toLowerCase());
+      });
+    }
+
+    // Global Keyboard Shortcuts
     window.addEventListener('keydown', (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
         e.preventDefault();
-        runQuery();
+        executeActiveQuery();
       }
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
-        const input = document.getElementById('nl-query-input');
-        if (input) input.focus();
+        toggleCopilot();
+      }
+      if (e.key.toLowerCase() === 'm' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        audio.muted = !audio.muted;
+        document.getElementById('audio-icon').textContent = audio.muted ? '🔇' : '🔊';
       }
       if (e.key === 'Escape') {
         const dialogs = document.querySelectorAll('dialog[open]');
         dialogs.forEach(d => d.close());
-        document.getElementById('erd-detail-drawer').classList.add('hidden');
+        document.getElementById('ai-copilot-drawer').classList.add('hidden');
+        document.getElementById('erd-entity-drawer').classList.add('hidden');
+      }
+    });
+
+    // Multi-tab Click Listener
+    setupTabListeners();
+  }
+
+  function setupTabListeners() {
+    document.querySelectorAll('.editor-tab').forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        if (e.target.classList.contains('tab-close')) return;
+        const tabId = tab.getAttribute('data-tab-id');
+        switchQueryTab(tabId);
+        audio.playClick();
+      });
+    });
+
+    const btnNewTab = document.getElementById('btn-new-sql-tab');
+    if (btnNewTab) {
+      btnNewTab.addEventListener('click', () => {
+        const newId = `tab-${queryTabs.length + 1}`;
+        queryTabs.push({
+          id: newId,
+          title: `query_${queryTabs.length + 1}.sql`,
+          content: 'SELECT * FROM organizations LIMIT 10;'
+        });
+        renderQueryTabs();
+        switchQueryTab(newId);
+        audio.playClick();
+      });
+    }
+  }
+
+  function renderQueryTabs() {
+    const container = document.getElementById('editor-tabs-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    queryTabs.forEach(t => {
+      const btn = document.createElement('button');
+      btn.className = `editor-tab ${t.id === activeTabId ? 'active' : ''}`;
+      btn.setAttribute('data-tab-id', t.id);
+      btn.innerHTML = `
+        <span class="tab-indicator">●</span>
+        <span class="tab-title">${t.title}</span>
+        <span class="tab-close" title="Close Tab">✕</span>
+      `;
+
+      btn.addEventListener('click', (e) => {
+        if (e.target.classList.contains('tab-close')) {
+          e.stopPropagation();
+          closeQueryTab(t.id);
+          return;
+        }
+        switchQueryTab(t.id);
+        audio.playClick();
+      });
+
+      container.appendChild(btn);
+    });
+  }
+
+  function switchQueryTab(tabId) {
+    saveActiveTabContent();
+    activeTabId = tabId;
+    const tab = queryTabs.find(t => t.id === tabId);
+    if (tab) {
+      const textarea = document.getElementById('sql-textarea');
+      textarea.value = tab.content;
+      updateLineNumbers();
+      renderQueryTabs();
+    }
+  }
+
+  function closeQueryTab(tabId) {
+    if (queryTabs.length <= 1) return;
+    const idx = queryTabs.findIndex(t => t.id === tabId);
+    if (idx >= 0) {
+      queryTabs.splice(idx, 1);
+      if (activeTabId === tabId) {
+        activeTabId = queryTabs[Math.max(0, idx - 1)].id;
+      }
+      renderQueryTabs();
+      switchQueryTab(activeTabId);
+    }
+  }
+
+  function saveActiveTabContent() {
+    const tab = queryTabs.find(t => t.id === activeTabId);
+    if (tab) {
+      tab.content = document.getElementById('sql-textarea').value;
+    }
+  }
+
+  function setEditorContent(sql) {
+    const textarea = document.getElementById('sql-textarea');
+    textarea.value = sql;
+    updateLineNumbers();
+    saveActiveTabContent();
+  }
+
+  function setupSplitResizer() {
+    const splitter = document.getElementById('pane-splitter');
+    const editorPane = document.getElementById('editor-pane');
+    if (!splitter || !editorPane) return;
+
+    let isResizing = false;
+
+    splitter.addEventListener('mousedown', (e) => {
+      isResizing = true;
+      document.body.style.cursor = 'row-resize';
+      e.preventDefault();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isResizing) return;
+      const totalH = window.innerHeight - 72; // minus headers
+      const newH = Math.max(140, Math.min(e.clientY - 46, totalH - 180));
+      editorPane.style.flex = `0 0 ${newH}px`;
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isResizing) {
+        isResizing = false;
+        document.body.style.cursor = 'default';
+        if (erdVisualizer) erdVisualizer.render();
+        if (chartEngine) chartEngine.render();
       }
     });
   }
 
-  function switchTab(tabId) {
-    currentActiveTab = tabId;
-    document.querySelectorAll('.workstation-nav .nav-tab').forEach(t => {
-      t.classList.toggle('active', t.getAttribute('data-tab') === tabId);
+  function updateLineNumbers() {
+    const textarea = document.getElementById('sql-textarea');
+    const gutter = document.getElementById('line-gutter');
+    if (!textarea || !gutter) return;
+
+    const lineCount = textarea.value.split('\n').length;
+    let linesHtml = '';
+    for (let i = 1; i <= Math.max(lineCount, 3); i++) {
+      linesHtml += `${i}<br>`;
+    }
+    gutter.innerHTML = linesHtml;
+  }
+
+  function updateCursorPosition() {
+    const textarea = document.getElementById('sql-textarea');
+    const display = document.getElementById('cursor-position-display');
+    if (!textarea || !display) return;
+
+    const textLines = textarea.value.substr(0, textarea.selectionStart).split('\n');
+    const line = textLines.length;
+    const col = textLines[textLines.length - 1].length + 1;
+    display.textContent = `Ln ${line}, Col ${col}`;
+  }
+
+  function switchResultView(viewId) {
+    currentResultView = viewId;
+    document.querySelectorAll('.res-tab').forEach(t => {
+      t.classList.toggle('active', t.getAttribute('data-res-view') === viewId);
     });
-    document.querySelectorAll('.tab-content').forEach(c => {
-      c.classList.toggle('active', c.id === tabId);
+    document.querySelectorAll('.res-view-panel').forEach(p => {
+      p.classList.toggle('active', p.id === viewId);
     });
 
-    if (tabId === 'tab-erd-canvas' && erdVisualizer) {
-      setTimeout(() => erdVisualizer.render(), 50);
+    if (viewId === 'view-erd' && erdVisualizer) {
+      setTimeout(() => erdVisualizer.render(), 40);
     }
-    if (tabId === 'tab-data-charts' && chartEngine) {
-      setTimeout(() => chartEngine.render(), 50);
+    if (viewId === 'view-charts' && chartEngine) {
+      setTimeout(() => chartEngine.render(), 40);
+    }
+    if (viewId === 'view-history') {
+      renderHistory();
     }
   }
 
-  function runQuery() {
-    const sql = document.getElementById('sql-input').value;
-    const statStatus = document.getElementById('stat-query-status');
-    const statTime = document.getElementById('stat-query-time');
-    const statRows = document.getElementById('stat-query-rows');
-    const statCols = document.getElementById('stat-query-cols');
-    const statScanned = document.getElementById('stat-scanned-rows');
+  function executeActiveQuery() {
+    const sql = document.getElementById('sql-textarea').value;
+    const metricTime = document.getElementById('metric-query-time');
+    const metricRows = document.getElementById('metric-rows-returned');
+    const statusAnnounce = document.getElementById('global-status-announcement');
+    const toast = document.getElementById('editor-toast-msg');
 
     try {
-      const result = engine.execute(sql);
-      currentQueryResult = result;
+      const res = engine.execute(sql);
+      currentQueryResult = res;
 
-      statStatus.textContent = 'SUCCESS';
-      statStatus.className = 'val success';
-      statTime.textContent = `${result.executionTimeMs} ms`;
-      statRows.textContent = `${result.rows.length} rows`;
-      statCols.textContent = `${result.columns.length} cols`;
-      statScanned.textContent = `${result.scannedRows} rows`;
+      metricTime.textContent = `${res.executionTimeMs}ms`;
+      metricRows.textContent = `${res.rows.length} rows`;
+      statusAnnounce.textContent = `Executed in ${res.executionTimeMs}ms (${res.rows.length} records)`;
+      toast.textContent = `Query Success (${res.executionTimeMs}ms)`;
 
-      renderResultsGrid(result);
-      renderExecutionPlan(result.queryPlan, result.executionTimeMs);
+      document.getElementById('res-grid-count').textContent = res.rows.length;
+
+      renderGridTable(res);
+      renderExecutionPlan(res.queryPlan, res.executionTimeMs);
 
       if (chartEngine) {
-        chartEngine.setData(result.rows, result.columns);
+        chartEngine.setData(res.rows, res.columns);
       }
+
+      // Add to history
+      queryHistory.unshift({
+        sql: sql.trim(),
+        duration: res.executionTimeMs,
+        rows: res.rows.length,
+        status: 'SUCCESS',
+        time: new Date().toLocaleTimeString()
+      });
 
       audio.playSuccess();
     } catch (err) {
-      statStatus.textContent = 'ERROR';
-      statStatus.className = 'val error';
-      statTime.textContent = '0.0 ms';
-      statRows.textContent = '0 rows';
-      statCols.textContent = '0 cols';
+      metricTime.textContent = '0ms';
+      metricRows.textContent = '0 rows';
+      statusAnnounce.textContent = `Error: ${err.message}`;
+      toast.textContent = 'Syntax / Execution Error';
 
-      const tbody = document.getElementById('grid-tbody');
+      const tbody = document.getElementById('grid-table-body');
       if (tbody) {
-        tbody.innerHTML = `<tr><td colspan="10" style="color: #f43f5e; padding: 20px;"><strong>Query Execution Error:</strong> ${err.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="12" style="color:var(--accent-rose); padding:16px;"><strong>Execution Error:</strong> ${err.message}</td></tr>`;
       }
+
+      queryHistory.unshift({
+        sql: sql.trim(),
+        duration: 0,
+        rows: 0,
+        status: 'ERROR',
+        time: new Date().toLocaleTimeString()
+      });
+
       audio.playError();
     }
   }
 
-  function renderResultsGrid(result) {
-    const thead = document.getElementById('grid-thead');
-    const tbody = document.getElementById('grid-tbody');
-    const emptyState = document.getElementById('grid-empty-state');
-    const paginationInfo = document.getElementById('pagination-info');
+  function renderGridTable(res) {
+    const thead = document.getElementById('grid-table-head');
+    const tbody = document.getElementById('grid-table-body');
+    const emptyCard = document.getElementById('grid-empty-card');
+    const pagSummary = document.getElementById('grid-pagination-summary');
 
     thead.innerHTML = '';
     tbody.innerHTML = '';
 
-    if (!result.rows || result.rows.length === 0) {
-      emptyState.classList.remove('hidden');
-      paginationInfo.textContent = '0 records returned';
+    if (!res.rows || res.rows.length === 0) {
+      emptyCard.classList.remove('hidden');
+      pagSummary.textContent = 'Showing 0 rows';
       return;
     }
 
-    emptyState.classList.add('hidden');
-    paginationInfo.textContent = `Showing 1-${result.rows.length} of ${result.rows.length} records`;
+    emptyCard.classList.add('hidden');
+    pagSummary.textContent = `Showing 1–${res.rows.length} of ${res.rows.length} records`;
 
-    // Render Table Header
+    // Header row with Row Index `#`
     const trHead = document.createElement('tr');
-    result.columns.forEach(col => {
+    const thIdx = document.createElement('th');
+    thIdx.className = 'td-index';
+    thIdx.textContent = '#';
+    trHead.appendChild(thIdx);
+
+    res.columns.forEach(col => {
       const th = document.createElement('th');
-      th.innerHTML = `${col} <span class="sort-indicator">↕</span>`;
-      th.addEventListener('click', () => sortGridByColumn(col));
+      const colType = res.columnTypes[col] || 'varchar';
+      th.innerHTML = `
+        <div class="th-content">
+          <span>${col}</span>
+          <span class="th-type-pill">${colType}</span>
+        </div>
+      `;
+      th.addEventListener('click', () => sortGridBy(col));
       trHead.appendChild(th);
     });
     thead.appendChild(trHead);
 
-    // Render Table Rows
-    result.rows.forEach(row => {
+    // Body rows
+    res.rows.forEach((row, idx) => {
       const tr = document.createElement('tr');
-      result.columns.forEach(col => {
+
+      const tdIdx = document.createElement('td');
+      tdIdx.className = 'td-index';
+      tdIdx.textContent = idx + 1;
+      tr.appendChild(tdIdx);
+
+      res.columns.forEach(col => {
         const td = document.createElement('td');
         const val = row[col];
-        td.textContent = val === null || val === undefined ? 'NULL' : val;
+
+        if (val === null || val === undefined) {
+          td.innerHTML = `<span class="val-null">NULL</span>`;
+        } else if (typeof val === 'boolean') {
+          td.innerHTML = val ? `<span class="val-bool-true">true</span>` : `<span class="val-bool-false">false</span>`;
+        } else {
+          td.textContent = val;
+        }
+
         tr.appendChild(td);
       });
       tbody.appendChild(tr);
     });
   }
 
-  function sortGridByColumn(col) {
+  function filterGridRows(query) {
+    const rows = document.querySelectorAll('#grid-table-body tr');
+    rows.forEach(r => {
+      const text = r.textContent.toLowerCase();
+      r.style.display = text.includes(query) ? '' : 'none';
+    });
+  }
+
+  function sortGridBy(col) {
     if (!currentQueryResult || !currentQueryResult.rows) return;
     const dir = currentSort.column === col && currentSort.direction === 'asc' ? 'desc' : 'asc';
     currentSort = { column: col, direction: dir };
@@ -1857,118 +2011,153 @@
       return 0;
     });
 
-    renderResultsGrid(currentQueryResult);
+    renderGridTable(currentQueryResult);
     audio.playClick();
   }
 
-  function renderExecutionPlan(planSteps, totalTime) {
-    const tree = document.getElementById('execution-pipeline-tree');
-    if (!tree) return;
-    tree.innerHTML = '';
+  function renderExecutionPlan(plan, duration) {
+    const container = document.getElementById('plan-nodes-container');
+    if (!container) return;
+    container.innerHTML = '';
 
-    planSteps.forEach((step, idx) => {
-      const card = document.createElement('div');
-      card.className = 'plan-node-card';
-      card.innerHTML = `
-        <div class="node-bullet"></div>
-        <div class="node-info-left">
-          <span class="node-op-name">${step.op}</span>
-          <span class="node-op-details">${step.detail}</span>
+    plan.forEach(step => {
+      const div = document.createElement('div');
+      div.className = 'plan-step-card';
+      div.innerHTML = `
+        <div>
+          <span class="plan-step-title">${step.op}</span>
+          <span class="plan-step-desc">${step.detail}</span>
         </div>
-        <div class="node-metrics-right">
-          <div class="node-metric">
-            <span class="val">${step.rows}</span>
-            <span class="lbl">Rows Est.</span>
-          </div>
-          <div class="node-metric">
-            <span class="val">${step.cost}</span>
-            <span class="lbl">Est. Cost</span>
-          </div>
+        <div style="text-align:right;">
+          <span style="color:var(--accent-cyan); font-weight:700;">${step.rows} rows</span>
+          <span style="color:var(--text-dim); margin-left:8px;">(cost: ${step.cost})</span>
         </div>
       `;
-      tree.appendChild(card);
+      container.appendChild(div);
     });
   }
 
-  function renderSidebarSchema() {
-    const list = document.getElementById('schema-tables-list');
-    const badge = document.getElementById('table-count-badge');
-    const fkVal = document.getElementById('fk-count-val');
-
+  function renderHistory() {
+    const list = document.getElementById('history-list-box');
     if (!list) return;
     list.innerHTML = '';
 
+    if (queryHistory.length === 0) {
+      list.innerHTML = `<div style="color:var(--text-dim); font-size:11px; padding:12px;">No executed queries recorded yet.</div>`;
+      return;
+    }
+
+    queryHistory.forEach(h => {
+      const div = document.createElement('div');
+      div.className = 'history-row';
+      div.innerHTML = `
+        <span class="history-query-text" title="${h.sql}">${h.sql}</span>
+        <div class="history-meta-box">
+          <span class="hist-time">${h.duration}ms</span>
+          <span style="color:var(--text-dim); font-size:9px;">${h.rows} rows</span>
+          <span style="color:var(--text-dim); font-size:9px;">${h.time}</span>
+          <button class="btn-hist-run">Load</button>
+        </div>
+      `;
+
+      div.querySelector('.btn-hist-run').addEventListener('click', () => {
+        setEditorContent(h.sql);
+        switchResultView('view-grid');
+        executeActiveQuery();
+      });
+
+      list.appendChild(div);
+    });
+  }
+
+  function renderSidebarTree() {
+    const tree = document.getElementById('explorer-tree');
+    const badge = document.getElementById('sidebar-tables-badge');
+    const fkCount = document.getElementById('explorer-fk-count');
+    if (!tree) return;
+    tree.innerHTML = '';
+
     const tables = Object.keys(activeDb.tables);
-    if (badge) badge.textContent = `${tables.length} Tables`;
+    if (badge) badge.textContent = tables.length;
 
     let totalFk = 0;
+
     tables.forEach(tblKey => {
       const tbl = activeDb.tables[tblKey];
-      const item = document.createElement('div');
-      item.className = 'schema-table-item';
+      const node = document.createElement('div');
+      node.className = 'tree-table-node';
 
       let colsHtml = '';
       tbl.columns.forEach(col => {
         if (col.isFk) totalFk++;
         colsHtml += `
-          <div class="schema-column-row">
-            <div class="column-name-box">
-              ${col.isPk ? '<span class="pk-badge">PK</span>' : ''}
-              ${col.isFk ? '<span class="fk-badge">FK</span>' : ''}
-              <span>${col.name}</span>
-            </div>
-            <span class="column-type">${col.type}</span>
+          <div class="tree-col-row">
+            <span>
+              ${col.isPk ? '<span class="col-tag pk">PK</span>' : ''}
+              ${col.isFk ? '<span class="col-tag fk">FK</span>' : ''}
+              ${col.name}
+            </span>
+            <span class="tree-col-type">${col.type}</span>
           </div>
         `;
       });
 
-      item.innerHTML = `
-        <div class="schema-table-header">
-          <div class="table-header-left">
-            <span class="table-chevron">▶</span>
-            <span class="table-name">${tblKey}</span>
+      node.innerHTML = `
+        <div class="tree-node-row">
+          <div class="tree-node-left">
+            <span class="tree-caret">▶</span>
+            <span class="tree-tbl-name">${tblKey}</span>
           </div>
-          <div class="table-actions">
-            <span class="table-row-count">${tbl.rows.length}</span>
-            <button class="btn-table-query" title="Query table">⚡</button>
+          <div class="tree-node-right">
+            <span class="tree-row-count">${tbl.rows.length}</span>
+            <button class="tree-quick-btn" title="SELECT * FROM table">⚡</button>
           </div>
         </div>
-        <div class="schema-columns-list">${colsHtml}</div>
+        <div class="tree-columns-box">${colsHtml}</div>
       `;
 
-      item.querySelector('.schema-table-header').addEventListener('click', (e) => {
-        if (e.target.classList.contains('btn-table-query')) return;
-        item.classList.toggle('expanded');
+      node.querySelector('.tree-node-row').addEventListener('click', (e) => {
+        if (e.target.classList.contains('tree-quick-btn')) return;
+        node.classList.toggle('expanded');
         audio.playClick();
       });
 
-      item.querySelector('.btn-table-query').addEventListener('click', () => {
-        document.getElementById('sql-input').value = `SELECT * FROM ${tblKey} LIMIT 20;`;
-        switchTab('tab-sql-grid');
-        runQuery();
+      node.querySelector('.tree-quick-btn').addEventListener('click', () => {
+        setEditorContent(`SELECT * FROM ${tblKey} LIMIT 20;`);
+        switchResultView('view-grid');
+        executeActiveQuery();
       });
 
-      list.appendChild(item);
+      tree.appendChild(node);
     });
 
-    if (fkVal) fkVal.textContent = `${totalFk} relations`;
+    if (fkCount) fkCount.textContent = `${totalFk} linked keys`;
   }
 
   function renderPromptChips() {
-    const container = document.getElementById('prompt-chips-container');
+    const container = document.getElementById('copilot-prompt-chips');
     if (!container) return;
     container.innerHTML = '';
 
     (activeDb.prompts || []).forEach(p => {
       const chip = document.createElement('div');
-      chip.className = 'prompt-chip';
+      chip.className = 'chip-item';
       chip.textContent = p.label;
       chip.addEventListener('click', () => {
-        document.getElementById('nl-query-input').value = p.query;
-        document.getElementById('btn-generate-sql').click();
+        setEditorContent(p.query);
+        document.getElementById('ai-copilot-drawer').classList.add('hidden');
+        switchResultView('view-grid');
+        executeActiveQuery();
       });
       container.appendChild(chip);
     });
+  }
+
+  function formatSql(sql) {
+    return sql
+      .replace(/\s+/g, ' ')
+      .replace(/\s*(SELECT|FROM|WHERE|JOIN|ON|ORDER BY|GROUP BY|LIMIT)\s*/gi, '\n$1 ')
+      .trim();
   }
 
   function generateDdl(db) {
@@ -1976,35 +2165,26 @@
     Object.keys(db.tables).forEach(tKey => {
       const tbl = db.tables[tKey];
       ddl += `CREATE TABLE ${tKey} (\n`;
-      const colDefs = tbl.columns.map(c => {
+      const cols = tbl.columns.map(c => {
         let def = `  ${c.name.padEnd(16)} ${c.type}`;
         if (c.isPk) def += ' PRIMARY KEY';
         if (c.isFk && c.fkRef) def += ` REFERENCES ${c.fkRef.table}(${c.fkRef.col})`;
         return def;
       });
-      ddl += colDefs.join(',\n') + '\n);\n\n';
+      ddl += cols.join(',\n') + '\n);\n\n';
     });
     return ddl;
-  }
-
-  function formatSql(sql) {
-    return sql
-      .replace(/\s+/g, ' ')
-      .replace(/\s*(SELECT|FROM|WHERE|JOIN|ON|GROUP BY|ORDER BY|LIMIT)\s*/gi, '\n$1 ')
-      .trim();
   }
 
   function exportCsv() {
     if (!currentQueryResult || !currentQueryResult.rows.length) return;
     const cols = currentQueryResult.columns;
-    const csvRows = [cols.join(',')];
-
-    currentQueryResult.rows.forEach(row => {
-      const vals = cols.map(c => `"${String(row[c] ?? '').replace(/"/g, '""')}"`);
-      csvRows.push(vals.join(','));
+    const rows = [cols.join(',')];
+    currentQueryResult.rows.forEach(r => {
+      const row = cols.map(c => `"${String(r[c] ?? '').replace(/"/g, '""')}"`);
+      rows.push(row.join(','));
     });
-
-    downloadBlob(csvRows.join('\n'), 'neuroquery_export.csv', 'text/csv');
+    downloadBlob(rows.join('\n'), 'neuroquery_export.csv', 'text/csv');
     audio.playSuccess();
   }
 
@@ -2019,14 +2199,29 @@
     const cols = currentQueryResult.columns;
     let md = '| ' + cols.join(' | ') + ' |\n';
     md += '| ' + cols.map(() => '---').join(' | ') + ' |\n';
-
     currentQueryResult.rows.forEach(r => {
       md += '| ' + cols.map(c => r[c] ?? '').join(' | ') + ' |\n';
     });
-
     navigator.clipboard.writeText(md);
     audio.playSuccess();
-    alert('Query results copied to clipboard as Markdown table!');
+    alert('Results copied to clipboard as Markdown table!');
+  }
+
+  function exportSqlInserts() {
+    if (!currentQueryResult || !currentQueryResult.rows.length) return;
+    const cols = currentQueryResult.columns;
+    const tbl = 'query_results';
+    let sql = '';
+    currentQueryResult.rows.forEach(r => {
+      const vals = cols.map(c => {
+        const v = r[c];
+        return v === null ? 'NULL' : typeof v === 'number' ? v : `'${String(v).replace(/'/g, "''")}'`;
+      });
+      sql += `INSERT INTO ${tbl} (${cols.join(', ')}) VALUES (${vals.join(', ')});\n`;
+    });
+    navigator.clipboard.writeText(sql);
+    audio.playSuccess();
+    alert('SQL INSERT statements copied to clipboard!');
   }
 
   function downloadBlob(content, filename, type) {
@@ -2039,7 +2234,6 @@
     URL.revokeObjectURL(url);
   }
 
-  // Initialize on DOMContentLoaded
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initApp);
   } else {
